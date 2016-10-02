@@ -4,6 +4,13 @@ import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * THIS IS JUST A TEST CLASS THAT WAS USED TO TEST THE DATABASE CONNECTION. THIS CLASS WILL BE REMOVED 
+ * IN THE RELEASE OF THE APPLICATION.
+ * 
+ * @author mkyong
+ *
+ */
 public class JDBC {
 
 	public static void main(String[] argv) {
@@ -12,7 +19,7 @@ public class JDBC {
 				+ "JDBC Connection Testing ------------");
 
 		try {
-
+			//The DB_DRIVER is being passed as a parameter of forName() here
 			Class.forName("org.postgresql.Driver");
 
 		} catch (ClassNotFoundException e) {
@@ -29,7 +36,13 @@ public class JDBC {
 		Connection connection = null;
 
 		try {
-
+			//This was the most important thing from this test that I got. This connection shows how we connect
+			//to the database. 
+			//The DB_CONNECTION is 'jdbc:postgresql://<localhostIPAddress>:<portNumber>/<databaseName>
+			//The DB_USER is the user that you have assigned in postgres (You could use the default "superuser" 
+			//postgres, but I felt like that was insecure. So I created a new user and I am giving it permissions
+			//as I go)
+			//The DB_PASSWORD again is the password you assign to the user you created in postgres
 			connection = DriverManager.getConnection(
 					"jdbc:postgresql://127.0.0.1:5432/scangro", "app",
 					"Th3Cak3IsALi3!");
