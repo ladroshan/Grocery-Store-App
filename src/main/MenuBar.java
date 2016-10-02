@@ -23,7 +23,7 @@ public class MenuBar extends JMenuBar implements ActionListener{
 	private static final long serialVersionUID = -1187579188283252389L;
 	JMenuBar menuBar;
 	JMenu file, pages, about, help;
-	JMenuItem logout, cashier, exit;
+	JMenuItem logout, exit;
 	JMenuItem inventory, users, checkout;
 	JMenuItem details;
 	JMenuItem instructions, bugReport;
@@ -45,11 +45,6 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		logout = new JMenuItem("Logout");
 		logout.addActionListener(this);
 		file.add(logout);
-
-		//REMOVE ME!! This was for testing
-		cashier = new JMenuItem("Cashier");
-		cashier.addActionListener(this);
-		file.add(cashier);
 		
 		exit = new JMenuItem("Exit");
 		exit.addActionListener(this);
@@ -101,11 +96,6 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		logout.addActionListener(this);
 		file.add(logout);
 		
-		//REMOVE ME!! This was for testing
-		cashier = new JMenuItem("Cashier");
-		cashier.addActionListener(this);
-		file.add(cashier);
-		
 		exit = new JMenuItem("Exit");
 		exit.addActionListener(this);
 		file.add(exit);
@@ -147,7 +137,6 @@ public class MenuBar extends JMenuBar implements ActionListener{
 	}
 	
 	public void hideMenu(String hide, String subs) {
-		
 		if (hide == "pages") {
 			if (subs == "inventory"){
 				pages.remove(inventory);
@@ -158,7 +147,7 @@ public class MenuBar extends JMenuBar implements ActionListener{
 			else if (subs == "checkout"){
 				pages.remove(checkout);
 			}
-			else {
+			else if (subs == "all"){
 				this.remove(pages);
 			}
 		}
@@ -171,6 +160,24 @@ public class MenuBar extends JMenuBar implements ActionListener{
 				this.remove(file);
 			}
 		}
+	}
+	
+	protected void restartMenu() {
+		this.add(file);
+		file.add(logout);
+		file.add(exit);
+		
+		this.add(pages);
+		pages.add(inventory);
+		pages.add(users);
+		pages.add(checkout);
+		
+		this.add(about);
+		about.add(details);
+		
+		this.add(help);
+		help.add(instructions);
+		help.add(bugReport);
 	}
 
 	@Override
@@ -201,10 +208,6 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		}
 		if (e.getSource() == logout) {
 			frame.logout();
-		}
-		//REMOVE ME!! This was for testing
-		if (e.getSource() == cashier) {
-			frame.cash();
 		}
 	}
 
