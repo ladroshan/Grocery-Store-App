@@ -145,7 +145,7 @@ public class JDBCSelect {
 	 * This method is a getter for the resultTable Vector of Strings.
 	 * The method is used by the Mainframe to get the data from the Query for processing.
 	 * 
-	 * @return Vector of Strings - The resultTable
+	 * @return resultTable - A Vector of Strings
 	 */
 	public static Vector<String> getList() {
 		return resultTable;

@@ -223,12 +223,39 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		//Initialize the MenuBar before the Mainframe is able to be passed in
 		new MenuBar();
 	}
+	/*
+	JMenu file, pages, about, help;
+	JMenuItem logout, exit;
+	JMenuItem inventory, users, checkout;
+	JMenuItem details;
+	JMenuItem instructions, bugReport;
+	 */
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		//If user clicks "Logout", invoke the logout method from the Mainframe
+		if (e.getSource() == logout) {
+			frame.logout();
+		}
+		
 		//If user clicks "Exit", close the program
 		if (e.getSource() == exit) {
 			System.exit(0);
+		}
+		
+		//If user clicks "Inventory", reload the frame with the inventory layout
+		if (e.getSource() == inventory) {
+			
+		}
+
+		//If user clicks "Users", reload the frame with the users layout
+		if (e.getSource() == users) {
+			
+		}
+
+		//If user clicks "Checkout", reload the frame with the checkout layout
+		if (e.getSource() == checkout) {
+			
 		}
 		
 		//If the user clicks "Details", show the development information for the app in a separate window
@@ -257,11 +284,6 @@ public class MenuBar extends JMenuBar implements ActionListener{
 					+ "Include in the email body a description of the error you are "
 					+ "experiencing.", "Instructions", 
 					JOptionPane.INFORMATION_MESSAGE);
-		}
-		
-		//If user clicks "Logout", invoke the logout method from the Mainframe
-		if (e.getSource() == logout) {
-			frame.logout();
 		}
 	}
 

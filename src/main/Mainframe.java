@@ -24,7 +24,7 @@ import javax.swing.JTextField;
  * It should be the first Class called in the final build.
  * 
  * @author Jacob Killpack
- * @version 1.3
+ * @version 1.4
  */
 public class Mainframe implements ActionListener{
 	
@@ -32,7 +32,7 @@ public class Mainframe implements ActionListener{
 	private JFrame frame =  new JFrame("ScanableGrocery");
 	
 	//This is the pane in the JFrame
-	private Container pane;
+	private Container pane = frame.getContentPane();
 	
 	//This is the instance of the Menubar being created. The menu object is being initialized with the 
 	//overloaded constructor to make the Menubar editable later in this program.
@@ -48,7 +48,7 @@ public class Mainframe implements ActionListener{
 	private userType current;
 	
 	//This is the login button
-	private JButton loginBtn, submit;
+	private JButton loginBtn, submit, checkout, inventory, users;
 	
 	//This is the JTextField for submitting a Username when logging in
 	private JTextField uname;
@@ -62,7 +62,7 @@ public class Mainframe implements ActionListener{
 	 */
 	public Mainframe(){
 		//This is initializing the current user to NONUSER since no one is logged in when the app starts
-		current = userType.NONUSER;
+		current = userType.CASHIER;
 		
 		//Check what type of user is logged in and use that information to build the view they need
 		checkUser();
@@ -86,12 +86,7 @@ public class Mainframe implements ActionListener{
 	private void reload(){
 		//Check what type of user is logged in and use that information to build the view they need
 		checkUser();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		pane = frame.getContentPane();
-		
-		//This Layout Manager is more important later in the pane design methods
-		pane.setLayout(new GridBagLayout());
-		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		//Add the MenuBar to the frame
 		frame.setJMenuBar(menu);
 		frame.pack();
@@ -108,8 +103,84 @@ public class Mainframe implements ActionListener{
 	 * @param section - The subpages or views that are variations on the main page
 	 */
 	private void paneEdit(String page, String section) {
-		if(page.equals("login")) {
-			//Design the view the Login function that just has a Login Button
+		if(page.equals("main")){
+			//Design the view that will display right when the Admin logs in
+			if (section.equals("admin")) {
+				//A JPanel is used in this section because the positioning of the form items later doesn't 
+				//work if they are just directly added to the pane container. 
+				JPanel buttonHolder = new JPanel();
+				buttonHolder.setLayout(new GridBagLayout());
+				
+				//This is necessary for the positioning code farther down in this if statement
+				GridBagConstraints design = new GridBagConstraints();
+				design.insets = new Insets(45, 45, 10, 45);
+				
+				//Create and initialize some variables *SIDE NOTE* The reason why inventory, users, and checkout
+				//are declared at the header of this class is so that they can be used in the Listener code
+				JLabel label1 = new JLabel("Work With Your Inventory:");
+				JLabel label2 = new JLabel("Manage Users:");
+				JLabel label3 = new JLabel("Checkout a Cart:");
+				
+				inventory = new JButton("Go");
+				users = new JButton("Go");
+				checkout = new JButton("Go");
+				
+				//This listener runs the JDBC Queries to check the password
+				checkout.addActionListener(this);
+				
+				//Positioning for the different parts of the form
+				design.gridx = 0;
+				design.gridy = 1;
+				buttonHolder.add(label1, design);
+				design.gridx = 0;
+				design.gridy = 2;
+				buttonHolder.add(inventory, design);
+				design.gridx = 1;
+				design.gridy = 1;
+				buttonHolder.add(label2, design);
+				design.gridx = 1;
+				design.gridy = 2;
+				buttonHolder.add(users, design);
+				design.gridx = 2;
+				design.gridy = 1;
+				buttonHolder.add(label3, design);
+				design.gridx = 2;
+				design.gridy = 2;
+				buttonHolder.add(checkout, design);
+				pane.add(buttonHolder);
+			}
+			
+			//Design the view that will display right when a cashier logs in
+			else if (section.equals("cashier")) {
+				//A JPanel is used in this section because the positioning of the form items later doesn't 
+				//work if they are just directly added to the pane container. 
+				JPanel buttonHolder = new JPanel();
+				buttonHolder.setLayout(new GridBagLayout());
+				
+				//This is necessary for the positioning code farther down in this if statement
+				GridBagConstraints design = new GridBagConstraints();
+				design.insets = new Insets(15, 15, 15, 15);
+				
+				//Create and initialize some variables *SIDE NOTE* The reason why uname, pword, and submit
+				//are declared at the header of this class is so that they can be used in the Listener code
+				JLabel label = new JLabel("Checkout a Cart:");
+				checkout = new JButton("Go");
+				
+				//This listener runs the JDBC Queries to check the password
+				checkout.addActionListener(this);
+				
+				//Positioning for the different parts of the form
+				design.gridx = 1;
+				design.gridy = 1;
+				buttonHolder.add(label, design);
+				design.gridx = 1;
+				design.gridy = 2;
+				buttonHolder.add(checkout, design);
+				pane.add(buttonHolder);
+			}
+		}
+		else if(page.equals("login")) {
+			//Design the view for the Login function that just has a Login Button
 			if (section.equals("button")) {
 				loginBtn = new JButton("Login");
 				loginBtn.addActionListener(this);
@@ -306,8 +377,15 @@ public class Mainframe implements ActionListener{
 		//To keep the logout function in a separate method, the program initializes to a logged-in view and then 
 		//immediately is logged out *SIDE NOTE* While it starts logged-in, it still starts with NONUSER 
 		//privileges
+		//Mainframe test = new Mainframe();
+		//test.logout();
+		
 		Mainframe test = new Mainframe();
-		test.logout();
+		test.pane.removeAll();
+		test.frame.dispose();
+		test.current = userType.ADMIN;
+		test.paneEdit("main", "admin");
+		test.reload();
 	}
 	
 	@SuppressWarnings("static-access") //Not sure why, but Java told me to add this SuppressWarnings tag
@@ -356,6 +434,7 @@ public class Mainframe implements ActionListener{
 							pane.removeAll();
 							frame.dispose();
 							current = userType.ADMIN;
+							paneEdit("main", "admin");
 							reload();
 						}
 						
@@ -364,6 +443,7 @@ public class Mainframe implements ActionListener{
 							pane.removeAll();
 							frame.dispose();
 							current = userType.CASHIER;
+							paneEdit("main", "cashier");
 							reload();
 						}
 					}
@@ -386,5 +466,25 @@ public class Mainframe implements ActionListener{
 				//JDBC Query Builder. Nothing needs to happen here because error windows were already cast
 			}
 		}
+		
+		//If User clicks the "Go" button for the Inventory from the main Admin page, load the frame with
+		//the inventory settings
+		if (e.getSource() == inventory) {
+			
+		}
+		
+		//If User clicks the "Go" button for the Users section from the main Admin page, load the frame with
+		//the users settings
+		if (e.getSource() == users) {
+			//WORK NEEDED - This needs to be edited so that it contains code to get to the users page.
+			
+		}
+		
+		//If User clicks the "Go" button for the Checkout section from the main Cashier or Admin page, 
+		//load the frame with the checkout layout
+		if (e.getSource() == checkout) {
+			//WORK NEEDED - This needs to be edited so that it contains code to get to the checkout page.
+		}
+				
 	}
 }
