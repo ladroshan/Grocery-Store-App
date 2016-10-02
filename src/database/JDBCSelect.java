@@ -25,7 +25,7 @@ public class JDBCSelect {
 	private static final String DB_USER = "app";
 	private static final String DB_PASSWORD = "Th3Cak3IsALi3!";
 	
-	//This String is a tool of abstraction used to build different queries depending on how this class is called
+	//This String is a tool of abstraction used to build different select queries depending on how this class is called
 	private static String Query;
 	
 	//This Vector is a collection of Strings compiled from the results of the database query

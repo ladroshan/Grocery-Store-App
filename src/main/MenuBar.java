@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
  * rest of the Mainframe.
  * 
  * @author Jacob Killpack
- * @version 1.3
+ * @version 1.4
  */
 public class MenuBar extends JMenuBar implements ActionListener{
 	
@@ -245,7 +245,7 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		
 		//If user clicks "Inventory", reload the frame with the inventory layout
 		if (e.getSource() == inventory) {
-			
+			frame.loadInventory();
 		}
 
 		//If user clicks "Users", reload the frame with the users layout

@@ -4,6 +4,7 @@ import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
 
 /**
  * This Class is used exclusively for running INSERT Queries to the databse.
@@ -11,7 +12,7 @@ import java.sql.Statement;
  * methods need to be added down the road.
  * 
  * @author Jacob Killpack
- * @version 1.1
+ * @version 1.2
  */
 public class JDBCInsert {
 	//The following final variables are the hard-coded values for creating a database connection
@@ -20,9 +21,15 @@ public class JDBCInsert {
 	private static final String DB_USER = "app";
 	private static final String DB_PASSWORD = "Th3Cak3IsALi3!";
 	
-	//WORK NEEDED - The Query Builder, resultTable, and overloaded constructor objects/methods need to be added here.
+	//This String is a tool of abstraction used to build different insert queries depending on how this class is called
+	//private static String Query;
 	
-	//WORK NEEDED - Implement the abstracted Query object and compile a resultTable. See JDBCSelect as an example
+	//This Vector is a collection of Strings compiled from the results of the database query
+	//(It should be an empty vector before and after running queries to maintain high security)
+	public static Vector<String> resultTable = new Vector<String>();
+	
+	//public JDBCInsert(String table, )
+	
 	private static void insertRecordIntoDbUserTable() throws SQLException {
 		Connection dbConnection = null;
 		Statement statement = null;

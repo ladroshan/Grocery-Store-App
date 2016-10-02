@@ -48,7 +48,7 @@ public class Mainframe implements ActionListener{
 	private userType current;
 	
 	//This is the login button
-	private JButton loginBtn, submit, checkout, inventory, users;
+	private JButton loginBtn, submit, checkout, inventory, users, invAdd, invEd, invDe;
 	
 	//This is the JTextField for submitting a Username when logging in
 	private JTextField uname;
@@ -126,7 +126,8 @@ public class Mainframe implements ActionListener{
 				checkout = new JButton("Go");
 				
 				//This listener runs the JDBC Queries to check the password
-				checkout.addActionListener(this);
+				inventory.addActionListener(this);
+				users.addActionListener(this);
 				
 				//Positioning for the different parts of the form
 				design.gridx = 0;
@@ -228,13 +229,67 @@ public class Mainframe implements ActionListener{
 				pane.add(loginForm);
 			}
 		}
-		
+		else if (page == "inventory") {
+			if (section == "menu") {
+				//A JPanel is used in this section because the positioning of the form items later doesn't 
+				//work if they are just directly added to the pane container. 
+				JPanel buttonHolder = new JPanel();
+				buttonHolder.setLayout(new GridBagLayout());
+				
+				//This is necessary for the positioning code farther down in this if statement
+				GridBagConstraints design = new GridBagConstraints();
+				design.insets = new Insets(30, 30, 10, 30);
+				
+				//Create and initialize some variables *SIDE NOTE* The reason why inventory, users, and checkout
+				//are declared at the header of this class is so that they can be used in the Listener code
+				JLabel label1 = new JLabel("Add Item to Inventory:");
+				JLabel label2 = new JLabel("Edit Item from Inventory:");
+				JLabel label3 = new JLabel("Delete Item from Inventory:");
+				
+				invAdd = new JButton("Go");
+				invEd = new JButton("Go");
+				invDe = new JButton("Go");
+				
+				//This listener runs the JDBC Queries to check the password
+				invAdd.addActionListener(this);
+				invEd.addActionListener(this);
+				invDe.addActionListener(this);
+				
+				//Positioning for the different parts of the form
+				design.gridx = 0;
+				design.gridy = 1;
+				buttonHolder.add(label1, design);
+				design.gridx = 0;
+				design.gridy = 2;
+				buttonHolder.add(invAdd, design);
+				design.gridx = 1;
+				design.gridy = 1;
+				buttonHolder.add(label2, design);
+				design.gridx = 1;
+				design.gridy = 2;
+				buttonHolder.add(invEd, design);
+				design.gridx = 2;
+				design.gridy = 1;
+				buttonHolder.add(label3, design);
+				design.gridx = 2;
+				design.gridy = 2;
+				buttonHolder.add(invDe, design);
+				pane.add(buttonHolder);
+			}
+		}
 		//Catch any possible errors in the code or unmapped cases
 		else {
 			JOptionPane.showMessageDialog(null, "There was an error in the paneEdit"
 					+ " function. Please review the page that is being passed.", "THERE WAS AN ERROR!", 
 					JOptionPane.ERROR_MESSAGE);
 		}
+	}
+	
+	protected void loadInventory() {
+		pane.removeAll();
+		frame.dispose();
+		paneEdit("inventory", "menu");
+		reload();
 	}
 	
 	/**
@@ -377,15 +432,15 @@ public class Mainframe implements ActionListener{
 		//To keep the logout function in a separate method, the program initializes to a logged-in view and then 
 		//immediately is logged out *SIDE NOTE* While it starts logged-in, it still starts with NONUSER 
 		//privileges
-		//Mainframe test = new Mainframe();
-		//test.logout();
-		
 		Mainframe test = new Mainframe();
-		test.pane.removeAll();
-		test.frame.dispose();
-		test.current = userType.ADMIN;
-		test.paneEdit("main", "admin");
-		test.reload();
+		test.logout();
+		
+		//Mainframe test = new Mainframe();
+		//test.pane.removeAll();
+		//test.frame.dispose();
+		//test.current = userType.ADMIN;
+		//test.paneEdit("main", "admin");
+		//test.reload();
 	}
 	
 	@SuppressWarnings("static-access") //Not sure why, but Java told me to add this SuppressWarnings tag
@@ -470,7 +525,22 @@ public class Mainframe implements ActionListener{
 		//If User clicks the "Go" button for the Inventory from the main Admin page, load the frame with
 		//the inventory settings
 		if (e.getSource() == inventory) {
+			loadInventory();
+		}
+		
+		//If User clicks the "Go" button for the Add Item from the Inventory Menu, load the Add Item form
+		if (e.getSource() == invAdd) {
 			
+		}
+		
+		//If User clicks the "Go" button for the Edit Item from the Inventory Menu, load the Edit Item form
+		if (e.getSource() == invEd) {
+			//WORK NEEDED - This needs to be edited so that it displays a view for a edit form
+		}
+		
+		//If User clicks the "Go" button for the Delete Item from the Inventory Menu, load the Delete Item form
+		if (e.getSource() == invDe) {
+			//WORK NEEDED - This needs to be edited so that it displays a view for a delete form
 		}
 		
 		//If User clicks the "Go" button for the Users section from the main Admin page, load the frame with
