@@ -809,7 +809,6 @@ public class Mainframe implements ActionListener{
 				//getUser() is a getter method of JDBCSelect that returns a vector of string data from the Query
 				//results. If the Query failed, the vector will be empty.
 				if ((getUser.getList()).size() == 0) {
-					System.out.println(getUser.getList().size());
 					JOptionPane.showMessageDialog(null, "The Username or Password that you have"
 							+ " entered is incorrect!", "Username Error", 
 							JOptionPane.ERROR_MESSAGE);
@@ -817,9 +816,6 @@ public class Mainframe implements ActionListener{
 				else {					
 					//This gets rid of whitespace before and after that may be before and after the entered pass
 					passString = passString.trim();
-					for (int i = 0; i < getUser.getList().size(); i++) {
-						System.out.println(getUser.getList().get(i));
-					}
 					
 					//The getUser() Vector should just store 1 row of the 'users' table at a time. There should
 					//be 4 entries for each row with the following indices: 0-id, 1-username, 2-password, 3-is_admin
@@ -875,8 +871,6 @@ public class Mainframe implements ActionListener{
 		//If User clicks the "Go" button for the Add Item from the Inventory Menu, load the Add Item form
 		if (e.getSource() == invAdd) {
 			loadInvAdd();
-			JDBCInsert insertInv = new JDBCInsert("inventory", "Hover Boards", "Airwheel", "5", "450.00");
-			insertInv.getList().clear();
 		}
 		
 		//If User clicks the "Go" button for the Edit Item from the Inventory Menu, load the Edit Item form
@@ -924,6 +918,7 @@ public class Mainframe implements ActionListener{
 			new ItemList().upload();
 			loadCheckOut();
 		}
+		//This is for inserting data into the inventory table
 		if (e.getSource() == dealOrNoDeal) {
 			String test, test2;
 			test = grams.getText();
