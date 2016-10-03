@@ -26,7 +26,7 @@ public class ItemList {
   void editItem(int n,String it[]){
 	  daList.remove(n);
 	  int id =Integer.valueOf(it[0]);
-	  Item x= new Item(id,Double.valueOf(it[3]),it[2],it[1], Integer.valueOf(it[4]));
+	  Item x= new Item(id,Double.valueOf(it[3]),it[1],it[2], Integer.valueOf(it[4]));
 	  daList.add(n,x);
 	  //edit full row
   }
