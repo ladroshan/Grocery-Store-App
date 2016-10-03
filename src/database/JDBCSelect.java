@@ -80,6 +80,7 @@ public class JDBCSelect {
 					+ " entered is incorrect!", "Password Error", 
 					JOptionPane.ERROR_MESSAGE);
 		}
+		dump = false;
 	}
 	
 	/**
