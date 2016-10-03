@@ -15,4 +15,11 @@ Application for Intro to Software Engineering Project
    button or the Checkout option in the dropdown menu to visit the first page of the checkout. From here you 
    can enter the id number for an item that is in the inventory datbase and it will decrement the availability of 
    that item. If an item is decremented below 1, the item will be removed from the database listing.
-
+6. As an Admin you will have access to adding editing and removing items from inventory you simply select to work 
+   with your inventory. on that page you may choose to add or edit on selecting edit it will take you to a table. On
+   the Table you will be able to select the Item name provider price and quantity of the of each inventory item.
+   you may only make adjustments to one row at a time enter in the changes then select the edit row button in the 
+   Update item colomn to submit those changes back to the database. any changes to the Id will not be saved to the database.
+   and by selecting delete row will delete the item selected from the database.
+7. Another feature is the ability to add or edit the users when selecting edit you will see the table displaying the User Name,
+   password, Id, is admin, on this page you may select and change the user name and password the same way.
