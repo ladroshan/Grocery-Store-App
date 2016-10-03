@@ -250,12 +250,12 @@ public class MenuBar extends JMenuBar implements ActionListener{
 
 		//If user clicks "Users", reload the frame with the users layout
 		if (e.getSource() == users) {
-			
+			frame.loadUsers();
 		}
 
 		//If user clicks "Checkout", reload the frame with the checkout layout
 		if (e.getSource() == checkout) {
-			
+			frame.loadCheckOut();
 		}
 		
 		//If the user clicks "Details", show the development information for the app in a separate window

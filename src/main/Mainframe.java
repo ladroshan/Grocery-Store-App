@@ -1,22 +1,32 @@
 package main;
 
 import main.MenuBar;
+import database.JDBCDelete;
+import database.JDBCInsert;
 import database.JDBCSelect;
+import database.JDBCUpdate;
 
+import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 
 
 /**
@@ -48,13 +58,16 @@ public class Mainframe implements ActionListener{
 	private userType current;
 	
 	//This is the login button
-	private JButton loginBtn, submit, checkout, inventory, users, invAdd, invEd, invDe;
+	private JButton loginBtn, submit, checkout, inventory, users, invAdd, invEd, invDe, usrAdd, usrEd, usrDe; 
+	private JButton newSubmit;
 	
 	//This is the JTextField for submitting a Username when logging in
 	private JTextField uname;
 	
 	//This is the JPassword for logging in
 	private JPasswordField pword;
+	
+	private JRadioButton yeah, nope;
 	
 	/**
 	 * Initialization constructor for Mainframe
@@ -128,6 +141,7 @@ public class Mainframe implements ActionListener{
 				//This listener runs the JDBC Queries to check the password
 				inventory.addActionListener(this);
 				users.addActionListener(this);
+				checkout.addActionListener(this);
 				
 				//Positioning for the different parts of the form
 				design.gridx = 0;
@@ -277,12 +291,174 @@ public class Mainframe implements ActionListener{
 				pane.add(buttonHolder);
 			}
 		}
+		else if (page == "users") {
+			if (section == "menu") {
+				//A JPanel is used in this section because the positioning of the form items later doesn't 
+				//work if they are just directly added to the pane container. 
+				JPanel buttonHolder = new JPanel();
+				buttonHolder.setLayout(new GridBagLayout());
+				
+				//This is necessary for the positioning code farther down in this if statement
+				GridBagConstraints design = new GridBagConstraints();
+				design.insets = new Insets(30, 30, 10, 30);
+				
+				//Create and initialize some variables *SIDE NOTE* The reason why inventory, users, and checkout
+				//are declared at the header of this class is so that they can be used in the Listener code
+				JLabel label1 = new JLabel("Add User to Database:");
+				JLabel label2 = new JLabel("Edit User from Database:");
+				JLabel label3 = new JLabel("Delete User from Database:");
+				
+				usrAdd = new JButton("Go");
+				usrEd = new JButton("Go");
+				usrDe = new JButton("Go");
+				
+				//This listener runs the JDBC Queries to check the password
+				usrAdd.addActionListener(this);
+				usrEd.addActionListener(this);
+				usrDe.addActionListener(this);
+				
+				//Positioning for the different parts of the form
+				design.gridx = 0;
+				design.gridy = 1;
+				buttonHolder.add(label1, design);
+				design.gridx = 0;
+				design.gridy = 2;
+				buttonHolder.add(usrAdd, design);
+				design.gridx = 1;
+				design.gridy = 1;
+				buttonHolder.add(label2, design);
+				design.gridx = 1;
+				design.gridy = 2;
+				buttonHolder.add(usrEd, design);
+				design.gridx = 2;
+				design.gridy = 1;
+				buttonHolder.add(label3, design);
+				design.gridx = 2;
+				design.gridy = 2;
+				buttonHolder.add(usrDe, design);
+				pane.add(buttonHolder);
+			}
+			else if (section == "add") {
+				//A JPanel is used in this section because the positioning of the form items later doesn't 
+				//work if they are just directly added to the pane container. 
+				JPanel newUser = new JPanel();
+				newUser.setLayout(new GridBagLayout());
+				
+				//This is necessary for the positioning code farther down in this if statement
+				GridBagConstraints design = new GridBagConstraints();
+				design.insets = new Insets(15, 15, 15, 15);
+				
+				//Create and initialize some variables *SIDE NOTE* The reason why uname, pword, and submit
+				//are declared at the header of this class is so that they can be used in the Listener code
+				JLabel luser = new JLabel("New Username: ");
+				JLabel lpass = new JLabel("New Password: ");
+				JLabel ladmin = new JLabel("Does this user have Admin privileges?");
+				uname = new JTextField(20);
+				pword = new JPasswordField(20);
+				newSubmit = new JButton("Submit");
+				yeah = new JRadioButton("Yes", false);
+				nope = new JRadioButton("No", true);
+				ButtonGroup radios = new ButtonGroup();
+				radios.add(yeah);
+				radios.add(nope);
+				
+				//This listener runs the JDBC Queries to check the password
+				yeah.addActionListener(this);
+				nope.addActionListener(this);
+				newSubmit.addActionListener(this);
+				
+				//Positioning for the different parts of the form
+				design.gridx = 0;
+				design.gridy = 0;
+				newUser.add(luser, design);
+				design.gridx = 0;
+				design.gridy = 1;
+				newUser.add(lpass, design);
+				design.gridx = 2;
+				design.gridy = 0;
+				newUser.add(uname, design);
+				design.gridx = 2;
+				design.gridy = 1;
+				newUser.add(pword, design);
+				design.gridx = 1;
+				design.gridy = 3;
+				newUser.add(newSubmit, design);
+				design.gridx = 0;
+				design.gridy = 2;
+				design.anchor = GridBagConstraints.WEST;
+				newUser.add(ladmin, design);
+				design.gridx = 2;
+				design.gridy = 2;
+				newUser.add(nope, design);
+				design.gridx = 1;
+				design.gridy = 2;
+				design.anchor = GridBagConstraints.EAST;
+				newUser.add(yeah, design);
+				pane.add(newUser);
+			}
+		}
+		else if(page == "checkout") {
+			if (section == "menu") {
+				//A JPanel is used in this section because the positioning of the form items later doesn't 
+				//work if they are just directly added to the pane container. 
+				JPanel checkOutLeft = new JPanel();
+				JPanel checkOutRight = new JPanel();
+				JButton addItem = new JButton("Add Item");
+				JButton next = new JButton("    Next    ");
+				JTextField enterItem = new JTextField();
+				Dimension textDim = new Dimension(100, 25);
+				enterItem.setMaximumSize(textDim);
+				enterItem.setAlignmentX(BoxLayout.X_AXIS);
+				
+				pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
+				checkOutLeft.setLayout(new BoxLayout(checkOutLeft, BoxLayout.Y_AXIS));
+				
+				pane.add(Box.createRigidArea(new Dimension(300,0)));
+				checkOutLeft.add(enterItem);
+				checkOutLeft.add(addItem);
+				checkOutLeft.add(next);
+
+				checkOutRight.setBackground(Color.WHITE);
+				
+				checkOutLeft.setAlignmentX((float) 10.0);
+				
+				//pane.add(Box.createRigidArea(new Dimension(200,0)));
+				pane.add(checkOutLeft);
+				Dimension minSize = new Dimension(5, 100);
+				Dimension prefSize = new Dimension(5, 100);
+				Dimension maxSize = new Dimension(Short.MAX_VALUE, 100);
+				pane.add(new Box.Filler(minSize, prefSize, maxSize));
+				pane.add(checkOutRight);
+				
+			}
+		}
 		//Catch any possible errors in the code or unmapped cases
 		else {
 			JOptionPane.showMessageDialog(null, "There was an error in the paneEdit"
 					+ " function. Please review the page that is being passed.", "THERE WAS AN ERROR!", 
 					JOptionPane.ERROR_MESSAGE);
 		}
+	}
+	
+	protected void loadCheckOut() {
+		pane.removeAll();
+		frame.dispose();
+		paneEdit("checkout", "menu");
+		reload();
+	}
+
+	private void loadUsrAdd() {
+		pane.removeAll();
+		frame.dispose();
+		paneEdit("users", "add");
+		reload();
+	}
+	
+	protected void loadUsers() {
+		pane.removeAll();
+		frame.dispose();
+		paneEdit("users", "menu");
+		reload();
 	}
 	
 	protected void loadInventory() {
@@ -432,26 +608,71 @@ public class Mainframe implements ActionListener{
 		//To keep the logout function in a separate method, the program initializes to a logged-in view and then 
 		//immediately is logged out *SIDE NOTE* While it starts logged-in, it still starts with NONUSER 
 		//privileges
-		Mainframe test = new Mainframe();
-		test.logout();
-		
 		//Mainframe test = new Mainframe();
-		//test.pane.removeAll();
-		//test.frame.dispose();
-		//test.current = userType.ADMIN;
-		//test.paneEdit("main", "admin");
-		//test.reload();
+		//test.logout();
+		
+		Mainframe test = new Mainframe();
+		test.pane.removeAll();
+		test.frame.dispose();
+		test.current = userType.ADMIN;
+		test.paneEdit("main", "admin");
+		test.reload();
 	}
 	
 	@SuppressWarnings("static-access") //Not sure why, but Java told me to add this SuppressWarnings tag
 	@Override //This one is necessary
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {		
 		//If user clicks "Login", bring up the login form
 		if (e.getSource() == loginBtn) {
 			pane.removeAll();
 			frame.dispose();
 			paneEdit("login", "form");
 			reload();
+		}
+
+		//If user clicks "Yes" to toggle radio buttons 
+		if (e.getSource() == yeah) {
+			yeah.setSelected(true);
+		}
+		
+		//if user clicks "No" to toggle radio buttons
+		if (e.getSource() == nope) {
+			nope.setSelected(true);
+		}
+		
+		//If user clicks "Submit" on the New User form, parse the 3 inputs into Strings, test them for 
+		//validation, and submit them to the database.
+		if (e.getSource() == newSubmit) {
+			String user = uname.getText();
+			String pass = new String(pword.getPassword());
+			String admin;
+			if (yeah.isSelected()) {
+				admin = "true";
+			}
+			else {
+				admin = "false";
+			}
+			if (validateUsername(user) && validatePassword(pass)){
+				user = user.trim();
+				pass = pass.trim();
+				
+				JDBCSelect existest = new JDBCSelect("users", "username", "'" + user + "'");
+				if (existest.getList().size() > 0){
+					JOptionPane.showMessageDialog(null, "The User you are trying to create already exists!"
+							+ " Please choose another username.", "User Conflict!", 
+							JOptionPane.ERROR_MESSAGE);
+					existest.getList().clear();
+				}
+				else {
+					JDBCInsert newGuy = new JDBCInsert("users", user, pass, admin);
+					newGuy.getList().clear();
+					existest.getList().clear();
+					pane.removeAll();
+					frame.dispose();
+					paneEdit("main", "admin");
+					reload();
+				}
+			}			
 		}
 		
 		//If user clicks "Submit" on the login form, run a JDBCSelect Query based off of the username they 
@@ -530,30 +751,51 @@ public class Mainframe implements ActionListener{
 		
 		//If User clicks the "Go" button for the Add Item from the Inventory Menu, load the Add Item form
 		if (e.getSource() == invAdd) {
-			
+			JDBCInsert insertInv = new JDBCInsert("inventory", "Hover Boards", "Airwheel", "5", "450.00");
+			insertInv.getList().clear();
 		}
 		
 		//If User clicks the "Go" button for the Edit Item from the Inventory Menu, load the Edit Item form
 		if (e.getSource() == invEd) {
-			//WORK NEEDED - This needs to be edited so that it displays a view for a edit form
+			JDBCUpdate updateInv = new JDBCUpdate("inventory", "Go-Pro", "Go-Pro", "3", "600.00", "id", "22");
+			updateInv.getList().clear();
 		}
 		
 		//If User clicks the "Go" button for the Delete Item from the Inventory Menu, load the Delete Item form
 		if (e.getSource() == invDe) {
-			//WORK NEEDED - This needs to be edited so that it displays a view for a delete form
+			JDBCDelete deleteUsr = new JDBCDelete("inventory", "provider", "Airwheel");
+			deleteUsr.getList().clear();
 		}
 		
 		//If User clicks the "Go" button for the Users section from the main Admin page, load the frame with
 		//the users settings
 		if (e.getSource() == users) {
-			//WORK NEEDED - This needs to be edited so that it contains code to get to the users page.
-			
+			loadUsers();
+		}
+		
+		//If User clicks the "Go" button for the Add User from the User Menu, load the Add user form
+		if (e.getSource() == usrAdd) {
+			loadUsrAdd();
+			JDBCInsert insertUsr = new JDBCInsert("users", "zerin.bates", "NewPassword123#", "true");
+			insertUsr.getList().clear();
+		}
+
+		//If User clicks the "Go" button for the Edit User from the User Menu, load the Edit Item form
+		if (e.getSource() == usrEd) {
+			JDBCUpdate updateUsr = new JDBCUpdate("users", "jeremy.killpack", "Toast4Me!", "false", "id", "6");
+			updateUsr.getList().clear();
+		}
+
+		//If User clicks the "Go" button for the Delete User from the User Menu, load the Delete Item form
+		if (e.getSource() == usrDe) {
+			JDBCDelete deleteUsr = new JDBCDelete("users", "username", "zerin.bates");
+			deleteUsr.getList().clear();
 		}
 		
 		//If User clicks the "Go" button for the Checkout section from the main Cashier or Admin page, 
 		//load the frame with the checkout layout
 		if (e.getSource() == checkout) {
-			//WORK NEEDED - This needs to be edited so that it contains code to get to the checkout page.
+			loadCheckOut();
 		}
 				
 	}

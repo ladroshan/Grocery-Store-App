@@ -2,23 +2,21 @@ package database;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
-import javax.swing.JOptionPane;
 
 /**
- * This Class is used for running Queries to the database. 
+ * This Class is used exclusively for running SELECT Queries to the database. 
  * A lot of work has gone into abstracting the workings of this class. Keep the abstraction going if 
  * methods need to be added down the road.
  * 
  * @author Jacob Killpack
- * @version 1.0
+ * @version 1.2
  */
-public abstract class JDBC {
+public class JDBCUpdate {
 	//The following final variables are the hard-coded values for creating a database connection
 	private static final String DB_DRIVER = "org.postgresql.Driver";
 	private static final String DB_CONNECTION = "jdbc:postgresql://127.0.0.1:5432/scangro";
@@ -33,24 +31,53 @@ public abstract class JDBC {
 	public static Vector<String> resultTable = new Vector<String>();
 	
 	/**
-	 * This is the overloaded constructor that is called by the Mainframe to run the SELECT queries
+	 * This is the overloaded constructor for running UPDATE queries into the inventory database.
 	 * The psql query would look as follows:
-	 * SELECT * FROM table WHERE where = test; 
+	 * UPDATE inventory SET producttype = product, provider = provider, quantity = quantity, price = price WHERE where = id);
 	 * 
 	 * @param table - This is the table in the database you want to query.
+	 * @param product - This is the product field value.
+	 * @param provider - This is the provider field value.
+	 * @param quantity - This is the quantity field that will be updated.
+	 * @param price - This is the price field for the object.
 	 * @param where - This is the field that will be evaluated in the WHERE conditional.
-	 * @param test - This is the value you are testing in the WHERE conditional.
+	 * @param id - This is the id value that will be used to qualify the Query.
 	 */
-	private QueryBuilder(String table, String where, String test) {
-		//Build the Query with user input then try pulling from database 
-		Query = "SELECT * FROM " + table + " WHERE " + where + " = " + test;
+	public JDBCUpdate(String table, String product, String provider, String quantity, String price, String where, String id) {
+		//Build the Query with user input then try pulling from database
+		table = "inventory";
+		where = "id";
+		Query = "UPDATE " + table + " SET producttype = '" + product + "', provider = '" + provider + "', quantity = " + quantity + ", price = " + price
+				+ " WHERE " + where + " = " + id;
 		try {
-			selectRecordFromDbUserTable();
+			updateRecordFromDbUserTable();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-			JOptionPane.showMessageDialog(null, "The Username or Password that you have"
-					+ " entered is incorrect!", "Password Error", 
-					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	/**
+	 * This is the overloaded constructor for running UPDATE queries into the users database.
+	 * The psql query would look as follows:
+	 * UPDATE inventory SET username = user, password = pass, is_admin = is_admin WHERE where = id);
+	 * 
+	 * @param table - This is the table in the database you want to query.
+	 * @param user - This is the user field that will be updated.
+	 * @param pass - This is the password field value that will updated.
+	 * @param is_admin - This is the boolean field that will be updated.
+	 * @param where - This is the field that will be evaluated in the WHERE conditional.
+	 * @param id - This is the id value that will be used to qualify the Query.
+	 */
+	public JDBCUpdate(String table, String user, String pass, String is_admin, String where, String id) {
+		//Build the Query with user input then try pulling from database
+		table = "users";
+		where = "id";
+		Query = "UPDATE " + table + " SET username = '" + user + "', password = '" + pass + "', is_admin = " + is_admin
+				+ " WHERE " + where + " = " + id;
+		try {
+			updateRecordFromDbUserTable();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
 		}
 	}
 	
@@ -59,7 +86,7 @@ public abstract class JDBC {
 	 * 
 	 * @throws SQLException
 	 */
-	private static void selectRecordFromDbUserTable() throws SQLException {
+	private static void updateRecordFromDbUserTable() throws SQLException {
 		//Create and initialize variables
 		Connection dbConnection = null;
 		Statement statement = null;
@@ -76,9 +103,6 @@ public abstract class JDBC {
 			
 			//This needs to be done to move to the first row of data in the ResultSet
 			results.next();
-			
-			//Send the ResultSet to a the makeList() method to add the data in it to a the resultTable Vector
-			makeList(results);
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		//If the try goes through, then make sure to close the Statement and Connection before closing	
@@ -117,29 +141,7 @@ public abstract class JDBC {
 		return dbConnection;
 	}
 	
-	/**
-	 * This method is used to compile a list of Strings from the ResultSet returned by the database query.
-	 * The Vector of Strings will then be used in the Mainframe for data processing.
-	 * 
-	 * @param results - The ResultSet from the database query. 
-	 */
-	private static void makeList(ResultSet results) {
-		try {
-			//This counter is used to iterate through all elements of ResultSet
-			int count = 1;
-			
-			//This object is necessary to get a count of the columns for an upper bound in the while loop
-			ResultSetMetaData info = results.getMetaData();
-			while (count <= info.getColumnCount()) {
-				//Add results to resultTable Vector
-				resultTable.add(results.getString(count));
-				count++;
-			}
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		}
-	}
+	
 	
 	/**
 	 * This method is a getter for the resultTable Vector of Strings.
@@ -159,7 +161,7 @@ public abstract class JDBC {
 	 */
 	public static void main(String [] args) {
 		try {
-			selectRecordFromDbUserTable();
+			updateRecordFromDbUserTable();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
