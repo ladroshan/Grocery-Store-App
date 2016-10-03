@@ -484,7 +484,7 @@ public class Mainframe implements ActionListener{
 				JPanel checkOutLeft = new JPanel();
 				JPanel checkOutRight = new JPanel();
 				JTextField enterItem = new JTextField();
-				tableItems table = new tableItems();
+				TableUser table = new TableUser();
 				Dimension textDim = new Dimension(100, 25);
 				enterItem.setMaximumSize(textDim);
 				enterItem.setAlignmentX(BoxLayout.X_AXIS);
@@ -494,7 +494,7 @@ public class Mainframe implements ActionListener{
 				
 				pane.add(Box.createRigidArea(new Dimension(100,0)));
 				/**HEY ZERIN! Can you change this so that it is using the User table Instead?**/
-				JScrollPane scrollPane = new JScrollPane(table.itemTable);
+				JScrollPane scrollPane = new JScrollPane(table.UserTable);
 				checkOutLeft.add(scrollPane,BoxLayout.X_AXIS);
 				
 				checkOutLeft.setAlignmentX((float) 10.0);
