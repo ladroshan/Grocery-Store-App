@@ -61,10 +61,10 @@ public class Mainframe implements ActionListener{
 	
 	//This is the login button
 	private JButton loginBtn, submit, checkout, inventory, users, invAdd, invEd, invDe, usrAdd, usrEd, usrDe; 
-	private JButton newSubmit;
+	private JButton newSubmit, dealOrNoDeal;
 	
 	//This is the JTextField for submitting a Username when logging in
-	private JTextField uname;
+	private JTextField uname, dope, dealer, grams, benjis;
 	
 	//This is the JPassword for logging in
 	private JPasswordField pword;
@@ -293,6 +293,84 @@ public class Mainframe implements ActionListener{
 				buttonHolder.add(invDe, design);
 				pane.add(buttonHolder);
 			}
+			else if (section == "add") {
+				//A JPanel is used in this section because the positioning of the form items later doesn't 
+				//work if they are just directly added to the pane container. 
+				JPanel newInventory = new JPanel();
+				newInventory.setLayout(new GridBagLayout());
+				
+				//This is necessary for the positioning code farther down in this if statement
+				GridBagConstraints design = new GridBagConstraints();
+				design.insets = new Insets(5, 5, 5, 5);
+				
+				//Create and initialize some variables *SIDE NOTE* The reason why uname, pword, and submit
+				//are declared at the header of this class is so that they can be used in the Listener code
+				JLabel ldope = new JLabel("Product Name: ");
+				JLabel ldealer = new JLabel("Provider: ");
+				JLabel lgrams = new JLabel("Quantity: ");
+				JLabel lbenjis = new JLabel("Price: ");
+				dope = new JTextField(20);
+				dealer = new JTextField(20);
+				grams = new JTextField(20);
+				benjis = new JTextField(20);
+				pword = new JPasswordField(20);
+				dealOrNoDeal = new JButton("Submit");
+				
+				//This listener runs the JDBC Queries to check the password
+				dealOrNoDeal.addActionListener(this);
+				
+				//Positioning for the different parts of the form
+				design.gridx = 0;
+				design.gridy = 0;
+				newInventory.add(ldope, design);
+				design.gridx = 0;
+				design.gridy = 1;
+				newInventory.add(ldealer, design);
+				design.gridx = 0;
+				design.gridy = 2;
+				newInventory.add(lgrams, design);
+				design.gridx = 0;
+				design.gridy = 3;
+				newInventory.add(lbenjis, design);
+				design.gridx = 1;
+				design.gridy = 0;
+				newInventory.add(dope, design);
+				design.gridx = 1;
+				design.gridy = 1;
+				newInventory.add(dealer, design);
+				design.gridx = 1;
+				design.gridy = 2;
+				newInventory.add(grams, design);
+				design.gridx = 1;
+				design.gridy = 3;
+				newInventory.add(benjis, design);
+				design.gridx = 1;
+				design.gridy = 4;
+				newInventory.add(dealOrNoDeal, design);
+				pane.add(newInventory);
+			}
+			else if (section == "edit") {
+				//A JPanel is used in this section because the positioning of the form items later doesn't 
+				//work if they are just directly added to the pane container. 
+				JPanel checkOutLeft = new JPanel();
+				JPanel checkOutRight = new JPanel();
+				JTextField enterItem = new JTextField();
+				tableItems table = new tableItems();
+				Dimension textDim = new Dimension(100, 25);
+				enterItem.setMaximumSize(textDim);
+				enterItem.setAlignmentX(BoxLayout.X_AXIS);
+				
+				pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
+				checkOutLeft.setLayout(new BoxLayout(checkOutLeft, BoxLayout.Y_AXIS));
+				
+				pane.add(Box.createRigidArea(new Dimension(100,0)));
+				JScrollPane scrollPane = new JScrollPane(table.itemTable);
+				checkOutLeft.add(scrollPane,BoxLayout.X_AXIS);
+				
+				checkOutLeft.setAlignmentX((float) 10.0);
+				pane.add(checkOutLeft);
+				pane.add(checkOutRight);
+			}
 		}
 		else if (page == "users") {
 			if (section == "menu") {
@@ -399,6 +477,29 @@ public class Mainframe implements ActionListener{
 				newUser.add(yeah, design);
 				pane.add(newUser);
 			}
+			else if (section == "edit") {
+				//A JPanel is used in this section because the positioning of the form items later doesn't 
+				//work if they are just directly added to the pane container. 
+				JPanel checkOutLeft = new JPanel();
+				JPanel checkOutRight = new JPanel();
+				JTextField enterItem = new JTextField();
+				tableItems table = new tableItems();
+				Dimension textDim = new Dimension(100, 25);
+				enterItem.setMaximumSize(textDim);
+				enterItem.setAlignmentX(BoxLayout.X_AXIS);
+				
+				pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
+				checkOutLeft.setLayout(new BoxLayout(checkOutLeft, BoxLayout.Y_AXIS));
+				
+				pane.add(Box.createRigidArea(new Dimension(100,0)));
+				/**HEY ZERIN! Can you change this so that it is using the User table Instead?**/
+				JScrollPane scrollPane = new JScrollPane(table.itemTable);
+				checkOutLeft.add(scrollPane,BoxLayout.X_AXIS);
+				
+				checkOutLeft.setAlignmentX((float) 10.0);
+				pane.add(checkOutLeft);
+				pane.add(checkOutRight);
+			}
 		}
 		else if(page == "checkout") {
 			if (section == "menu") {
@@ -409,8 +510,7 @@ public class Mainframe implements ActionListener{
 				JButton addItem = new JButton("Add Item");
 				JButton next = new JButton("    Next    ");
 				JTextField enterItem = new JTextField();
-				tableItems table = new tableItems();
-				//JPanel itemTable = new JPanel();
+				//tableItems table = new tableItems();
 				Dimension textDim = new Dimension(100, 25);
 				enterItem.setMaximumSize(textDim);
 				enterItem.setAlignmentX(BoxLayout.X_AXIS);
@@ -422,20 +522,11 @@ public class Mainframe implements ActionListener{
 				checkOutLeft.add(enterItem);
 				checkOutLeft.add(addItem);
 				checkOutLeft.add(next);
-				JScrollPane scrollPane = new JScrollPane(table.itemTable);
-				checkOutLeft.add(scrollPane,BoxLayout.X_AXIS);
-		        //checkOutLeft.setFillsViewportHeight(true);
-				
-				//checkOutRight.setBackground(Color.WHITE);
+				//JScrollPane scrollPane = new JScrollPane(table.itemTable);
+				//checkOutLeft.add(scrollPane,BoxLayout.X_AXIS);
 				
 				checkOutLeft.setAlignmentX((float) 10.0);
-				
-				//pane.add(Box.createRigidArea(new Dimension(200,0)));
 				pane.add(checkOutLeft);
-				//Dimension minSize = new Dimension(5, 100);
-				//Dimension prefSize = new Dimension(5, 100);
-				//Dimension maxSize = new Dimension(Short.MAX_VALUE, 100);
-				//pane.add(new Box.Filler(minSize, prefSize, maxSize));
 				pane.add(checkOutRight);
 				
 			}
@@ -446,6 +537,20 @@ public class Mainframe implements ActionListener{
 					+ " function. Please review the page that is being passed.", "THERE WAS AN ERROR!", 
 					JOptionPane.ERROR_MESSAGE);
 		}
+	}
+	
+	private void loadUserChange() {
+		pane.removeAll();
+		frame.dispose();
+		paneEdit("users", "edit");
+		reload();
+	}
+	
+	private void loadInventoryChange() {
+		pane.removeAll();
+		frame.dispose();
+		paneEdit("inventory", "edit");
+		reload();
 	}
 	
 	protected void loadCheckOut() {
@@ -682,10 +787,7 @@ public class Mainframe implements ActionListener{
 					JDBCInsert newGuy = new JDBCInsert("users", user, pass, admin);
 					newGuy.getList().clear();
 					existest.getList().clear();
-					pane.removeAll();
-					frame.dispose();
-					paneEdit("main", "admin");
-					reload();
+					loadUsers();
 				}
 			}			
 		}
@@ -705,6 +807,7 @@ public class Mainframe implements ActionListener{
 				//getUser() is a getter method of JDBCSelect that returns a vector of string data from the Query
 				//results. If the Query failed, the vector will be empty.
 				if ((getUser.getList()).size() == 0) {
+					System.out.println(getUser.getList().size());
 					JOptionPane.showMessageDialog(null, "The Username or Password that you have"
 							+ " entered is incorrect!", "Username Error", 
 							JOptionPane.ERROR_MESSAGE);
@@ -712,6 +815,9 @@ public class Mainframe implements ActionListener{
 				else {					
 					//This gets rid of whitespace before and after that may be before and after the entered pass
 					passString = passString.trim();
+					for (int i = 0; i < getUser.getList().size(); i++) {
+						System.out.println(getUser.getList().get(i));
+					}
 					
 					//The getUser() Vector should just store 1 row of the 'users' table at a time. There should
 					//be 4 entries for each row with the following indices: 0-id, 1-username, 2-password, 3-is_admin
@@ -773,14 +879,16 @@ public class Mainframe implements ActionListener{
 		
 		//If User clicks the "Go" button for the Edit Item from the Inventory Menu, load the Edit Item form
 		if (e.getSource() == invEd) {
-			JDBCUpdate updateInv = new JDBCUpdate("inventory", "Go-Pro", "Go-Pro", "3", "600.00", "id", "22");
-			updateInv.getList().clear();
+			loadInventoryChange();
+			//JDBCUpdate updateInv = new JDBCUpdate("inventory", "Go-Pro", "Go-Pro", "3", "600.00", "id", "22");
+			//updateInv.getList().clear();
 		}
 		
 		//If User clicks the "Go" button for the Delete Item from the Inventory Menu, load the Delete Item form
 		if (e.getSource() == invDe) {
-			JDBCDelete deleteUsr = new JDBCDelete("inventory", "provider", "Airwheel");
-			deleteUsr.getList().clear();
+			loadInventoryChange();
+			//JDBCDelete deleteUsr = new JDBCDelete("inventory", "provider", "Airwheel");
+			//deleteUsr.getList().clear();
 		}
 		
 		//If User clicks the "Go" button for the Users section from the main Admin page, load the frame with
@@ -792,20 +900,20 @@ public class Mainframe implements ActionListener{
 		//If User clicks the "Go" button for the Add User from the User Menu, load the Add user form
 		if (e.getSource() == usrAdd) {
 			loadUsrAdd();
-			JDBCInsert insertUsr = new JDBCInsert("users", "zerin.bates", "NewPassword123#", "true");
-			insertUsr.getList().clear();
 		}
 
 		//If User clicks the "Go" button for the Edit User from the User Menu, load the Edit Item form
 		if (e.getSource() == usrEd) {
-			JDBCUpdate updateUsr = new JDBCUpdate("users", "jeremy.killpack", "Toast4Me!", "false", "id", "6");
-			updateUsr.getList().clear();
+			loadUserChange();
+			//JDBCUpdate updateUsr = new JDBCUpdate("users", "jeremy.killpack", "Toast4Me!", "false", "id", "6");
+			//updateUsr.getList().clear();
 		}
 
 		//If User clicks the "Go" button for the Delete User from the User Menu, load the Delete Item form
 		if (e.getSource() == usrDe) {
-			JDBCDelete deleteUsr = new JDBCDelete("users", "username", "zerin.bates");
-			deleteUsr.getList().clear();
+			loadUserChange();
+			//JDBCDelete deleteUsr = new JDBCDelete("users", "username", "zerin.bates");
+			//deleteUsr.getList().clear();
 		}
 		
 		//If User clicks the "Go" button for the Checkout section from the main Cashier or Admin page, 
@@ -814,6 +922,23 @@ public class Mainframe implements ActionListener{
 			new ItemList().upload();
 			loadCheckOut();
 		}
-				
+		if (e.getSource() == dealOrNoDeal) {
+			String test, test2;
+			test = grams.getText();
+			test2 = benjis.getText();
+			if (test.matches(".*[!@#$%^&*()_+=,<>:;?~].*") || test.matches(".*[A-Z][a-z].*") || 
+					test2.matches(".*[!@#$%^&*()_+=,<>:;?~].*") || test2.matches(".*[A-Z][a-z].*")) {
+				JOptionPane.showMessageDialog(null, "You entered data into the quantity or the price"
+						+ " that is not valid!", "INVALID INPUT", 
+						JOptionPane.ERROR_MESSAGE);
+			}
+			else {
+				JDBCInsert addToTheKitty = new JDBCInsert("inventory", dope.getText(), dealer.getText(), 
+						grams.getText(), benjis.getText());
+				addToTheKitty.getList().clear();
+				loadInventory();
+			}
+			
+		}
 	}
 }

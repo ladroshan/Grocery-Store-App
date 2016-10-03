@@ -31,6 +31,7 @@ public class JDBCSelect {
 	
 	//This String is a tool of abstraction used to build different select queries depending on how this class is called
 	private static String Query, Qcount;
+	private static boolean dump = false;
 	
 	//This Vector is a collection of Strings compiled from the results of the database query
 	//(It should be an empty vector before and after running queries to maintain high security)
@@ -67,6 +68,7 @@ public class JDBCSelect {
 	 * @param table - The table from which you want all the records.
 	 */
 	public JDBCSelect(String table) {
+		dump = true;
 		Query = "SELECT * FROM " + table;
 		Qcount = table;
 		try {
@@ -93,12 +95,15 @@ public class JDBCSelect {
 			//System.out.println("Success 2");
 			dbConnection = getDBConnection();
 			statement = dbConnection.createStatement();
+			int count = 1;
 			System.out.println(Query);
-			ResultSet r = statement.executeQuery("SELECT COUNT(*) AS rowcount FROM " + Qcount);
-			r.next();
-			int count = r.getInt("rowcount");
-			System.out.println(count);
-			r.close();
+			if (dump) {
+				ResultSet r = statement.executeQuery("SELECT COUNT(*) AS rowcount FROM " + Qcount);
+				r.next();
+				count = r.getInt("rowcount");
+				System.out.println(count);
+				r.close();				
+			}
 			//The ResultSet is used to hold results of the query
 			ResultSet results;
 			
@@ -109,7 +114,12 @@ public class JDBCSelect {
 			results.next();
 			
 			//Send the ResultSet to a the makeList() method to add the data in it to a the resultTable Vector
-			makeList(results, count);
+			if (dump) {
+				makeDaList(results, count);
+			}
+			else {
+				makeList(results);
+			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		//If the try goes through, then make sure to close the Statement and Connection before closing	
@@ -154,7 +164,21 @@ public class JDBCSelect {
 	 * 
 	 * @param results - The ResultSet from the database query. 
 	 */
-	private static void makeList(ResultSet results, int max) {
+	private static void makeList(ResultSet results) {
+		try {
+			ResultSetMetaData info = results.getMetaData();
+			int count = 1;
+			while(count <= info.getColumnCount()) {
+				resultTable.addElement(results.getString(count));
+				count++;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+	}
+	
+	
+	private static void makeDaList(ResultSet results, int max) {
 		try {
 			//System.out.println("Success 3");
 			//This object is necessary to get a count of the columns for an upper bound in the while loop
@@ -165,6 +189,7 @@ public class JDBCSelect {
 				String aprovider;
 				int quantity;
 				double acost;
+				String edit;
 				for (int i = 0; i < max; i++){
 					itemNumber = results.getInt(1);
 					//System.out.println(itemNumber);
@@ -174,7 +199,18 @@ public class JDBCSelect {
 					//System.out.println(aprovider);
 					quantity = results.getInt(4);
 					//System.out.println(quantity);
-					acost = results.getDouble(5);
+					edit = results.getString(5);
+					edit = edit.substring(1);
+					//System.out.println(edit);
+					char[] removeCommas = edit.toCharArray();
+					for (int j = 0; j < edit.length(); j++) {
+						if (removeCommas[j] == ',') {
+							edit = edit.substring(0, (j)) + edit.substring(j + 1);
+							//System.out.println(edit);
+							removeCommas = edit.toCharArray();
+						}
+					}
+					acost = Double.parseDouble(edit);
 					//System.out.println(acost);
 					Item test = new Item(itemNumber, itemName, aprovider, quantity, acost);
 					DaUdderList.add(test);

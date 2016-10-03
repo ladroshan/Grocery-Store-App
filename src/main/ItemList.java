@@ -13,12 +13,14 @@ public class ItemList {
    List<Item> daList=new ArrayList<Item>();
   public void upload(){
 	  //upload from data base
+	  daList.clear();
 	  JDBCSelect uploadData = new JDBCSelect("inventory");
 	  int max = uploadData.getDaUdderList().size(), count = 0;
 	  while (count < max) {
 		  daList.add(uploadData.getDaUdderList().get(count));
 		  count++;
 	  }
+	  uploadData.getDaUdderList().clear();
    }
   Object[]stringItem(int n){
 	  Object[]a=new Object[7];
