@@ -4,7 +4,8 @@ import main.MenuBar;
 
 import java.awt.Container;
 import java.awt.Dimension;
-
+import main.tableItem;
+import main.TableUser;
 import database.JDBCDelete;
 import database.JDBCInsert;
 import database.JDBCSelect;
@@ -419,7 +420,10 @@ public class Mainframe implements ActionListener{
 				checkOutLeft.add(enterItem);
 				checkOutLeft.add(addItem);
 				checkOutLeft.add(next);
-
+				JScrollPane scrollPane = new JScrollPane(table.UserTable);
+				checkOutLeft.add(scrollPane,BoxLayout.X_AXIS);
+		                checkOutLeft.setFillsViewportHeight(true);
+				
 				checkOutRight.setBackground(Color.WHITE);
 				
 				checkOutLeft.setAlignmentX((float) 10.0);
