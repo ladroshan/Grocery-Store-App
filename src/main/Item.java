@@ -21,7 +21,7 @@ public class Item {
   int getQuantity(){
 	  return quant;
   }
-  Item(int itemNumber,double acost,String itemName,String aprovider, int quantity){
+  public Item(int itemNumber,String itemName,String aprovider, int quantity,double acost){
 	 itemID=itemNumber;
 	 cost=acost;
 	 provider=aprovider;

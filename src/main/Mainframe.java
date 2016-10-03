@@ -1,17 +1,16 @@
 package main;
 
 import main.MenuBar;
-
-import java.awt.Container;
-import java.awt.Dimension;
-import main.tableItem;
+import main.tableItems;
 import main.TableUser;
+
 import database.JDBCDelete;
 import database.JDBCInsert;
 import database.JDBCSelect;
 import database.JDBCUpdate;
 
-import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -28,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 
@@ -409,6 +409,8 @@ public class Mainframe implements ActionListener{
 				JButton addItem = new JButton("Add Item");
 				JButton next = new JButton("    Next    ");
 				JTextField enterItem = new JTextField();
+				tableItems table = new tableItems();
+				//JPanel itemTable = new JPanel();
 				Dimension textDim = new Dimension(100, 25);
 				enterItem.setMaximumSize(textDim);
 				enterItem.setAlignmentX(BoxLayout.X_AXIS);
@@ -420,20 +422,20 @@ public class Mainframe implements ActionListener{
 				checkOutLeft.add(enterItem);
 				checkOutLeft.add(addItem);
 				checkOutLeft.add(next);
-				JScrollPane scrollPane = new JScrollPane(table.UserTable);
+				JScrollPane scrollPane = new JScrollPane(table.itemTable);
 				checkOutLeft.add(scrollPane,BoxLayout.X_AXIS);
-		                checkOutLeft.setFillsViewportHeight(true);
+		        //checkOutLeft.setFillsViewportHeight(true);
 				
-				checkOutRight.setBackground(Color.WHITE);
+				//checkOutRight.setBackground(Color.WHITE);
 				
 				checkOutLeft.setAlignmentX((float) 10.0);
 				
 				//pane.add(Box.createRigidArea(new Dimension(200,0)));
 				pane.add(checkOutLeft);
-				Dimension minSize = new Dimension(5, 100);
-				Dimension prefSize = new Dimension(5, 100);
-				Dimension maxSize = new Dimension(Short.MAX_VALUE, 100);
-				pane.add(new Box.Filler(minSize, prefSize, maxSize));
+				//Dimension minSize = new Dimension(5, 100);
+				//Dimension prefSize = new Dimension(5, 100);
+				//Dimension maxSize = new Dimension(Short.MAX_VALUE, 100);
+				//pane.add(new Box.Filler(minSize, prefSize, maxSize));
 				pane.add(checkOutRight);
 				
 			}
@@ -809,6 +811,7 @@ public class Mainframe implements ActionListener{
 		//If User clicks the "Go" button for the Checkout section from the main Cashier or Admin page, 
 		//load the frame with the checkout layout
 		if (e.getSource() == checkout) {
+			new ItemList().upload();
 			loadCheckOut();
 		}
 				

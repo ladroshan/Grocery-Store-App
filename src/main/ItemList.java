@@ -3,6 +3,7 @@ import main.Item;
 import java.util.List;
 
 import database.JDBCDelete;
+import database.JDBCSelect;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,8 +11,14 @@ import java.util.Comparator;
 import java.util.ArrayList;
 public class ItemList {
    List<Item> daList=new ArrayList<Item>();
-   void upload(){
+  public void upload(){
 	  //upload from data base
+	  JDBCSelect uploadData = new JDBCSelect("inventory");
+	  int max = uploadData.getDaUdderList().size(), count = 0;
+	  while (count < max) {
+		  daList.add(uploadData.getDaUdderList().get(count));
+		  count++;
+	  }
    }
   Object[]stringItem(int n){
 	  Object[]a=new Object[7];
@@ -26,7 +33,7 @@ public class ItemList {
   void editItem(int n,String it[]){
 	  daList.remove(n);
 	  int id =Integer.valueOf(it[0]);
-	  Item x= new Item(id,Double.valueOf(it[3]),it[2],it[1], Integer.valueOf(it[4]));
+	  Item x= new Item(id,it[2],it[1], Integer.valueOf(it[4]),Double.valueOf(it[3]));
 	  daList.add(n,x);
 	  //edit full row
   }
