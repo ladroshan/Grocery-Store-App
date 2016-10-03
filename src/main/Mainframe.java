@@ -9,6 +9,7 @@ import database.JDBCInsert;
 import database.JDBCSelect;
 import database.JDBCUpdate;
 
+import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -600,6 +601,7 @@ public class Mainframe implements ActionListener{
 		//Clear current view and load the login page with limited menu access
 		pane.removeAll();
 		frame.dispose();
+		pane.setLayout(new GridBagLayout());
 		paneEdit("login", "button");
 		reload();
 	}
