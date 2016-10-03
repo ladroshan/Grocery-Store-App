@@ -120,7 +120,7 @@ public class tableItems extends JTable implements ActionListener{
 				     
 				      if(column==6 ){
 				       //System.out.println("stuff");
-						data.deleteItem(row);
+						data.deleteItem(row, (int)stuff[row][0]);
 						buildTable();
 				      }
 				      if(column==5 ){

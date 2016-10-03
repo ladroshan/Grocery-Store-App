@@ -1,6 +1,9 @@
 package main;
 import main.Item;
 import java.util.List;
+
+import database.JDBCDelete;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -8,14 +11,7 @@ import java.util.ArrayList;
 public class ItemList {
    List<Item> daList=new ArrayList<Item>();
    void upload(){
-	   for (int i =0;i<4;i++){
-	   Item a=new Item(i,i,"stuff","thing",i);
-	   daList.add(a);
-	   }
-	   Item b = new Item(1,5,"girls","women",0);
-	   Item c = new Item(7,3.2,"red","green",100);
-	   daList.add(b);
-	   daList.add(c);
+	  //upload from data base
    }
   Object[]stringItem(int n){
 	  Object[]a=new Object[7];
@@ -32,9 +28,12 @@ public class ItemList {
 	  int id =Integer.valueOf(it[0]);
 	  Item x= new Item(id,Double.valueOf(it[3]),it[2],it[1], Integer.valueOf(it[4]));
 	  daList.add(n,x);
+	  //edit full row
   }
-  void deleteItem(int n){
+  void deleteItem(int n,int id){
 	  daList.remove(n);
+	  //remove from data base
+	  JDBCDelete removeRow = new JDBCDelete("inventory", "id", Integer.toString(id));
   }
    void idSort(){
 	   System.out.println(daList.toString().replaceAll(",", "\n"));

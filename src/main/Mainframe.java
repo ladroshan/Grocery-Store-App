@@ -1,20 +1,16 @@
 package main;
 
 import main.MenuBar;
-import main.TableUser;
-import java.awt.BorderLayout;
+
 import java.awt.Container;
 import java.awt.Dimension;
 
-import javax.swing.JScrollPane;
 import database.JDBCDelete;
 import database.JDBCInsert;
 import database.JDBCSelect;
 import database.JDBCUpdate;
 
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -27,14 +23,11 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
 
 
 /**
@@ -470,6 +463,13 @@ public class Mainframe implements ActionListener{
 		reload();
 	}
 	
+	private void loadInvAdd() {
+		pane.removeAll();
+		frame.dispose();
+		paneEdit("inventory", "add");
+		reload();
+	}
+	
 	protected void loadInventory() {
 		pane.removeAll();
 		frame.dispose();
@@ -760,6 +760,7 @@ public class Mainframe implements ActionListener{
 		
 		//If User clicks the "Go" button for the Add Item from the Inventory Menu, load the Add Item form
 		if (e.getSource() == invAdd) {
+			loadInvAdd();
 			JDBCInsert insertInv = new JDBCInsert("inventory", "Hover Boards", "Airwheel", "5", "450.00");
 			insertInv.getList().clear();
 		}
