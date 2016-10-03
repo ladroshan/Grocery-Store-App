@@ -415,7 +415,7 @@ public class Mainframe implements ActionListener{
 				pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
 				checkOutLeft.setLayout(new BoxLayout(checkOutLeft, BoxLayout.Y_AXIS));
 				
-				pane.add(Box.createRigidArea(new Dimension(300,0)));
+				pane.add(Box.createRigidArea(new Dimension(100,0)));
 				checkOutLeft.add(enterItem);
 				checkOutLeft.add(addItem);
 				checkOutLeft.add(next);
