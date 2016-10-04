@@ -26,7 +26,7 @@ public class TableUser extends JTable implements ActionListener{
 	 */
 	private static final long serialVersionUID = -964558493484362323L;
 
-	JTable UserTable;
+	protected JTable UserTable;
 
 // buttons
 	private JButton buttonId= new JButton("Id");
@@ -45,8 +45,8 @@ public class TableUser extends JTable implements ActionListener{
 	
 	private void buildTable(){
 		
-		stuff=new Object[data.daList.size()][7];
-		for(int i=0;i<data.daList.size();i++){
+		stuff=new Object[data.getdaList().size()][7];
+		for(int i=0;i<data.getdaList().size();i++){
 			stuff[i]=data.stringUser(i);
 			stuff[i][4]="edit row "+i;
 			stuff[i][5]="delete row"+i;
@@ -68,12 +68,13 @@ public class TableUser extends JTable implements ActionListener{
 		UserTable.getColumn("Update User").setCellRenderer(new ButtonRenderer());
 		UserTable.getColumn("Delete User").setCellRenderer(new ButtonRenderer());
 	}
+	
 	public TableUser(){
 		
 		//Add headers to the Menu bar
 		data.upload();
-		stuff=new Object[data.daList.size()][7];
-		for(int i=0;i<data.daList.size();i++){
+		stuff=new Object[data.getdaList().size()][7];
+		for(int i=0;i<data.getdaList().size();i++){
 			stuff[i]=data.stringUser(i);
 			//JButton add = new JButton(i+"");
 			//JButton edit = new JButton(i+"");

@@ -1,6 +1,6 @@
 package main;
+
 import main.Item;
-import java.util.List;
 
 import database.JDBCDelete;
 import database.JDBCSelect;
@@ -9,9 +9,12 @@ import database.JDBCUpdate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.ArrayList;
+import java.util.List;
+
 public class ItemList {
-   List<Item> daList=new ArrayList<Item>();
-  public void upload(){
+   private List<Item> daList=new ArrayList<Item>();
+   
+   protected void upload(){
 	  //upload from data base
 	  daList.clear();
 	  JDBCSelect uploadData = new JDBCSelect("inventory");
@@ -23,7 +26,8 @@ public class ItemList {
 	  }
 	  JDBCSelect.getDaUdderInvList().clear();
    }
-  Object[]stringItem(int n){
+  
+   protected Object[]stringItem(int n){
 	  Object[]a=new Object[7];
 	   a[0]=daList.get(n).getId()+"";
 	   a[1]=daList.get(n).getName();
@@ -32,7 +36,8 @@ public class ItemList {
 	   a[4]=daList.get(n).getCost()+"";
 	   return a;
    }
-  void editItem(int n,String it[]){
+   
+   protected void editItem(int n,String it[]){
 	  //Pick row out of the table
 	  daList.remove(n);
 	  //Get ID to pass to the Update Query for specification of where to locate the record
@@ -47,7 +52,8 @@ public class ItemList {
 	  //Add item back into the table
 	  daList.add(n,x);
   }
-  void deleteItem(int n,int id){
+  
+  protected void deleteItem(int n,int id){
 	  //Pick row out of the table
 	  daList.remove(n);
 	  //Remove record from database
@@ -56,7 +62,8 @@ public class ItemList {
 	  //Pointless 
 	  removeRow.equals(daList);
   }
-   void idSort(){
+  
+   protected void idSort(){
 	   //System.out.println(daList.toString().replaceAll(",", "\n"));
 	   Collections.sort(daList, new Comparator<Item>() {
 		   public int compare(Item c1, Item c2) {
@@ -68,7 +75,8 @@ public class ItemList {
 		});
       
    }
-  void priceSort(){
+   
+  protected void priceSort(){
 	  Collections.sort(daList, new Comparator<Item>() {
 		   public int compare(Item c1, Item c2) {
 		     if (c1.getCost()> c2.getCost()) return -1;
@@ -78,7 +86,8 @@ public class ItemList {
 
 		});
    }
-  void provideSort(){
+  
+  protected void provideSort(){
 	  Collections.sort(daList, new Comparator<Item>() {
 		   public int compare(Item c1, Item c2) {
 			   int comp =c1.getProvider().toLowerCase().compareTo(c2.getProvider().toLowerCase());
@@ -89,7 +98,8 @@ public class ItemList {
 
 		});
   }
-  void nameSort(){
+  
+  protected void nameSort(){
 	  Collections.sort(daList, new Comparator<Item>() {
 		   public int compare(Item c1, Item c2) {
 			   int comp =c1.getName().toLowerCase().compareTo(c2.getName().toLowerCase());
@@ -100,7 +110,8 @@ public class ItemList {
 
 		});
    }
-void quantSort(){
+  
+  protected void quantSort(){
 	  Collections.sort(daList, new Comparator<Item>() {
 		   public int compare(Item c1, Item c2) {
 		     if (c1.getQuantity()> c2.getQuantity()) return -1;
@@ -110,5 +121,9 @@ void quantSort(){
 
 		});
    }
+
+	public List<Item> getdaList() {
+		return daList;
+	}
 }
 

@@ -16,8 +16,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-
-
 /**
  * @author Zerin Bates
  *
@@ -26,18 +24,18 @@ public class tableItems extends JTable implements ActionListener{
 	
 	private static final long serialVersionUID = 1L;
 
-	JTable itemTable;
+	protected JTable itemTable;
 
 // buttons
-	JButton buttonId= new JButton("Id");
-	JButton buttonName= new JButton("Item Name");
-	JButton buttonProv = new JButton("Provider");
-	JButton buttonPrice= new JButton("Quantity");
-	JButton buttonQuant = new JButton("Price");
+	private JButton buttonId= new JButton("Id");
+	private JButton buttonName= new JButton("Item Name");
+	private JButton buttonProv = new JButton("Provider");
+	private JButton buttonPrice= new JButton("Quantity");
+	private JButton buttonQuant = new JButton("Price");
 	//misc
-	Object [][] stuff;
-	String[] columnNames = {"Id","Name","Provider","Quantity","Price","Update Item","Delete Item"};
-	ItemList data = new ItemList();
+	private Object [][] stuff;
+	private String[] columnNames = {"Id","Name","Provider","Quantity","Price","Update Item","Delete Item"};
+	private ItemList data = new ItemList();
 	//private local
 	private TableColumn Id;
 	private TableColumn nameItem;
@@ -47,8 +45,8 @@ public class tableItems extends JTable implements ActionListener{
 	
 	private void buildTable(){
 		
-		stuff=new Object[data.daList.size()][7];
-		for(int i=0;i<data.daList.size();i++){
+		stuff=new Object[data.getdaList().size()][7];
+		for(int i=0;i<data.getdaList().size();i++){
 			stuff[i]=data.stringItem(i);
 			stuff[i][5]="edit row "+i;
 			stuff[i][6]="delete row"+i;
@@ -76,8 +74,8 @@ public class tableItems extends JTable implements ActionListener{
 		
 		//Add headers to the Menu bar
 		data.upload();
-		stuff=new Object[data.daList.size()][7];
-		for(int i=0;i<data.daList.size();i++){
+		stuff=new Object[data.getdaList().size()][7];
+		for(int i=0;i<data.getdaList().size();i++){
 			stuff[i]=data.stringItem(i);
 			//JButton add = new JButton(i+"");
 			//JButton edit = new JButton(i+"");

@@ -1,6 +1,5 @@
 package main;
 import main.User;
-import java.util.List;
 
 import database.JDBCDelete;
 import database.JDBCSelect;
@@ -8,10 +7,13 @@ import database.JDBCSelect;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.ArrayList;
+import java.util.List;
+
 public class UserList {
-   List<User> daList=new ArrayList<User>();
+	
+   private List<User> daList=new ArrayList<User>();
    
-   void upload(){
+   protected void upload(){
 	   daList.clear();
 	   JDBCSelect uploadData = new JDBCSelect("users");
 	   uploadData.equals(daList);
@@ -22,7 +24,8 @@ public class UserList {
 	   }
 	   JDBCSelect.getDaUdderUsrList().clear();
    }
-  Object[]stringUser(int n){
+   
+  protected Object[]stringUser(int n){
 	  Object[]a=new Object[6];
 	   a[0]=daList.get(n).getId()+"";
 	   a[1]=daList.get(n).getuserName();
@@ -31,13 +34,15 @@ public class UserList {
 
 	   return a;
    }
-  void editUser(int n,String it[]){
+  
+  protected void editUser(int n,String it[]){
 	  daList.remove(n);
 	  User x= new User(Integer.valueOf(it[0]),it[1],it[2],Boolean.valueOf(it[3]));
 	  
 	  daList.add(n,x);
   }
-  void deleteUser(int n, int id){
+  
+  protected void deleteUser(int n, int id){
 	  daList.remove(n);
 	  //remove from data base
 	  JDBCDelete removeRow = new JDBCDelete("users", "id", Integer.toString(id));
@@ -45,7 +50,8 @@ public class UserList {
 	  //Pointless 
 	  removeRow.equals(daList);
   }
-   void adminSort(){
+  
+   protected void adminSort(){
 	   //System.out.println(daList.toString().replaceAll(",", "\n"));
 	   Collections.sort(daList, new Comparator<User>() {
 		   public int compare(User c1, User c2) {
@@ -58,7 +64,7 @@ public class UserList {
       
    }
 
-  void provideSort(){
+  protected void provideSort(){
 	  Collections.sort(daList, new Comparator<User>() {
 		   public int compare(User c1, User c2) {
 			   int comp =c1.getPassword().toLowerCase().compareTo(c2.getPassword().toLowerCase());
@@ -69,7 +75,8 @@ public class UserList {
 
 		});
   }
-  void nameSort(){
+  
+  protected void nameSort(){
 	  Collections.sort(daList, new Comparator<User>() {
 		   public int compare(User c1, User c2) {
 			   int comp =c1.getuserName().toLowerCase().compareTo(c2.getuserName().toLowerCase());
@@ -80,7 +87,8 @@ public class UserList {
 
 		});
    }
-  void IdSort(){
+  
+  protected void IdSort(){
 	  Collections.sort(daList, new Comparator<User>() {
 		   public int compare(User c1, User c2) {
 		     if (c1.getId()> c2.getId()) return -1;
@@ -90,4 +98,8 @@ public class UserList {
 
 		});
    }
-   }
+  
+  protected List<User> getdaList() {
+	  return daList;
+  }
+}

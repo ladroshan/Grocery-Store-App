@@ -6,19 +6,19 @@ public class Item {
   private String provider = "acme";
   private String Name = "Inego Montoya";
  private int quant=100;
-  int getId(){
+  protected int getId(){
 	  return itemID;
   }
-  double getCost(){
+  protected double getCost(){
 	  return cost;
   }
-  String getProvider(){
+  protected String getProvider(){
 	  return provider;
   }
-  String getName(){
+  protected String getName(){
 	  return Name;
   }
-  int getQuantity(){
+  protected int getQuantity(){
 	  return quant;
   }
   public Item(int itemNumber,String itemName,String aprovider, int quantity,double acost){
@@ -28,7 +28,7 @@ public class Item {
 	 Name = itemName;
 	 quant = quantity;
  }
-  Item(){
+  public Item(){
 	  itemID=0000;
       cost=6.66;
 	  provider="acme";

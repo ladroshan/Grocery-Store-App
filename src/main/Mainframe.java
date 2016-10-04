@@ -59,7 +59,7 @@ public class Mainframe implements ActionListener{
 	
 	//This is the login button
 	private JButton loginBtn, submit, checkout, inventory, users, invAdd, invEd, invDe, usrAdd, usrEd, usrDe; 
-	private JButton newSubmit, dealOrNoDeal;
+	private JButton newSubmit, dealOrNoDeal, addItem, next;
 	
 	//This is the JTextField for submitting a Username when logging in
 	private JTextField uname, dope, dealer, grams, benjis;
@@ -505,8 +505,10 @@ public class Mainframe implements ActionListener{
 				//work if they are just directly added to the pane container. 
 				JPanel checkOutLeft = new JPanel();
 				JPanel checkOutRight = new JPanel();
-				JButton addItem = new JButton("Add Item");
-				JButton next = new JButton("    Next    ");
+				addItem = new JButton("Add Item");
+				next = new JButton("     Pay    ");
+				addItem.addActionListener(this);
+				next.addActionListener(this);
 				JTextField enterItem = new JTextField();
 				//tableItems table = new tableItems();
 				Dimension textDim = new Dimension(100, 25);
@@ -526,6 +528,8 @@ public class Mainframe implements ActionListener{
 				checkOutLeft.setAlignmentX((float) 10.0);
 				pane.add(checkOutLeft);
 				pane.add(checkOutRight);
+			}
+			else if (section == "") {
 				
 			}
 		}
@@ -535,6 +539,15 @@ public class Mainframe implements ActionListener{
 					+ " function. Please review the page that is being passed.", "THERE WAS AN ERROR!", 
 					JOptionPane.ERROR_MESSAGE);
 		}
+	}
+	
+	private void loadPayment() {
+		/*
+		pane.removeAll();
+		frame.dispose();
+		paneEdit("users", "edit");
+		reload();
+		*/
 	}
 	
 	private void loadUserChange() {
@@ -915,6 +928,7 @@ public class Mainframe implements ActionListener{
 			new ItemList().upload();
 			loadCheckOut();
 		}
+		
 		//This is for inserting data into the inventory table
 		if (e.getSource() == dealOrNoDeal) {
 			String test, test2;
@@ -933,6 +947,10 @@ public class Mainframe implements ActionListener{
 				loadInventory();
 			}
 			
+		}
+		
+		if (e.getSource() == next) {
+			loadPayment();
 		}
 	}
 }
