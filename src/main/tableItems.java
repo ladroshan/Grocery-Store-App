@@ -9,15 +9,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import main.Item;
-
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 
 
 
@@ -26,24 +23,27 @@ import javax.swing.table.TableModel;
  *
  */
 public class tableItems extends JTable implements ActionListener{
+	
+	private static final long serialVersionUID = 1L;
+
 	JTable itemTable;
 
 // buttons
 	JButton buttonId= new JButton("Id");
 	JButton buttonName= new JButton("Item Name");
 	JButton buttonProv = new JButton("Provider");
-	JButton buttonPrice= new JButton("Price");
-	JButton buttonQuant = new JButton("Quantity");
+	JButton buttonPrice= new JButton("Quantity");
+	JButton buttonQuant = new JButton("Price");
 	//misc
 	Object [][] stuff;
-	String[] columnNames = {"Id","Name","Provider","Price","Quantity","Update Item","Delete Item"};
+	String[] columnNames = {"Id","Name","Provider","Quantity","Price","Update Item","Delete Item"};
 	ItemList data = new ItemList();
 	//private local
 	private TableColumn Id;
 	private TableColumn nameItem;
 	private TableColumn provider;
-	private TableColumn price;
 	private TableColumn quantity;
+	private TableColumn price;
 	
 	private void buildTable(){
 		
@@ -170,7 +170,9 @@ public class tableItems extends JTable implements ActionListener{
 	}
 class ButtonRenderer extends JButton implements TableCellRenderer {
 
-	  public ButtonRenderer() {
+	private static final long serialVersionUID = 1L;
+
+	public ButtonRenderer() {
 	    setOpaque(true);
 	  }
 

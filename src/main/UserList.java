@@ -75,7 +75,7 @@ public class UserList {
   void provideSort(){
 	  Collections.sort(daList, new Comparator<User>() {
 		   public int compare(User c1, User c2) {
-			   int comp =c1.getPassword().compareTo(c2.getPassword());
+			   int comp =c1.getPassword().toLowerCase().compareTo(c2.getPassword().toLowerCase());
 		     if (comp<0) return -1;
 		     if (comp>0) return 1;
 		     return 0;
@@ -86,7 +86,7 @@ public class UserList {
   void nameSort(){
 	  Collections.sort(daList, new Comparator<User>() {
 		   public int compare(User c1, User c2) {
-			   int comp =c1.getuserName().compareTo(c2.getuserName());
+			   int comp =c1.getuserName().toLowerCase().compareTo(c2.getuserName().toLowerCase());
 		     if (comp<0) return -1;
 		     if (comp>0) return 1;
 		     return 0;

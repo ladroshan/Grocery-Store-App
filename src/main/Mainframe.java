@@ -4,12 +4,9 @@ import main.MenuBar;
 import main.tableItems;
 import main.TableUser;
 
-import database.JDBCDelete;
 import database.JDBCInsert;
 import database.JDBCSelect;
-import database.JDBCUpdate;
 
-import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;

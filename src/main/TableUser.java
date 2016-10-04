@@ -3,7 +3,6 @@ package main;
 //import main.Mainframe;
 import main.UserList;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -12,9 +11,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JTable;
-import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 
@@ -24,6 +21,11 @@ import javax.swing.table.TableColumn;
  *
  */
 public class TableUser extends JTable implements ActionListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -964558493484362323L;
+
 	JTable UserTable;
 
 // buttons
@@ -114,9 +116,7 @@ public class TableUser extends JTable implements ActionListener{
 						data.deleteUser(row, Integer.parseInt(stuff[row][0].toString()));
 						buildTable();
 				      }
-				      if(column==4 ){
-					       
-				    	  
+				      if(column==4 ){			    	  
 				    	  String []x=new String [4];
 				    	  for (int i =1;i<4;i++){
 				    		  x[i]=UserTable.getModel().getValueAt(row, i).toString();

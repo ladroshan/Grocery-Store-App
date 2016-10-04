@@ -208,7 +208,6 @@ public class JDBCSelect {
 		try {
 			//System.out.println("Success 3");
 			//This object is necessary to get a count of the columns for an upper bound in the while loop
-			ResultSetMetaData info = results.getMetaData();
 				//System.out.println("Success 4");
 				int itemNumber;
 				String itemName;
@@ -219,9 +218,9 @@ public class JDBCSelect {
 				for (int i = 0; i < max; i++){
 					itemNumber = results.getInt(1);
 					//System.out.println(itemNumber);
-					itemName = results.getString(2);
+					itemName = results.getString(2).trim();
 					//System.out.println(itemName);
-					aprovider = results.getString(3);
+					aprovider = results.getString(3).trim();
 					//System.out.println(aprovider);
 					quantity = results.getInt(4);
 					//System.out.println(quantity);
@@ -255,10 +254,9 @@ public class JDBCSelect {
 				String aPassword;
 				boolean isAAdmin;
 				for (int i = 0; i < max; i++){
-					//int anId,String aUserName,String aPassword,Boolean isAAdmin
 					anId = results.getInt(1);
-					aUserName = results.getString(2);
-					aPassword = results.getString(3);
+					aUserName = results.getString(2).trim();
+					aPassword = results.getString(3).trim();
 					isAAdmin = results.getBoolean(4);
 					User test = new User(anId, aUserName, aPassword, isAAdmin);
 					DaUdderUsrList.add(test);
