@@ -33,30 +33,31 @@ public class ItemList {
 	   return a;
    }
   void editItem(int n,String it[]){
+	  //Pick row out of the table
 	  daList.remove(n);
+	  //Get ID to pass to the Update Query for specification of where to locate the record
 	  int id =Integer.valueOf(it[0]);
-	  for (int i = 0; i < 5; i++) {
-
-		  System.out.println(it[i]);
-		  
-	  }
+	  //Update database
 	  JDBCUpdate editAway = new JDBCUpdate("inventory", it[1], it[2], it[3], it[4], "id", it[0]);
+	  JDBCUpdate.getList().clear();
 	  //Pointless
 	  editAway.equals(daList);
+	  //Create new row for the table
 	  Item x= new Item(id,it[1],it[2], Integer.valueOf(it[3]),Double.valueOf(it[4]));
+	  //Add item back into the table
 	  daList.add(n,x);
-	  //edit full row
   }
   void deleteItem(int n,int id){
+	  //Pick row out of the table
 	  daList.remove(n);
-	  //remove from data base
+	  //Remove record from database
 	  JDBCDelete removeRow = new JDBCDelete("inventory", "id", Integer.toString(id));
 	  JDBCDelete.getList().clear();
 	  //Pointless 
 	  removeRow.equals(daList);
   }
    void idSort(){
-	   System.out.println(daList.toString().replaceAll(",", "\n"));
+	   //System.out.println(daList.toString().replaceAll(",", "\n"));
 	   Collections.sort(daList, new Comparator<Item>() {
 		   public int compare(Item c1, Item c2) {
 		     if (c1.getId() > c2.getId()) return -1;

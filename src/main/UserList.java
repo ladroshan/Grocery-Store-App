@@ -10,21 +10,7 @@ import java.util.Comparator;
 import java.util.ArrayList;
 public class UserList {
    List<User> daList=new ArrayList<User>();
-   /*
-    public void upload(){
-	  //upload from data base
-	  daList.clear();
-	  JDBCSelect uploadData = new JDBCSelect("inventory");
-	  uploadData.equals(daList);
-	  int max = JDBCSelect.getDaUdderInvList().size(), count = 0;
-	  while (count < max) {
-		  daList.add(JDBCSelect.getDaUdderInvList().get(count));
-		  count++;
-	  }
-	  JDBCSelect.getDaUdderInvList().clear();
-   } 
-     
-    */
+   
    void upload(){
 	   daList.clear();
 	   JDBCSelect uploadData = new JDBCSelect("users");
@@ -60,7 +46,7 @@ public class UserList {
 	  removeRow.equals(daList);
   }
    void adminSort(){
-	   System.out.println(daList.toString().replaceAll(",", "\n"));
+	   //System.out.println(daList.toString().replaceAll(",", "\n"));
 	   Collections.sort(daList, new Comparator<User>() {
 		   public int compare(User c1, User c2) {
 		     if (c1.getAdmin()) return 1;

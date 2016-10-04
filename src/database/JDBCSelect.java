@@ -74,7 +74,6 @@ public class JDBCSelect {
 			Query = "SELECT * FROM " + table;
 			Qcount = table;
 			try {
-				//System.out.println("Success 1");
 				if(table.equals("inventory")){
 					selectRecordFromDbUserTable();		
 				} 
@@ -104,7 +103,6 @@ public class JDBCSelect {
 		Connection dbConnection = null;
 		Statement statement = null;
 		try {
-			//System.out.println("Success 2");
 			dbConnection = getDBConnection();
 			statement = dbConnection.createStatement();
 			int count = 1, prejudice = 0;
@@ -125,10 +123,8 @@ public class JDBCSelect {
 			results = statement.executeQuery(Query);
 			ResultSetMetaData info = results.getMetaData();
 			prejudice = info.getColumnCount();
-			//System.out.println(Query);
 			//This needs to be done to move to the first row of data in the ResultSet
-			results.next();
-			
+			results.next();			
 			//Send the ResultSet to a the makeList() method to add the data in it to a the resultTable Vector
 			if (dump) {
 				if(prejudice == 4) {
@@ -206,9 +202,7 @@ public class JDBCSelect {
 	
 	private static void makeDaInvList(ResultSet results, int max) {
 		try {
-			//System.out.println("Success 3");
 			//This object is necessary to get a count of the columns for an upper bound in the while loop
-				//System.out.println("Success 4");
 				int itemNumber;
 				String itemName;
 				String aprovider;
@@ -217,26 +211,19 @@ public class JDBCSelect {
 				String edit;
 				for (int i = 0; i < max; i++){
 					itemNumber = results.getInt(1);
-					//System.out.println(itemNumber);
 					itemName = results.getString(2).trim();
-					//System.out.println(itemName);
 					aprovider = results.getString(3).trim();
-					//System.out.println(aprovider);
 					quantity = results.getInt(4);
-					//System.out.println(quantity);
 					edit = results.getString(5);
 					edit = edit.substring(1);
-					//System.out.println(edit);
 					char[] removeCommas = edit.toCharArray();
 					for (int j = 0; j < edit.length(); j++) {
 						if (removeCommas[j] == ',') {
 							edit = edit.substring(0, (j)) + edit.substring(j + 1);
-							//System.out.println(edit);
 							removeCommas = edit.toCharArray();
 						}
 					}
 					acost = Double.parseDouble(edit);
-					//System.out.println(acost);
 					Item test = new Item(itemNumber, itemName, aprovider, quantity, acost);
 					DaUdderInvList.add(test);
 					results.next();

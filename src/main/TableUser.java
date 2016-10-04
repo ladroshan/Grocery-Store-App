@@ -112,7 +112,6 @@ public class TableUser extends JTable implements ActionListener{
 				      int column = target.getSelectedColumn();
 				     
 				      if(column==5 ){
-				       //System.out.println("stuff");
 						data.deleteUser(row, Integer.parseInt(stuff[row][0].toString()));
 						buildTable();
 				      }
@@ -135,7 +134,6 @@ public class TableUser extends JTable implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 		if (e.getSource() == buttonPrice) {
 			data.adminSort();
 			buildTable();

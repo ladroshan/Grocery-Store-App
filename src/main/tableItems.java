@@ -119,13 +119,10 @@ public class tableItems extends JTable implements ActionListener{
 				      int column = target.getSelectedColumn();
 				     
 				      if(column==6 ){
-				        //System.out.println(stuff);
 						data.deleteItem(row, Integer.parseInt(stuff[row][0].toString()));
 						buildTable();
 				      }
 				      if(column==5 ){
-					       //System.out.println("stuff");
-				    	  
 				    	  String []x=new String [5];
 				    	  for (int i =1;i<5;i++){
 				    		  x[i]=itemTable.getModel().getValueAt(row, i).toString();
@@ -142,13 +139,11 @@ public class tableItems extends JTable implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 		if (e.getSource() == buttonPrice) {
 			data.priceSort();
 			buildTable();
 		}
 		if (e.getSource() == buttonId) {
-				//System.out.println("stuff");
 				data.idSort();
 				buildTable();
 			}
