@@ -5,7 +5,6 @@ import java.util.List;
 import database.JDBCDelete;
 import database.JDBCSelect;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.ArrayList;
@@ -15,12 +14,13 @@ public class ItemList {
 	  //upload from data base
 	  daList.clear();
 	  JDBCSelect uploadData = new JDBCSelect("inventory");
-	  int max = uploadData.getDaUdderList().size(), count = 0;
+	  uploadData.equals(daList);
+	  int max = JDBCSelect.getDaUdderInvList().size(), count = 0;
 	  while (count < max) {
-		  daList.add(uploadData.getDaUdderList().get(count));
+		  daList.add(JDBCSelect.getDaUdderInvList().get(count));
 		  count++;
 	  }
-	  uploadData.getDaUdderList().clear();
+	  JDBCSelect.getDaUdderInvList().clear();
    }
   Object[]stringItem(int n){
 	  Object[]a=new Object[7];
@@ -43,6 +43,9 @@ public class ItemList {
 	  daList.remove(n);
 	  //remove from data base
 	  JDBCDelete removeRow = new JDBCDelete("inventory", "id", Integer.toString(id));
+	  JDBCDelete.getList().clear();
+	  //Pointless 
+	  removeRow.equals(daList);
   }
    void idSort(){
 	   System.out.println(daList.toString().replaceAll(",", "\n"));

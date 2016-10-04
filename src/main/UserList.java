@@ -1,20 +1,40 @@
 package main;
 import main.User;
 import java.util.List;
+
+import database.JDBCDelete;
+import database.JDBCSelect;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.ArrayList;
 public class UserList {
    List<User> daList=new ArrayList<User>();
+   /*
+    public void upload(){
+	  //upload from data base
+	  daList.clear();
+	  JDBCSelect uploadData = new JDBCSelect("inventory");
+	  uploadData.equals(daList);
+	  int max = JDBCSelect.getDaUdderInvList().size(), count = 0;
+	  while (count < max) {
+		  daList.add(JDBCSelect.getDaUdderInvList().get(count));
+		  count++;
+	  }
+	  JDBCSelect.getDaUdderInvList().clear();
+   } 
+     
+    */
    void upload(){
-	   for (int i =0;i<4;i++){
-	   User a=new User(i,"stuff","thing",false);
-	   daList.add(a);
+	   daList.clear();
+	   JDBCSelect uploadData = new JDBCSelect("users");
+	   uploadData.equals(daList);
+	   int max = JDBCSelect.getDaUdderUsrList().size(), count = 0;
+	   while (count < max) {
+		   daList.add(JDBCSelect.getDaUdderUsrList().get(count));
+		   count++;
 	   }
-	   User b = new User(1,"girls","women",false);
-	   User c = new User(7,"red","green",true);
-	   daList.add(b);
-	   daList.add(c);
+	   JDBCSelect.getDaUdderUsrList().clear();
    }
   Object[]stringUser(int n){
 	  Object[]a=new Object[6];
@@ -31,8 +51,13 @@ public class UserList {
 	  
 	  daList.add(n,x);
   }
-  void deleteUser(int n){
+  void deleteUser(int n, int id){
 	  daList.remove(n);
+	  //remove from data base
+	  JDBCDelete removeRow = new JDBCDelete("users", "id", Integer.toString(id));
+	  JDBCDelete.getList().clear();
+	  //Pointless 
+	  removeRow.equals(daList);
   }
    void adminSort(){
 	   System.out.println(daList.toString().replaceAll(",", "\n"));

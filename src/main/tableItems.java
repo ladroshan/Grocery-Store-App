@@ -119,8 +119,8 @@ public class tableItems extends JTable implements ActionListener{
 				      int column = target.getSelectedColumn();
 				     
 				      if(column==6 ){
-				       //System.out.println("stuff");
-						data.deleteItem(row, (int)stuff[row][0]);
+				        //System.out.println(stuff);
+						data.deleteItem(row, Integer.parseInt(stuff[row][0].toString()));
 						buildTable();
 				      }
 				      if(column==5 ){

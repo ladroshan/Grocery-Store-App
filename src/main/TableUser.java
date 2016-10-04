@@ -27,14 +27,14 @@ public class TableUser extends JTable implements ActionListener{
 	JTable UserTable;
 
 // buttons
-	JButton buttonId= new JButton("Id");
-	JButton buttonName= new JButton("User Name");
-	JButton buttonProv = new JButton("Password");
-	JButton buttonPrice= new JButton("isAdmin");
+	private JButton buttonId= new JButton("Id");
+	private JButton buttonName= new JButton("User Name");
+	private JButton buttonProv = new JButton("Password");
+	private JButton buttonPrice= new JButton("isAdmin");
 	//misc
-	Object [][] stuff;
-	String[] columnNames = {"Id","Name","Password","isAdmin","Update User","Delete User"};
-	UserList data = new UserList();
+	private Object [][] stuff;
+	private String[] columnNames = {"Id","Name","Password","isAdmin","Update User","Delete User"};
+	private UserList data = new UserList();
 	//private local
 	private TableColumn Id;
 	private TableColumn nameUser;
@@ -111,7 +111,7 @@ public class TableUser extends JTable implements ActionListener{
 				     
 				      if(column==5 ){
 				       //System.out.println("stuff");
-						data.deleteUser(row);
+						data.deleteUser(row, Integer.parseInt(stuff[row][0].toString()));
 						buildTable();
 				      }
 				      if(column==4 ){

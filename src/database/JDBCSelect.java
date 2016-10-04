@@ -1,6 +1,7 @@
 package database;
 
 import main.Item;
+import main.User;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -36,7 +37,8 @@ public class JDBCSelect {
 	//This Vector is a collection of Strings compiled from the results of the database query
 	//(It should be an empty vector before and after running queries to maintain high security)
 	public static Vector<String> resultTable = new Vector<String>();
-	private static List<Item> DaUdderList = new ArrayList<Item>();
+	private static List<Item> DaUdderInvList = new ArrayList<Item>();
+	private static List<User> DaUdderUsrList = new ArrayList<User>();
 	
 	/**
 	 * This is the overloaded constructor that is called by the Mainframe to run the SELECT queries
@@ -68,19 +70,28 @@ public class JDBCSelect {
 	 * @param table - The table from which you want all the records.
 	 */
 	public JDBCSelect(String table) {
-		dump = true;
-		Query = "SELECT * FROM " + table;
-		Qcount = table;
-		try {
-			//System.out.println("Success 1");
-			selectRecordFromDbUserTable();
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-			JOptionPane.showMessageDialog(null, "The Username or Password that you have"
-					+ " entered is incorrect!", "Password Error", 
-					JOptionPane.ERROR_MESSAGE);
-		}
-		dump = false;
+			dump = true;
+			Query = "SELECT * FROM " + table;
+			Qcount = table;
+			try {
+				//System.out.println("Success 1");
+				if(table.equals("inventory")){
+					selectRecordFromDbUserTable();		
+				} 
+				else if (table.equals("users")){
+					selectRecordFromDbUserTable();
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "There was an error in the Select Dump", "Database Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+				JOptionPane.showMessageDialog(null, "The Username or Password that you have"
+						+ " entered is incorrect!", "Password Error", 
+						JOptionPane.ERROR_MESSAGE);
+			}
+			dump = false;
 	}
 	
 	/**
@@ -96,10 +107,12 @@ public class JDBCSelect {
 			//System.out.println("Success 2");
 			dbConnection = getDBConnection();
 			statement = dbConnection.createStatement();
-			int count = 1;
+			int count = 1, prejudice = 0;
+			
 			System.out.println(Query);
 			if (dump) {
 				ResultSet r = statement.executeQuery("SELECT COUNT(*) AS rowcount FROM " + Qcount);
+				System.out.println(prejudice);
 				r.next();
 				count = r.getInt("rowcount");
 				System.out.println(count);
@@ -110,13 +123,25 @@ public class JDBCSelect {
 			
 			//execute SELECT SQL Query
 			results = statement.executeQuery(Query);
-			System.out.println(Query);
+			ResultSetMetaData info = results.getMetaData();
+			prejudice = info.getColumnCount();
+			//System.out.println(Query);
 			//This needs to be done to move to the first row of data in the ResultSet
 			results.next();
 			
 			//Send the ResultSet to a the makeList() method to add the data in it to a the resultTable Vector
 			if (dump) {
-				makeDaList(results, count);
+				if(prejudice == 4) {
+					makeDaUsrList(results, count);
+				}
+				else if (prejudice == 5) {
+					makeDaInvList(results, count);
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "There was an error in the differentiating between"
+							+ "whether this dump is for the User or Inventory databases.", "Database Error", 
+							JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			else {
 				makeList(results);
@@ -179,7 +204,7 @@ public class JDBCSelect {
 	}
 	
 	
-	private static void makeDaList(ResultSet results, int max) {
+	private static void makeDaInvList(ResultSet results, int max) {
 		try {
 			//System.out.println("Success 3");
 			//This object is necessary to get a count of the columns for an upper bound in the while loop
@@ -214,7 +239,7 @@ public class JDBCSelect {
 					acost = Double.parseDouble(edit);
 					//System.out.println(acost);
 					Item test = new Item(itemNumber, itemName, aprovider, quantity, acost);
-					DaUdderList.add(test);
+					DaUdderInvList.add(test);
 					results.next();
 				}
 			} catch (SQLException e) {
@@ -223,7 +248,26 @@ public class JDBCSelect {
 		}
 	}
 	
-	public void all(String table) {
+	private static void makeDaUsrList(ResultSet results, int max) {
+		try {
+				int anId;
+				String aUserName;
+				String aPassword;
+				boolean isAAdmin;
+				for (int i = 0; i < max; i++){
+					//int anId,String aUserName,String aPassword,Boolean isAAdmin
+					anId = results.getInt(1);
+					aUserName = results.getString(2);
+					aPassword = results.getString(3);
+					isAAdmin = results.getBoolean(4);
+					User test = new User(anId, aUserName, aPassword, isAAdmin);
+					DaUdderUsrList.add(test);
+					results.next();
+				}
+			} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -236,8 +280,12 @@ public class JDBCSelect {
 		return resultTable;
 	}
 	
-	public static List<Item> getDaUdderList() {
-		return DaUdderList;
+	public static List<Item> getDaUdderInvList() {
+		return DaUdderInvList;
+	}
+	
+	public static List<User> getDaUdderUsrList() {
+		return DaUdderUsrList;
 	}
 	
 	/**
