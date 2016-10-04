@@ -7,6 +7,7 @@ import main.TableUser;
 import database.JDBCInsert;
 import database.JDBCSelect;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -14,6 +15,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -26,6 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 
@@ -57,17 +61,23 @@ public class Mainframe implements ActionListener{
 	//This variable is to track which form of user is using the application
 	private userType current;
 	
+	//private JLabel ltotalfinal;
+	
 	//This is the login button
 	private JButton loginBtn, submit, checkout, inventory, users, invAdd, invEd, invDe, usrAdd, usrEd, usrDe; 
-	private JButton newSubmit, dealOrNoDeal, addItem, next;
+	private JButton newSubmit, dealOrNoDeal, addItem, next; //, payNow;
 	
 	//This is the JTextField for submitting a Username when logging in
-	private JTextField uname, dope, dealer, grams, benjis;
+	private JTextField uname, dope, dealer, grams, benjis, enterItem;
+	
+	private String operand;
 	
 	//This is the JPassword for logging in
 	private JPasswordField pword;
 	
 	private JRadioButton yeah, nope;
+	
+	private List<ReceiptRow> receiptBody = new ArrayList<ReceiptRow>();
 	
 	/**
 	 * Initialization constructor for Mainframe
@@ -299,7 +309,7 @@ public class Mainframe implements ActionListener{
 				
 				//This is necessary for the positioning code farther down in this if statement
 				GridBagConstraints design = new GridBagConstraints();
-				design.insets = new Insets(5, 5, 5, 5);
+				design.insets = new Insets(10, 10, 10, 10);
 				
 				//Create and initialize some variables *SIDE NOTE* The reason why uname, pword, and submit
 				//are declared at the header of this class is so that they can be used in the Listener code
@@ -505,11 +515,18 @@ public class Mainframe implements ActionListener{
 				//work if they are just directly added to the pane container. 
 				JPanel checkOutLeft = new JPanel();
 				JPanel checkOutRight = new JPanel();
+				JTextArea checkoutList = new JTextArea();
+				checkoutList.setText("ID    |    ITEM    |    AMOUNT    |    COST\n");
+				for (int i = 0; i < receiptBody.size(); i++){
+					checkoutList.append((receiptBody.get(i).toString()));
+					checkoutList.append("\n");
+				}
+				checkoutList.setEditable(false);
 				addItem = new JButton("Add Item");
 				next = new JButton("     Pay    ");
 				addItem.addActionListener(this);
 				next.addActionListener(this);
-				JTextField enterItem = new JTextField();
+				enterItem = new JTextField();
 				//tableItems table = new tableItems();
 				Dimension textDim = new Dimension(100, 25);
 				enterItem.setMaximumSize(textDim);
@@ -517,7 +534,8 @@ public class Mainframe implements ActionListener{
 				
 				pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
 				checkOutLeft.setLayout(new BoxLayout(checkOutLeft, BoxLayout.Y_AXIS));
-				
+				checkOutRight.setBackground(Color.WHITE);
+				checkOutRight.add(checkoutList);
 				pane.add(Box.createRigidArea(new Dimension(100,0)));
 				checkOutLeft.add(enterItem);
 				checkOutLeft.add(addItem);
@@ -529,8 +547,44 @@ public class Mainframe implements ActionListener{
 				pane.add(checkOutLeft);
 				pane.add(checkOutRight);
 			}
-			else if (section == "") {
+			else if (section == "payment") {
+				/*
+				//A JPanel is used in this section because the positioning of the form items later doesn't 
+				//work if they are just directly added to the pane container. 
+				JPanel newInventory = new JPanel();
+				newInventory.setLayout(new GridBagLayout());
 				
+				//This is necessary for the positioning code farther down in this if statement
+				GridBagConstraints design = new GridBagConstraints();
+				design.insets = new Insets(10, 10, 10, 10);
+				
+				//Create and initialize some variables *SIDE NOTE* The reason why uname, pword, and submit
+				//are declared at the header of this class is so that they can be used in the Listener code
+				JLabel lpayment = new JLabel("Method of Payment: ");
+				JLabel ltotal = new JLabel("Total Price: ");
+				payNow = new JButton("Pay Now");
+				
+				//This listener runs the JDBC Queries to check the password
+				payNow.addActionListener(this);
+				
+				//Positioning for the different parts of the form
+				design.gridx = 0;
+				design.gridy = 0;
+				newInventory.add(lpayment, design);
+				design.gridx = 0;
+				design.gridy = 1;
+				newInventory.add(ltotal, design);
+				design.gridx = 2;
+				design.gridy = 0;
+				newInventory.add(payment, design);
+				design.gridx = 2;
+				design.gridy = 1;
+				newInventory.add(ltotalfinal, design);
+				design.gridx = 1;
+				design.gridy = 2;
+				newInventory.add(payNow, design);
+				pane.add(newInventory);
+				*/
 			}
 		}
 		//Catch any possible errors in the code or unmapped cases
@@ -541,14 +595,14 @@ public class Mainframe implements ActionListener{
 		}
 	}
 	
+	/*
 	private void loadPayment() {
-		/*
 		pane.removeAll();
 		frame.dispose();
-		paneEdit("users", "edit");
+		paneEdit("checkout", "payment");
 		reload();
-		*/
 	}
+	*/
 	
 	private void loadUserChange() {
 		pane.removeAll();
@@ -950,7 +1004,51 @@ public class Mainframe implements ActionListener{
 		}
 		
 		if (e.getSource() == next) {
-			loadPayment();
+			double printTotal = 0;
+			String printItAlready;
+			for(int i = 0; i < receiptBody.size(); i++) {
+				printTotal += Double.parseDouble(receiptBody.get(i).getCost());
+				System.out.println(printTotal);
+			}
+			printItAlready = Double.toString(printTotal);
+			
+			String payment = JOptionPane.showInputDialog(null, "Thank you for your purchase! Your total is $" + printItAlready
+					+ "\nWhat type of payment would you like to use?");
+			Receipt done = new Receipt(printTotal, payment, receiptBody);
+			JOptionPane.showMessageDialog(null, done.toString(), "PROOF OF PURCHASE", JOptionPane.DEFAULT_OPTION);
+			//loadPayment();
+		}
+		
+		if (e.getSource() == addItem) {
+			JDBCSelect buildReceipt = new JDBCSelect("inventory", "id", enterItem.getText());
+			
+			String input;
+			double calculate;
+			input = JOptionPane.showInputDialog(null, "How many would you like?\nThere are only " + 
+					buildReceipt.getList().get(3).toString() + " left.");
+			if (Integer.parseInt(input) > Integer.parseInt(buildReceipt.getList().get(3))) {
+				JOptionPane.showMessageDialog(null, "There are not that many available!", "Request Denied", 
+						JOptionPane.ERROR_MESSAGE);
+			}
+			else {
+				operand = buildReceipt.getList().get(4);
+				operand = operand.substring(1);
+				char[] removeCommas = operand.toCharArray();
+				for (int j = 0; j < operand.length(); j++) {
+					if (removeCommas[j] == ',') {
+						operand = operand.substring(0, (j)) + operand.substring(j + 1);
+						removeCommas = operand.toCharArray();
+					}
+				}
+				calculate = Double.parseDouble(operand);
+				calculate *= Integer.parseInt(input);
+				ReceiptRow addition = new ReceiptRow(buildReceipt.getList().get(0), buildReceipt.getList().get(1),
+						input, Double.toString(calculate));
+				System.out.println(receiptBody.add(addition));
+			}
+			
+			buildReceipt.getList().clear();
+			loadCheckOut();
 		}
 	}
 }
