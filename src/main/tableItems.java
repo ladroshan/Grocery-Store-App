@@ -17,8 +17,10 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 /**
+ * 
+ * 
  * @author Zerin Bates
- *
+ * @version 1.6
  */
 public class tableItems extends JTable implements ActionListener{
 	

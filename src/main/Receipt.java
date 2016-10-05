@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 
+ * 
  * @author Jacob Killpack
- *
+ * @version 1.1
  */
 public class Receipt {
 

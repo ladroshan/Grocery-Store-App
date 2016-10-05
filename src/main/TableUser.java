@@ -17,8 +17,10 @@ import javax.swing.table.TableColumn;
 
 
 /**
+ * SOME DESCRIPTION
+ * 
  * @author Zerin Bates
- *
+ * @version 1.5
  */
 public class TableUser extends JTable implements ActionListener{
 	/**

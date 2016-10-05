@@ -1,8 +1,10 @@
 package main;
 
 /**
+ * SOMETHING HERE
+ * 
  * @author Jacob Killpack
- *
+ * @version 1.1
  */
 public class ReceiptRow {
 

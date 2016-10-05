@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
  * rest of the Mainframe.
  * 
  * @author Jacob Killpack
- * @version 1.4
+ * @version 1.8
  */
 public class MenuBar extends JMenuBar implements ActionListener{
 	

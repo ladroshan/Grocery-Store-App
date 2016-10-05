@@ -12,6 +12,12 @@ import javax.swing.UIManager;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
+/**
+ * SOMETHING HERE
+ * 
+ * @author Zerin Bates
+ * @version 1.2
+ */
 public class EditableHeaderRenderer implements TableCellRenderer {
 
 

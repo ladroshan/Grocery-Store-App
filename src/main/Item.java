@@ -1,5 +1,12 @@
 package main;
 
+
+/**
+ * SOMETHING HERE
+ * 
+ * @author Zerin Bates
+ * @version 1.2
+ */
 public class Item {
  private int itemID=0;
   private double cost= 6.66;

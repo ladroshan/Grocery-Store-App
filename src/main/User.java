@@ -1,5 +1,10 @@
 package main;
 
+/**
+ * 
+ * @author Zerin Bates
+ * @version 1.1
+ */
 public class User {
 private int Id=0;
 private String userName="Dabom.com";

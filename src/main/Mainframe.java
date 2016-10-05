@@ -38,7 +38,7 @@ import javax.swing.JTextField;
  * It should be the first Class called in the final build.
  * 
  * @author Jacob Killpack
- * @version 1.4
+ * @version 1.23
  */
 public class Mainframe implements ActionListener{
 	
@@ -796,7 +796,7 @@ public class Mainframe implements ActionListener{
 		//privileges
 		//Mainframe test = new Mainframe();
 		//test.logout();
-		
+
 		Mainframe test = new Mainframe();
 		test.pane.removeAll();
 		test.frame.dispose();

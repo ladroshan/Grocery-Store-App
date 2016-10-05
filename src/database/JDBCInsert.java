@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
  * methods need to be added down the road.
  * 
  * @author Jacob Killpack
- * @version 1.2
+ * @version 1.5
  */
 public class JDBCInsert {
 	//The following final variables are the hard-coded values for creating a database connection

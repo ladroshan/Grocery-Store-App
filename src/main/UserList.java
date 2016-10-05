@@ -9,6 +9,11 @@ import java.util.Comparator;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * @author Zerin Bates
+ * @version 1.5
+ */
 public class UserList {
 	
    private List<User> daList=new ArrayList<User>();

@@ -11,6 +11,12 @@ import java.util.Comparator;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * SOMETHING HERE
+ * 
+ * @author Zerin Bates
+ * @version 1.9
+ */
 public class ItemList {
    private List<Item> daList=new ArrayList<Item>();
    
