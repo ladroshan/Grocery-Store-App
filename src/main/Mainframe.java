@@ -15,13 +15,20 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -64,7 +71,7 @@ public class Mainframe implements ActionListener{
 	//private JLabel ltotalfinal;
 	
 	//This is the login button
-	private JButton loginBtn, submit, checkout, inventory, users, invAdd, invEd, invDe, usrAdd, usrEd, usrDe; 
+	private JButton loginBtn, submit, genRep, checkout, ckReceipt, ckOrder, inventory, users, invAdd, invEd, invDe, usrAdd, usrEd, usrDe; 
 	private JButton newSubmit, dealOrNoDeal, addItem, next; //, payNow;
 	
 	//This is the JTextField for submitting a Username when logging in
@@ -76,6 +83,23 @@ public class Mainframe implements ActionListener{
 	private JPasswordField pword;
 	
 	private JRadioButton yeah, nope;
+	
+	private final String[] calDays = {"01", "02", "03", "04", "05", "06", "07", "08", "09",
+									  "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
+									  "20", "21", "22", "23", "24", "25", "26", "27", "28", "29",
+									  "30", "31"};
+
+	private final String[] calMonths = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
+										"November", "December", "YOU SUCK"};
+	
+	private final String[] calYears = {"1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", 
+									   "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013",
+									   "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025" };
+
+	
+	//These JComboBoxes are for Date selection on the report generation page
+	@SuppressWarnings("rawtypes")
+	private JComboBox dayList1, monthList1, yearList1, dayList2, monthList2, yearList2;
 	
 	private List<ReceiptRow> receiptBody = new ArrayList<ReceiptRow>();
 	
@@ -126,6 +150,7 @@ public class Mainframe implements ActionListener{
 	 * @param page - The main page or main function that is being handled
 	 * @param section - The subpages or views that are variations on the main page
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void paneEdit(String page, String section) {
 		if(page.equals("main")){
 			//Design the view that will display right when the Admin logs in
@@ -509,8 +534,112 @@ public class Mainframe implements ActionListener{
 				pane.add(checkOutRight);
 			}
 		}
+		else if(page == "reports") {
+			if (section == "menu") {
+				//A JPanel is used in this section because the positioning of the form items later doesn't 
+				//work if they are just directly added to the pane container. 
+				JPanel buttonHolder = new JPanel();
+				buttonHolder.setLayout(new GridBagLayout());
+				
+				//This is necessary for the positioning code farther down in this if statement
+				GridBagConstraints design = new GridBagConstraints();
+				design.insets = new Insets(30, 30, 10, 30);
+				
+				//Create and initialize some variables *SIDE NOTE* The reason why inventory, users, and checkout
+				//are declared at the header of this class is so that they can be used in the Listener code
+				JLabel label1 = new JLabel("Start Date:");
+				JLabel label2 = new JLabel("End Date:");
+	
+				dayList1 = new JComboBox(calDays);
+				monthList1 = new JComboBox(calMonths);
+				yearList1 = new JComboBox(calYears);
+	
+				dayList2 = new JComboBox(calDays);
+				monthList2 = new JComboBox(calMonths);
+				yearList2 = new JComboBox(calYears);
+				
+				genRep = new JButton("Generate Report");
+				
+				//This listener runs the JDBC Queries to check the password
+				genRep.addActionListener(this);
+				
+				//Positioning for the different parts of the form
+				design.gridx = 0;
+				design.gridy = 1;
+				buttonHolder.add(label1, design);
+				design.gridx = 1;
+				design.gridy = 1;
+				buttonHolder.add(dayList1, design);
+				design.gridx = 2;
+				design.gridy = 1;
+				buttonHolder.add(monthList1, design);
+				design.gridx = 3;
+				design.gridy = 1;
+				buttonHolder.add(yearList1, design);
+				design.gridx = 0;
+				design.gridy = 2;
+				buttonHolder.add(label2, design);
+				design.gridx = 1;
+				design.gridy = 2;
+				buttonHolder.add(dayList2, design);
+				design.gridx = 2;
+				design.gridy = 2;
+				buttonHolder.add(monthList2, design);
+				design.gridx = 3;
+				design.gridy = 2;
+				buttonHolder.add(yearList2, design);
+				design.gridx = 2;
+				design.gridy = 4;
+				buttonHolder.add(genRep, design);
+				
+				pane.add(buttonHolder);
+			}
+		}
 		else if(page == "checkout") {
 			if (section == "menu") {
+				//A JPanel is used in this section because the positioning of the form items later doesn't 
+				//work if they are just directly added to the pane container. 
+				JPanel buttonHolder = new JPanel();
+				buttonHolder.setLayout(new GridBagLayout());
+				
+				//This is necessary for the positioning code farther down in this if statement
+				GridBagConstraints design = new GridBagConstraints();
+				design.insets = new Insets(30, 30, 10, 30);
+				
+				//Create and initialize some variables *SIDE NOTE* The reason why inventory, users, and checkout
+				//are declared at the header of this class is so that they can be used in the Listener code
+				JLabel label1 = new JLabel("Search Receipts:");
+				JLabel label2 = new JLabel("Start Order:");
+				
+				ckReceipt = new JButton("Go");
+				ckOrder = new JButton("Go");
+				
+				//This listener runs the JDBC Queries to check the password
+				ckReceipt.addActionListener(this);
+				ckOrder.addActionListener(this);
+				
+				//Positioning for the different parts of the form
+				design.gridx = 0;
+				design.gridy = 1;
+				buttonHolder.add(label1, design);
+				design.gridx = 0;
+				design.gridy = 2;
+				buttonHolder.add(ckReceipt, design);
+				design.gridx = 2;
+				design.gridy = 1;
+				buttonHolder.add(label2, design);
+				design.gridx = 2;
+				design.gridy = 2;
+				buttonHolder.add(ckOrder, design);
+				
+				pane.add(buttonHolder);
+			}
+			else if (section == "receipt") {
+				JOptionPane.showMessageDialog(null, "This Page has not yet been developed. "
+						+ "For more information look under the paneEdit Function in the "
+						+ "'receipt' section of the 'checkout' field.", "Under Construction", JOptionPane.ERROR_MESSAGE);
+			}
+			else if (section == "order") {
 				//A JPanel is used in this section because the positioning of the form items later doesn't 
 				//work if they are just directly added to the pane container. 
 				JPanel checkOutLeft = new JPanel();
@@ -618,10 +747,31 @@ public class Mainframe implements ActionListener{
 		reload();
 	}
 	
+	protected void loadReports() {
+		pane.removeAll();
+		frame.dispose();
+		paneEdit("reports", "menu");
+		reload();
+	}
+	
 	protected void loadCheckOut() {
 		pane.removeAll();
 		frame.dispose();
 		paneEdit("checkout", "menu");
+		reload();
+	}
+	
+	private void loadOrder() {
+		pane.removeAll();
+		frame.dispose();
+		paneEdit("checkout", "order");
+		reload();
+	}
+	
+	private void loadReceipt() {
+		pane.removeAll();
+		frame.dispose();
+		paneEdit("checkout", "receipt");
 		reload();
 	}
 
@@ -693,6 +843,18 @@ public class Mainframe implements ActionListener{
 		}
 		else {
 			//NULL. NONUSER, CASHIER, and ADMIN should be the only userTypes for now
+		}
+	}
+	
+	private void generateReport(Date startDate, Date endDate) {
+		Calendar startCal = Calendar.getInstance();
+		startCal.setTime(startDate);
+		Calendar endCal = Calendar.getInstance();
+		endCal.setTime(endDate);
+		@SuppressWarnings("unused")
+		JDBCSelect report = new JDBCSelect("receipts", "date", startCal, endCal);
+		for (int i = 0; i < JDBCSelect.getList().size(); i++) {
+			System.out.println(JDBCSelect.getList().get(i));
 		}
 	}
 
@@ -794,15 +956,15 @@ public class Mainframe implements ActionListener{
 		//To keep the logout function in a separate method, the program initializes to a logged-in view and then 
 		//immediately is logged out *SIDE NOTE* While it starts logged-in, it still starts with NONUSER 
 		//privileges
-		Mainframe test = new Mainframe();
-		test.logout();
-
 //		Mainframe test = new Mainframe();
-//		test.pane.removeAll();
-//		test.frame.dispose();
-//		test.current = userType.ADMIN;
-//		test.paneEdit("main", "admin");
-//		test.reload();
+//		test.logout();
+
+		Mainframe test = new Mainframe();
+		test.pane.removeAll();
+		test.frame.dispose();
+		test.current = userType.ADMIN;
+		test.paneEdit("main", "admin");
+		test.reload();
 	}
 	
 	@SuppressWarnings("static-access") //Not sure why, but Java told me to add this SuppressWarnings tag
@@ -979,7 +1141,6 @@ public class Mainframe implements ActionListener{
 		//If User clicks the "Go" button for the Checkout section from the main Cashier or Admin page, 
 		//load the frame with the checkout layout
 		if (e.getSource() == checkout) {
-			new ItemList().upload();
 			loadCheckOut();
 		}
 		
@@ -1049,6 +1210,38 @@ public class Mainframe implements ActionListener{
 			
 			buildReceipt.getList().clear();
 			loadCheckOut();
+		}
+		
+		if (e.getSource() == ckOrder) {
+			new ItemList().upload();
+			loadOrder();
+		}
+		
+		if (e.getSource() == ckReceipt) {
+			loadReceipt();
+		}
+		if (e.getSource() == genRep) {
+			String date1 = monthList1.getSelectedItem().toString() + " " + dayList1.getSelectedItem().toString() + ", " + yearList1.getSelectedItem().toString();
+			String date2 = monthList2.getSelectedItem().toString() + " " + dayList2.getSelectedItem().toString() + ", " + yearList2.getSelectedItem().toString();
+			DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
+			Date startDate, endDate;
+			try {
+				startDate = format.parse(date1);
+				endDate = format.parse(date2);
+				
+				if (startDate.getTime() > endDate.getTime()) {
+					JOptionPane.showMessageDialog(null, "The Start Date Must be less than the End Date! Please try again.", "DATE ERROR", 
+							JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+					generateReport(startDate, endDate);
+					System.out.println(startDate);
+					System.out.println(endDate);
+				}
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null, "There was a Date Parsing Error", "DATE ERROR", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 }
