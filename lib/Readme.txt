@@ -1,1 +1,1 @@
-This is just a placeholder for the lib folder.
+The lib/ folder contains the files necessary to make the databases that you will need to have for the application to run properly.

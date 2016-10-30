@@ -794,15 +794,15 @@ public class Mainframe implements ActionListener{
 		//To keep the logout function in a separate method, the program initializes to a logged-in view and then 
 		//immediately is logged out *SIDE NOTE* While it starts logged-in, it still starts with NONUSER 
 		//privileges
-		//Mainframe test = new Mainframe();
-		//test.logout();
-
 		Mainframe test = new Mainframe();
-		test.pane.removeAll();
-		test.frame.dispose();
-		test.current = userType.ADMIN;
-		test.paneEdit("main", "admin");
-		test.reload();
+		test.logout();
+
+//		Mainframe test = new Mainframe();
+//		test.pane.removeAll();
+//		test.frame.dispose();
+//		test.current = userType.ADMIN;
+//		test.paneEdit("main", "admin");
+//		test.reload();
 	}
 	
 	@SuppressWarnings("static-access") //Not sure why, but Java told me to add this SuppressWarnings tag
@@ -865,7 +865,7 @@ public class Mainframe implements ActionListener{
 			String passString = new String(pword.getPassword());
 			
 			//If the username and password entered validate then run JDBC Queries
-			if (validateUsername(uname.getText()) && validatePassword(passString)) {
+			if (validateUsername(uname.getText())) {
 				
 				//Run a Select Query on the 'users' table where the username field is equal to the entered username
 				JDBCSelect getUser = new JDBCSelect("users", "username", "'" + uname.getText() + "'");
