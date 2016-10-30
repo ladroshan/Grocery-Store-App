@@ -28,6 +28,14 @@ public class Item {
   protected int getQuantity(){
 	  return quant;
   }
+  /**
+   * this is the overload constructor for creating an item object
+   * @param itemNumber is the Id number of said item
+   * @param itemName is the name of the item
+   * @param aprovider a string with the providers name
+   * @param quantity number of items
+   * @param acost the cost of the item
+   */
   public Item(int itemNumber,String itemName,String aprovider, int quantity,double acost){
 	 itemID=itemNumber;
 	 cost=acost;

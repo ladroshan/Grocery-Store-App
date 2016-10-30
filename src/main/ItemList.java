@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * SOMETHING HERE
+ * this class controls and creates the list of items and allows you to find specific items and search them.
  * 
  * @author Zerin Bates
  * @version 1.9
@@ -24,15 +24,25 @@ public class ItemList {
 	  //upload from data base
 	  daList.clear();
 	  JDBCSelect uploadData = new JDBCSelect("inventory");
+	  System.out.println("wtf");
 	  uploadData.equals(daList);
 	  int max = JDBCSelect.getDaUdderInvList().size(), count = 0;
 	  while (count < max) {
 		  daList.add(JDBCSelect.getDaUdderInvList().get(count));
 		  count++;
-	  }
+	 }
 	  JDBCSelect.getDaUdderInvList().clear();
    }
-  
+ //searches for receipt based on ID
+ 	public String searchID(int ID){
+ 		int searchListLength = daList.size();
+ 		for (int i = 0; i < searchListLength; i++) {
+ 		if (daList.get(i).getId()==ID) {
+ 		return daList.get(i).toString();
+ 		}
+ 		}
+ 		return "could not find Item";
+ 	}
    protected Object[]stringItem(int n){
 	  Object[]a=new Object[7];
 	   a[0]=daList.get(n).getId()+"";
