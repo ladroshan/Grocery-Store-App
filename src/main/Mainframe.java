@@ -1219,12 +1219,12 @@ public class Mainframe implements ActionListener{
 			
 			done.updateInv();
 			JOptionPane.showMessageDialog(null, done.toString(), "PROOF OF PURCHASE", JOptionPane.DEFAULT_OPTION);
-<<<<<<< HEAD
-			JDBCInsert ImAwesome=new JDBCInsert(true, done.getBody(), done.getTotal()+"", useId);
-=======
+
+			
+
 			@SuppressWarnings("unused")
-			JDBCInsert ImAwesome=new JDBCInsert(true, done.getBody(), done.getTotal()+"", useId, "");
->>>>>>> bd8c8c24df092af942484b67ce11ffc9292dd8c4
+			JDBCInsert ImAwesome=new JDBCInsert(true, done.getBody(), done.getTotal()+"", useId);
+
 			//loadPayment();
 		}
 		
