@@ -669,7 +669,7 @@ public class Mainframe implements ActionListener{
 						  checkoutList.setRowSelectionAllowed(true);
 							
 						    if (e.getClickCount() == 1) {
-						    	System.out.println("wtf");
+						    	
 						      JTable target = (JTable)e.getSource();
 						      int row = target.getSelectedRow();
 						      int column = target.getSelectedColumn();
@@ -678,6 +678,7 @@ public class Mainframe implements ActionListener{
 						    	  
 						    	  receiptBody.remove(row);
 						    	  //need to switch when merge
+						    	  System.out.println("wtf");
 						    	  loadOrder();
 						      }
 						      
@@ -1217,9 +1218,10 @@ public class Mainframe implements ActionListener{
 			
 			Receipt done = new Receipt(printTotal, payment, receiptBody);
 			//changing item stuff
+			
 			done.updateInv();
 			JOptionPane.showMessageDialog(null, done.toString(), "PROOF OF PURCHASE", JOptionPane.DEFAULT_OPTION);
-			JDBCInsert ImAwesome=new JDBCInsert(true, done.getBody(), done.getTotal()+"", useId, "");
+			JDBCInsert ImAwesome=new JDBCInsert(true, done.getBody(), done.getTotal()+"", useId);
 			//loadPayment();
 		}
 		
@@ -1251,7 +1253,7 @@ public class Mainframe implements ActionListener{
 			}
 			
 			buildReceipt.getList().clear();
-			loadCheckOut();
+			loadOrder();
 		}
 		
 		if (e.getSource() == ckOrder) {

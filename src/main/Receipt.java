@@ -51,7 +51,7 @@ public class Receipt {
 			JDBCSelect item =new JDBCSelect("inventory","id",ids[i]+"");
 			System.out.println(item.getList().get(3));
 			if(nums[i]>Integer.parseInt(item.getList().get(3))){
-				System.out.println(nums[i]);
+				//System.out.println(nums[i]+"wtf");
 				JOptionPane.showMessageDialog(null, "exceeded item quantity try again.", "error message", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
