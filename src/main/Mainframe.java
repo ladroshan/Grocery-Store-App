@@ -1214,7 +1214,8 @@ public class Mainframe implements ActionListener{
 			}
 			printItAlready = Double.toString(printTotal);
 			
-			String payment = JOptionPane.showInputDialog(null, "Thank you for your purchase! Your total is $" + printItAlready
+			String payment = JOptionPane.showInputDialog(
+					null, "Thank you for your purchase! Your total is $" + printItAlready
 					+ "\nWhat type of payment would you like to use?");
 			
 			Receipt done = new Receipt(printTotal, payment, receiptBody);

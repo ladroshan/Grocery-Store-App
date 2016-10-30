@@ -83,6 +83,7 @@ public class JDBCSelect {
 		//Build the Query with user input then try pulling from database 
 		Query = "SELECT * FROM " + table + " WHERE " + where + " >= " + startParsed + " AND " + where + " <= " + endParsed;
 		Qcount = table;
+		reportList.refresh();
 		try {
 			selectRecordFromDbUserTable();
 			dump = false;

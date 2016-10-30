@@ -57,4 +57,12 @@ public class ReportList {
 	public int getTotalOrders() {
 		return totalOrders;
 	}
+	
+	public void refresh() {
+		for (int i = daList.size() - 1; i >= 0; i--) {
+			daList.remove(i);
+		}
+		this.totalOrders = 0;
+		this.totalRevenue = 0;
+	}
 }
