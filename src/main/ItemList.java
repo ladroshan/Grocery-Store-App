@@ -19,12 +19,14 @@ import java.util.List;
  */
 public class ItemList {
    private List<Item> daList=new ArrayList<Item>();
-   
+   public ItemList(){
+	   upload();
+   }
    protected void upload(){
 	  //upload from data base
 	  daList.clear();
 	  JDBCSelect uploadData = new JDBCSelect("inventory");
-	  System.out.println("wtf");
+	 
 	  uploadData.equals(daList);
 	  int max = JDBCSelect.getDaUdderInvList().size(), count = 0;
 	  while (count < max) {

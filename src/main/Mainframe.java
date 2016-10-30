@@ -3,7 +3,7 @@ package main;
 import main.MenuBar;
 import main.tableItems;
 import main.TableUser;
-
+import main.ExcelBuilder;
 import database.JDBCInsert;
 import database.JDBCSelect;
 
@@ -18,6 +18,8 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -36,8 +38,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 
 /**
@@ -78,7 +82,7 @@ public class Mainframe implements ActionListener{
 	private JTextField uname, dope, dealer, grams, benjis, enterItem;
 	
 	private String operand;
-	
+	private String useId = "7";
 	//This is the JPassword for logging in
 	private JPasswordField pword;
 	
@@ -644,13 +648,45 @@ public class Mainframe implements ActionListener{
 				//work if they are just directly added to the pane container. 
 				JPanel checkOutLeft = new JPanel();
 				JPanel checkOutRight = new JPanel();
-				JTextArea checkoutList = new JTextArea();
-				checkoutList.setText("ID    |    ITEM    |    AMOUNT    |    COST\n");
+				
+				Object[][] info=new Object[receiptBody.size()][5];
+				
 				for (int i = 0; i < receiptBody.size(); i++){
-					checkoutList.append((receiptBody.get(i).toString()));
-					checkoutList.append("\n");
+					info[i][0]=receiptBody.get(i).getId();
+					info[i][1]=receiptBody.get(i).getName();
+					info[i][2]=receiptBody.get(i).getAmount();
+					info[i][3]=receiptBody.get(i).getCost();
+					info[i][4]= "delete";
+					
 				}
-				checkoutList.setEditable(false);
+				String[] collums= {"ID",   "ITEM",   "AMOUNT",  "COST", "REMOVE"};
+				JTable checkoutList = new JTable(info,collums);
+				//building table 
+				checkoutList.getColumn("REMOVE").setCellRenderer(new ButtonRenderer());
+				checkoutList.addMouseListener(new MouseAdapter() {
+					  public void mouseClicked(MouseEvent e) {
+						  checkoutList.setColumnSelectionAllowed(true);
+						  checkoutList.setRowSelectionAllowed(true);
+							
+						    if (e.getClickCount() == 1) {
+						    	System.out.println("wtf");
+						      JTable target = (JTable)e.getSource();
+						      int row = target.getSelectedRow();
+						      int column = target.getSelectedColumn();
+						     
+						      if(column==4 ){
+						    	  
+						    	  receiptBody.remove(row);
+						    	  //need to switch when merge
+						    	  loadOrder();
+						      }
+						      
+						    }
+						}   
+					  });
+				JScrollPane thingy = new JScrollPane(checkoutList);
+			
+				//checkoutList.setEditable(false);
 				addItem = new JButton("Add Item");
 				next = new JButton("     Pay    ");
 				addItem.addActionListener(this);
@@ -956,6 +992,7 @@ public class Mainframe implements ActionListener{
 		//To keep the logout function in a separate method, the program initializes to a logged-in view and then 
 		//immediately is logged out *SIDE NOTE* While it starts logged-in, it still starts with NONUSER 
 		//privileges
+
 //		Mainframe test = new Mainframe();
 //		test.logout();
 
@@ -1032,6 +1069,7 @@ public class Mainframe implements ActionListener{
 				//Run a Select Query on the 'users' table where the username field is equal to the entered username
 				JDBCSelect getUser = new JDBCSelect("users", "username", "'" + uname.getText() + "'");
 				
+				
 				//getUser() is a getter method of JDBCSelect that returns a vector of string data from the Query
 				//results. If the Query failed, the vector will be empty.
 				if ((getUser.getList()).size() == 0) {
@@ -1046,6 +1084,7 @@ public class Mainframe implements ActionListener{
 					//The getUser() Vector should just store 1 row of the 'users' table at a time. There should
 					//be 4 entries for each row with the following indices: 0-id, 1-username, 2-password, 3-is_admin
 					if (passString.equals((getUser).getList().get(2).trim())) {
+						useId = getUser.getList().get(0);
 						JOptionPane.showMessageDialog(null, "You have been logged in as "
 								+ uname.getText(), "Login Success!", 
 								JOptionPane.INFORMATION_MESSAGE);
@@ -1180,6 +1219,7 @@ public class Mainframe implements ActionListener{
 			//changing item stuff
 			done.updateInv();
 			JOptionPane.showMessageDialog(null, done.toString(), "PROOF OF PURCHASE", JOptionPane.DEFAULT_OPTION);
+			JDBCInsert ImAwesome=new JDBCInsert(true, done.getBody(), done.getTotal()+"", useId, "");
 			//loadPayment();
 		}
 		

@@ -45,9 +45,25 @@ public class JDBCInsert {
 	public JDBCInsert(String table, String product, String provider, String quantity, String price) {
 		//Build the Query with user input then try pulling from database
 		table = "inventory";
-		Query = "INSERT INTO " + table + "(producttype, provider, quantity, price) VALUES ('"
+		Query = "INSERT INTO " + table + "(producttype, provider, quantity, price) VALUES('"
 				+ product + "', '" + provider + "', " + quantity + ", " 
 				+ price + ")";
+		System.out.println(Query);
+		try {
+			insertRecordIntoDbUserTable();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			JOptionPane.showMessageDialog(null, "Your attempt to Insert a record into "
+					+ "the inventory database was not successful.", "Query Failure", 
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	public JDBCInsert( boolean recieptFlag,String body, String totalprice, String cashierid, String date) {
+		//Build the Query with user input then try pulling from database
+		String table = "reciepts";
+		Query = "INSERT INTO " + table + "(body, totalprice, cashierid, date) VALUES ('"
+				+ body + "', '" + totalprice + "', " + cashierid + ", " 
+				+ date + ")";
 		try {
 			insertRecordIntoDbUserTable();
 		} catch (SQLException e) {
@@ -73,6 +89,7 @@ public class JDBCInsert {
 		table = "users";
 		Query = "INSERT INTO " + table + "(username, password, is_admin) VALUES ('"
 				+ user + "', '" + pass + "', " + is_admin + ")";
+		System.out.println(Query);
 		try {
 			insertRecordIntoDbUserTable();
 		} catch (SQLException e) {
