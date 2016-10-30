@@ -125,7 +125,13 @@ public class Receipt {
 	public List<ReceiptRow> getReceiptBody() {
 		return receiptBody;
 	}
-	
+	public String getBody(){
+		String output=null;
+		for (int i = 0; i < receiptBody.size(); i++) {
+			output = output + receiptBody.get(i).toString() + "\n";
+		}
+		return output;
+	}
 	public String toString() {
 		String output;
 		output = "RECEIPT\n"
