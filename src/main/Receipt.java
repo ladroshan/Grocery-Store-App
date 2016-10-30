@@ -128,7 +128,7 @@ public class Receipt {
 		return receiptBody;
 	}
 	public String getBody(){
-		String output=null;
+		String output="";
 		for (int i = 0; i < receiptBody.size(); i++) {
 			output = output + receiptBody.get(i).toString() + "\n";
 		}

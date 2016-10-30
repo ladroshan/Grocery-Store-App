@@ -42,6 +42,7 @@ public class JDBCSelect {
 	public static Vector<String> resultTable = new Vector<String>();
 	private static List<Item> DaUdderInvList = new ArrayList<Item>();
 	private static List<User> DaUdderUsrList = new ArrayList<User>();
+	private static ReportList reportList = new ReportList();
 	
 	/**
 	 * This is the overloaded constructor that is called by the Mainframe to run the SELECT queries
@@ -75,13 +76,16 @@ public class JDBCSelect {
 	 * @param test - This is the value you are testing in the WHERE conditional.
 	 */
 	public JDBCSelect(String table, String where, Calendar startCal, Calendar endCal) {
+		dump = true;
 		System.out.println(startCal.get(Calendar.MONTH));
 		String startParsed = "'" + startCal.get(Calendar.YEAR) + "-" + (startCal.get(Calendar.MONTH) + 1) + "-" + startCal.get(Calendar.DATE) + "'";
 		String endParsed = "'" + endCal.get(Calendar.YEAR) + "-" + (endCal.get(Calendar.MONTH) + 1) + "-" + endCal.get(Calendar.DATE) + "'";
 		//Build the Query with user input then try pulling from database 
 		Query = "SELECT * FROM " + table + " WHERE " + where + " >= " + startParsed + " AND " + where + " <= " + endParsed;
+		Qcount = table;
 		try {
 			selectRecordFromDbUserTable();
+			dump = false;
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			JOptionPane.showMessageDialog(null, "The Username or Password that you have"
@@ -292,49 +296,82 @@ public class JDBCSelect {
 	
 	private static void makeDaRecList(ResultSet results, int max) {
 		try {
-				ReportList newReport = new ReportList();
 				String product = "";
 				int quantity = 0;
 				double revenue = 0;
 				String edit;
 				for (int i = 0; i < max; i++) {
 					edit = results.getString(2);
+					//System.out.println(edit);
 					char[] breakDown = edit.toCharArray();
+					//System.out.println(breakDown);
 					int count = 0;
 					for (int j = 0; j < breakDown.length; j++) {
 						if (breakDown[j] == '|') {
 							if(count == 0) {
+								//System.out.println(count);
 								edit = edit.substring(j + 1);
 								breakDown = edit.toCharArray();
 								count++;
+								//System.out.println(edit);
+								//System.out.println(breakDown);
+								//System.out.println(count);
+								j = 0;
 							}
-							if (count == 1) {
-								product = edit.substring(0, j);
+							else if (count == 1) {
+								//System.out.println(count);
+								product = edit.substring(0, j).trim();
 								edit = edit.substring(j + 1);
+								breakDown = edit.toCharArray();
 								count++;
+								System.out.println("Product: " + product);
+								//System.out.println(edit);
+								//System.out.println(breakDown);
+								//System.out.println(count);
+								j = 0;
 							}
-							if (count == 2) {
+							else if (count == 2) {
+								//System.out.println(count);
 								quantity = Integer.parseInt(edit.substring(0, j).trim());
 								edit = edit.substring(j + 1);
+								breakDown = edit.toCharArray();
 								count++;
+								System.out.println("Quantity: " + quantity);
+								//System.out.println(edit);
+								//System.out.println(breakDown);
+								//System.out.println(count);
+								j = 0;
 							}
 						}
 						else if(breakDown[j] == '\n') {
-							String removeMoney = edit.trim();
-							removeMoney = removeMoney.substring(1);
+							//System.out.println(count);
+							//System.out.println(edit);
+							String removeMoney = edit.substring(0, j).trim();
+							edit = edit.substring(j + 1);
+							breakDown = edit.toCharArray();
+							//System.out.println(removeMoney);
 							char[] removeCommas = removeMoney.toCharArray();
-							for (int k = 0; k < edit.length(); k++) {
+							for (int k = 0; k < removeCommas.length; k++) {
 								if (removeCommas[k] == ',') {
 									removeMoney = removeMoney.substring(0, (k)) + removeMoney.substring(k + 1);
 									removeCommas = removeMoney.toCharArray();
+									System.out.println(removeMoney);
 								}
 							}
+							System.out.println("Revenue: $" + removeMoney);
 							revenue = Double.parseDouble(removeMoney);
 							Report report = new Report(product, quantity, revenue);
-							newReport.addReport(report);
+							reportList.addReport(report);
+							count = 0;
+							j = 0;
 						}
 					}
 					results.next();
+				}
+				System.out.println("Total Revenue: $" + reportList.calculateTotalRevenue());
+				System.out.println("Total Orders: " + reportList.getTotalOrders());
+				for (int i = 0; i < reportList.getSize(); i++) {
+					System.out.println(reportList.getReport(i).toString());
 				}
 			} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -358,6 +395,10 @@ public class JDBCSelect {
 	
 	public static List<User> getDaUdderUsrList() {
 		return DaUdderUsrList;
+	}
+	
+	public static ReportList getReportList() {
+		return reportList;
 	}
 	
 	/**

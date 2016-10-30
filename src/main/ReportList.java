@@ -22,26 +22,39 @@ public class ReportList {
 	public void addReport(Report report) {
 		String exists;
 		exists = report.getProduct();
+		if (daList.size() == 0) {
+			daList.add(report);
+			totalOrders++;
+			return;
+		}
 		for(int i = 0; i < daList.size(); i++) {
 			if (daList.get(i).getProduct().equals(exists)) {
 				daList.get(i).incQuantity(report.getQuantity());
 				daList.get(i).incRevenue(report.getRevenue());
-			}
-			else {
-				daList.add(report);
+				totalOrders++;
+				return;
 			}
 		}
+		daList.add(report);
 		totalOrders++;
 	}
 	
-	protected double calculateTotalRevenue() {
+	public int getSize() {
+		return daList.size();
+	}
+	
+	public Report getReport(int index) {
+		return daList.get(index);
+	}
+	
+	public double calculateTotalRevenue() {
 		for (int i = 0; i < daList.size(); i++) {
 			totalRevenue += daList.get(i).getRevenue();
 		}
 		return totalRevenue;
 	}
 	
-	protected int getTotalOrders() {
+	public int getTotalOrders() {
 		return totalOrders;
 	}
 }
