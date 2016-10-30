@@ -48,7 +48,7 @@ public class JDBCInsert {
 		Query = "INSERT INTO " + table + "(producttype, provider, quantity, price) VALUES('"
 				+ product + "', '" + provider + "', " + quantity + ", " 
 				+ price + ")";
-		System.out.println(Query);
+		
 		try {
 			insertRecordIntoDbUserTable();
 		} catch (SQLException e) {
@@ -63,7 +63,7 @@ public class JDBCInsert {
 		String table = "receipts";
 		Query = "INSERT INTO " + table + "(body, totalprice, cashierid) VALUES ('"
 				+ body + "', '" + totalprice + "', " + cashierid + ")";
-		System.out.println(Query);
+
 		try {
 			insertRecordIntoDbUserTable();
 		} catch (SQLException e) {

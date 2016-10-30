@@ -12,6 +12,9 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 public class ExcelBuilder {
 	private String filePath="C:\\Users\\zerin\\desktop\\readfile.xls";
+	public void setFilePath (String n){
+		filePath =n;
+	}
 	@SuppressWarnings("deprecation")
 	public void excelReader(){
 try {
@@ -51,7 +54,7 @@ try {
 					}
 					//creates inventory
 					if (row.getRowNum()==0){
-						System.out.println(i);
+						//System.out.println(i);
 						if (cell.toString().equals("id")){
 							//System.out.println(cell.toString());
 							i=3;
@@ -88,23 +91,24 @@ try {
 					      }
 				     }
 					//creates receipts
-//					if (row.getRowNum()==3){
-//						System.out.println(i);
-//						if (cell.toString().equals("id")){
-//							System.out.println(cell.toString());
-//							i=3;
-//							holder = new String [4];
-//						}else if (i>=0){
-//							holder[3-i]=cell.toString();
-//							i--;
-//					      }
-//
-//						 if (i==-1){
-//							 System.out.println(holder[0]+holder[1]+holder[2]);
-//							
-//							 JDBCInsert wendyPefercorn =new JDBCInsert( true,String body, String totalprice, String cashierid, String date);
-//					      }
-//				     }
+					if (row.getRowNum()==2){
+						System.out.println(i);
+						if (cell.toString().equals("id")){
+							System.out.println(cell.toString());
+							i=3;
+							holder = new String [4];
+						}else if (i>=0){
+							holder[3-i]=cell.toString();
+							i--;
+					      }
+
+						 if (i==-1){
+							 System.out.println(holder[0]+holder[1]+holder[2]+holder[3]);
+							 int squints =(int)(Double.parseDouble(holder[2]));
+							 String smalls="'"+holder[3]+"'";
+							 JDBCInsert wendyPefercorn =new JDBCInsert( true,holder[0], holder[1], squints+"",smalls );
+					      }
+				     }
 				//end of cell iterator
 				}
 				

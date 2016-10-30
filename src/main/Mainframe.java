@@ -724,7 +724,7 @@ public class Mainframe implements ActionListener{
 				
 				//Create and initialize some variables *SIDE NOTE* The reason why uname, pword, and submit
 				//are declared at the header of this class is so that they can be used in the Listener code
-				JLabel lpayment = new JLabel("Method of Payment: ");
+				JLabel lpayment = new JLabel("Method of ment: ");
 				JLabel ltotal = new JLabel("Total Price: ");
 				payNow = new JButton("Pay Now");
 				
@@ -994,7 +994,8 @@ public class Mainframe implements ActionListener{
 
 //		Mainframe test = new Mainframe();
 //		test.logout();
-
+		//ExcelBuilder temp = new ExcelBuilder();
+		//temp.excelReader();
 		Mainframe test = new Mainframe();
 		test.pane.removeAll();
 		test.frame.dispose();
@@ -1203,11 +1204,13 @@ public class Mainframe implements ActionListener{
 		}
 		
 		if (e.getSource() == next) {
+			
 			double printTotal = 0;
 			String printItAlready;
 			for(int i = 0; i < receiptBody.size(); i++) {
 				printTotal += Double.parseDouble(receiptBody.get(i).getCost());
 				System.out.println(printTotal);
+				
 			}
 			printItAlready = Double.toString(printTotal);
 			
@@ -1217,16 +1220,18 @@ public class Mainframe implements ActionListener{
 			Receipt done = new Receipt(printTotal, payment, receiptBody);
 			//changing item stuff
 			
-			done.updateInv();
+			if(done.updateInv()){
 			JOptionPane.showMessageDialog(null, done.toString(), "PROOF OF PURCHASE", JOptionPane.DEFAULT_OPTION);
 
 			
 
 			@SuppressWarnings("unused")
 			JDBCInsert ImAwesome=new JDBCInsert(true, done.getBody(), done.getTotal()+"", useId);
-
-			//loadPayment();
+			receiptBody.clear();
+			loadCheckOut();
 		}
+
+			}
 		
 		if (e.getSource() == addItem) {
 			JDBCSelect buildReceipt = new JDBCSelect("inventory", "id", enterItem.getText());
