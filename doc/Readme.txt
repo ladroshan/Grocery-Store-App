@@ -1,1 +1,1 @@
-This is just a place holder for the doc folder.
+The doc/ folder contains the documentation that relates to the ScannableGrocery application.
