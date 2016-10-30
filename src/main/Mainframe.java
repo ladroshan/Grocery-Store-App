@@ -3,7 +3,6 @@ package main;
 import main.MenuBar;
 import main.tableItems;
 import main.TableUser;
-import main.ExcelBuilder;
 import database.JDBCInsert;
 import database.JDBCSelect;
 
@@ -39,9 +38,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 
 
 /**
@@ -685,6 +682,7 @@ public class Mainframe implements ActionListener{
 						    }
 						}   
 					  });
+				@SuppressWarnings("unused")
 				JScrollPane thingy = new JScrollPane(checkoutList);
 			
 				//checkoutList.setEditable(false);
@@ -1221,7 +1219,12 @@ public class Mainframe implements ActionListener{
 			
 			done.updateInv();
 			JOptionPane.showMessageDialog(null, done.toString(), "PROOF OF PURCHASE", JOptionPane.DEFAULT_OPTION);
+<<<<<<< HEAD
 			JDBCInsert ImAwesome=new JDBCInsert(true, done.getBody(), done.getTotal()+"", useId);
+=======
+			@SuppressWarnings("unused")
+			JDBCInsert ImAwesome=new JDBCInsert(true, done.getBody(), done.getTotal()+"", useId, "");
+>>>>>>> bd8c8c24df092af942484b67ce11ffc9292dd8c4
 			//loadPayment();
 		}
 		

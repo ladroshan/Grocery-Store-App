@@ -35,6 +35,7 @@ public class Receipt {
 			}
 		return items;
 	}
+	@SuppressWarnings("static-access")
 	public void updateInv(){
 		int[] ids=this.getItemsID();
 		int [] nums = this.getItemsQuant();
@@ -75,6 +76,7 @@ public class Receipt {
 		/*for (int j=0;j<4;j++){
 			System.out.println(i+item.getList().get(j));
 		}*/
+		@SuppressWarnings("unused")
 		JDBCUpdate update = new JDBCUpdate("inventory",  item.getList().get(1).trim(), item.getList().get(2).trim(),quant+"", acost+"", "the land of make believe", ids[i]+"");
 		
 		}
