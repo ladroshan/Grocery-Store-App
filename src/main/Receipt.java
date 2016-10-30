@@ -36,7 +36,7 @@ public class Receipt {
 		return items;
 	}
 	@SuppressWarnings("static-access")
-	public void updateInv(){
+	public boolean updateInv(){
 		int[] ids=this.getItemsID();
 		int [] nums = this.getItemsQuant();
 		for (int i = 0;i<ids.length;i++){
@@ -54,11 +54,16 @@ public class Receipt {
 			if(nums[i]>Integer.parseInt(item.getList().get(3))){
 				//System.out.println(nums[i]+"wtf");
 				JOptionPane.showMessageDialog(null, "exceeded item quantity try again.", "error message", JOptionPane.ERROR_MESSAGE);
-				return;
+				return false;
 			}
+			item.getList().clear();
 	}
+		
 		for (int i = 0;i<ids.length;i++){
 		JDBCSelect item =new JDBCSelect("inventory","id",ids[i]+"");
+		for(int j = 0;j<item.getList().size();j++){
+		//System.out.println(i+"wtf"+item.getList().get(j));
+		}
 		int quant =Integer.parseInt(item.getList().get(3))-nums[i];
 		
 		String edit;
@@ -73,13 +78,15 @@ public class Receipt {
 		}
 		
 		double acost = Double.parseDouble(edit);
-		/*for (int j=0;j<4;j++){
-			System.out.println(i+item.getList().get(j));
-		}*/
+//		for (int j=0;j<4;j++){
+//			System.out.println(i+item.getList().get(j));
+//		}
 		@SuppressWarnings("unused")
 		JDBCUpdate update = new JDBCUpdate("inventory",  item.getList().get(1).trim(), item.getList().get(2).trim(),quant+"", acost+"", "the land of make believe", ids[i]+"");
+		item.getList().clear();
 		
 		}
+		return true;
 	}
 	public int[] getItemsID(){
 		int [] items = new int [receiptBody.size()];
