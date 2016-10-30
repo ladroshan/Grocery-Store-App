@@ -2,10 +2,9 @@ package main;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+//import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
-import main.ItemList;
 import database.JDBCInsert;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -13,6 +12,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 public class ExcelBuilder {
 	private String filePath="C:\\Users\\zerin\\desktop\\readfile.xls";
+	@SuppressWarnings("deprecation")
 	public void excelReader(){
 try {
 			
@@ -64,7 +64,8 @@ try {
 						 if (i==-1){
 							 //System.out.println(holder[0]+holder[1]+holder[2]+holder[3]);
 							 int squints =(int)(Double.parseDouble(holder[2]));
-							 JDBCInsert wendyPefercorn =new JDBCInsert("inventory", holder[0], holder[1], squints+"", holder[3]);
+							 @SuppressWarnings("unused")
+							JDBCInsert wendyPefercorn =new JDBCInsert("inventory", holder[0], holder[1], squints+"", holder[3]);
 					      }
 				     }
 					//creates users
@@ -82,7 +83,8 @@ try {
 						 if (i==-1){
 							// System.out.println(holder[0]+holder[1]+holder[2]);
 							String squints ="'"+holder[2]+"'";
-							 JDBCInsert wendyPefercorn =new JDBCInsert("users", holder[0], holder[1], squints);
+							 @SuppressWarnings("unused")
+							JDBCInsert wendyPefercorn =new JDBCInsert("users", holder[0], holder[1], squints);
 					      }
 				     }
 					//creates receipts
