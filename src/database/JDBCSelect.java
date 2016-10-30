@@ -1,6 +1,8 @@
 package database;
 
 import main.Item;
+import main.Report;
+import main.ReportList;
 import main.User;
 
 import java.sql.DriverManager;
@@ -10,6 +12,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Vector;
 
@@ -63,7 +66,32 @@ public class JDBCSelect {
 	}
 	
 	/**
-	 * This is another overloaded constructor for pulling all records from the database.
+	 * This is the overloaded constructor that is called by the Mainframe to query receipts by date range
+	 * The psql query would look as follows:
+	 * SELECT * FROM table WHERE where = test; 
+	 * 
+	 * @param table - This is the table in the database you want to query.
+	 * @param where - This is the field that will be evaluated in the WHERE conditional.
+	 * @param test - This is the value you are testing in the WHERE conditional.
+	 */
+	public JDBCSelect(String table, String where, Calendar startCal, Calendar endCal) {
+		System.out.println(startCal.get(Calendar.MONTH));
+		String startParsed = "'" + startCal.get(Calendar.YEAR) + "-" + (startCal.get(Calendar.MONTH) + 1) + "-" + startCal.get(Calendar.DATE) + "'";
+		String endParsed = "'" + endCal.get(Calendar.YEAR) + "-" + (endCal.get(Calendar.MONTH) + 1) + "-" + endCal.get(Calendar.DATE) + "'";
+		//Build the Query with user input then try pulling from database 
+		Query = "SELECT * FROM " + table + " WHERE " + where + " >= " + startParsed + " AND " + where + " <= " + endParsed;
+		try {
+			selectRecordFromDbUserTable();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			JOptionPane.showMessageDialog(null, "The Username or Password that you have"
+					+ " entered is incorrect!", "Password Error", 
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	/**
+	 * This is another overloaded constructor for pulling all records from one table on the database.
 	 * The psql query would look as follows:
 	 * SELECT * FROM table;
 	 * 
@@ -131,7 +159,12 @@ public class JDBCSelect {
 					makeDaUsrList(results, count);
 				}
 				else if (prejudice == 5) {
-					makeDaInvList(results, count);
+					if (Qcount.equals("inventory")){
+						makeDaInvList(results, count);
+					}
+					else {
+						makeDaRecList(results, count);
+					}
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "There was an error in the differentiating between"
@@ -190,10 +223,12 @@ public class JDBCSelect {
 		try {
 			ResultSetMetaData info = results.getMetaData();
 			int count = 1;
+			System.out.println(info.getColumnCount());
 			while(count <= info.getColumnCount()) {
 				resultTable.addElement(results.getString(count));
 				count++;
 			}
+			System.out.println(count);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}	
@@ -247,6 +282,58 @@ public class JDBCSelect {
 					isAAdmin = results.getBoolean(4);
 					User test = new User(anId, aUserName, aPassword, isAAdmin);
 					DaUdderUsrList.add(test);
+					results.next();
+				}
+			} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	private static void makeDaRecList(ResultSet results, int max) {
+		try {
+				ReportList newReport = new ReportList();
+				String product = "";
+				int quantity = 0;
+				double revenue = 0;
+				String edit;
+				for (int i = 0; i < max; i++) {
+					edit = results.getString(2);
+					char[] breakDown = edit.toCharArray();
+					int count = 0;
+					for (int j = 0; j < breakDown.length; j++) {
+						if (breakDown[j] == '|') {
+							if(count == 0) {
+								edit = edit.substring(j + 1);
+								breakDown = edit.toCharArray();
+								count++;
+							}
+							if (count == 1) {
+								product = edit.substring(0, j);
+								edit = edit.substring(j + 1);
+								count++;
+							}
+							if (count == 2) {
+								quantity = Integer.parseInt(edit.substring(0, j).trim());
+								edit = edit.substring(j + 1);
+								count++;
+							}
+						}
+						else if(breakDown[j] == '\n') {
+							String removeMoney = edit.trim();
+							removeMoney = removeMoney.substring(1);
+							char[] removeCommas = removeMoney.toCharArray();
+							for (int k = 0; k < edit.length(); k++) {
+								if (removeCommas[k] == ',') {
+									removeMoney = removeMoney.substring(0, (k)) + removeMoney.substring(k + 1);
+									removeCommas = removeMoney.toCharArray();
+								}
+							}
+							revenue = Double.parseDouble(removeMoney);
+							Report report = new Report(product, quantity, revenue);
+							newReport.addReport(report);
+						}
+					}
 					results.next();
 				}
 			} catch (SQLException e) {
