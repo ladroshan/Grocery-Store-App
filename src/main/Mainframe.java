@@ -595,14 +595,14 @@ public class Mainframe implements ActionListener{
 		}
 	}
 	
-	/*
-	private void loadPayment() {
+	
+	/*private void loadPayment() {
 		pane.removeAll();
 		frame.dispose();
 		paneEdit("checkout", "payment");
 		reload();
-	}
-	*/
+	}*/
+	
 	
 	private void loadUserChange() {
 		pane.removeAll();
@@ -1014,14 +1014,16 @@ public class Mainframe implements ActionListener{
 			
 			String payment = JOptionPane.showInputDialog(null, "Thank you for your purchase! Your total is $" + printItAlready
 					+ "\nWhat type of payment would you like to use?");
+			
 			Receipt done = new Receipt(printTotal, payment, receiptBody);
+			//changing item stuff
+			done.updateInv();
 			JOptionPane.showMessageDialog(null, done.toString(), "PROOF OF PURCHASE", JOptionPane.DEFAULT_OPTION);
 			//loadPayment();
 		}
 		
 		if (e.getSource() == addItem) {
 			JDBCSelect buildReceipt = new JDBCSelect("inventory", "id", enterItem.getText());
-			
 			String input;
 			double calculate;
 			input = JOptionPane.showInputDialog(null, "How many would you like?\nThere are only " + 

@@ -24,7 +24,6 @@ public class JDBCDelete {
 	private static final String DB_CONNECTION = "jdbc:postgresql://127.0.0.1:5432/scangro";
 	private static final String DB_USER = "app";
 	private static final String DB_PASSWORD = "Th3Cak3IsALi3!";
-	
 	//This String is a tool of abstraction used to build different select queries depending on how this class is called
 	private static String Query;
 	
