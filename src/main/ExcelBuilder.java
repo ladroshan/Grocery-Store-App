@@ -106,7 +106,8 @@ try {
 							 System.out.println(holder[0]+holder[1]+holder[2]+holder[3]);
 							 int squints =(int)(Double.parseDouble(holder[2]));
 							 String smalls="'"+holder[3]+"'";
-							 JDBCInsert wendyPefercorn =new JDBCInsert( true,holder[0], holder[1], squints+"",smalls );
+							 @SuppressWarnings("unused")
+							JDBCInsert wendyPefercorn =new JDBCInsert( true,holder[0], holder[1], squints+"",smalls );
 					      }
 				     }
 				//end of cell iterator

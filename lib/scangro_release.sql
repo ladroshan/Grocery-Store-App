@@ -40,8 +40,8 @@ SET default_with_oids = false;
 
 CREATE TABLE inventory (
     id integer NOT NULL,
-    producttype character(20) NOT NULL,
-    provider character(20),
+    producttype character varying(50) NOT NULL,
+    provider character varying(50),
     quantity integer NOT NULL,
     price money NOT NULL
 );
@@ -167,7 +167,6 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 --
 
 COPY inventory (id, producttype, provider, quantity, price) FROM stdin;
-0	Example Item 1      	Provider            	1	$0.00
 \.
 
 
@@ -175,7 +174,7 @@ COPY inventory (id, producttype, provider, quantity, price) FROM stdin;
 -- Name: inventory_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('inventory_id_seq', 37, true);
+SELECT pg_catalog.setval('inventory_id_seq', 43, true);
 
 
 --
@@ -190,7 +189,7 @@ COPY receipts (id, body, totalprice, cashierid, date) FROM stdin;
 -- Name: receipts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: app
 --
 
-SELECT pg_catalog.setval('receipts_id_seq', 4, true);
+SELECT pg_catalog.setval('receipts_id_seq', 11, true);
 
 
 --
