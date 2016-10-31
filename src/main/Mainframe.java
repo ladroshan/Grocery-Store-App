@@ -11,6 +11,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -73,17 +74,19 @@ public class Mainframe implements ActionListener{
 	
 	//This is the login button
 	private JButton loginBtn, submit, genRep, checkout, ckReceipt, ckOrder, inventory, users, invAdd, invEd, invDe, usrAdd, usrEd, usrDe; 
-	private JButton newSubmit, dealOrNoDeal, addItem, next; //, payNow;
+	private JButton newSubmit, dealOrNoDeal, addItem, next, searchInv, searchId, searchDate; //, payNow;
 	
 	//This is the JTextField for submitting a Username when logging in
-	private JTextField uname, dope, dealer, grams, benjis, enterItem;
+	private JTextField uname, dope, dealer, grams, benjis, enterItem, searchBar;
 	
-	private String operand;
-	private String useId = "7";
+	private String operand, useId = "7";
+	
 	//This is the JPassword for logging in
 	private JPasswordField pword;
 	
-	private JRadioButton yeah, nope;
+	private JRadioButton yeah, nope, searchPicker1, searchPicker2;
+	
+	private ButtonGroup searchType, radios;
 	
 	private final String[] calDays = {"01", "02", "03", "04", "05", "06", "07", "08", "09",
 									  "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
@@ -393,6 +396,9 @@ public class Mainframe implements ActionListener{
 				Dimension textDim = new Dimension(100, 25);
 				enterItem.setMaximumSize(textDim);
 				enterItem.setAlignmentX(BoxLayout.X_AXIS);
+				searchBar = new JTextField();
+				searchInv = new JButton("Search");
+				searchInv.addActionListener(this);
 				
 				pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
 				checkOutLeft.setLayout(new BoxLayout(checkOutLeft, BoxLayout.Y_AXIS));
@@ -400,6 +406,30 @@ public class Mainframe implements ActionListener{
 				pane.add(Box.createRigidArea(new Dimension(100,0)));
 				JScrollPane scrollPane = new JScrollPane(table.itemTable);
 				checkOutLeft.add(scrollPane,BoxLayout.X_AXIS);
+				JPanel filler1 = new JPanel();
+				JPanel filler2 = new JPanel();
+				JPanel filler3 = new JPanel();
+				JPanel filler4 = new JPanel();
+				JPanel filler5 = new JPanel();
+				JPanel filler6 = new JPanel();
+				searchPicker1 = new JRadioButton("By Name");
+				searchPicker1.setSelected(true);
+				searchPicker2 = new JRadioButton("By ID");
+				searchType = new ButtonGroup();
+				searchType.add(searchPicker1);
+				searchType.add(searchPicker2);
+				checkOutRight.setLayout(new GridLayout(15, 1, 5, 5));
+				checkOutRight.add(filler1);
+				checkOutRight.add(filler3);
+				checkOutRight.add(filler4);
+				checkOutRight.add(filler5);
+				checkOutRight.add(filler6);
+				checkOutRight.add(searchBar);
+				checkOutRight.add(searchInv);
+				checkOutRight.add(filler2);
+				checkOutRight.add(searchPicker1);
+				checkOutRight.add(searchPicker2);
+				
 				
 				checkOutLeft.setAlignmentX((float) 10.0);
 				pane.add(checkOutLeft);
@@ -473,7 +503,7 @@ public class Mainframe implements ActionListener{
 				newSubmit = new JButton("Submit");
 				yeah = new JRadioButton("Yes", false);
 				nope = new JRadioButton("No", true);
-				ButtonGroup radios = new ButtonGroup();
+				radios = new ButtonGroup();
 				radios.add(yeah);
 				radios.add(nope);
 				
@@ -526,7 +556,6 @@ public class Mainframe implements ActionListener{
 				checkOutLeft.setLayout(new BoxLayout(checkOutLeft, BoxLayout.Y_AXIS));
 				
 				pane.add(Box.createRigidArea(new Dimension(100,0)));
-				/**HEY ZERIN! Can you change this so that it is using the User table Instead?**/
 				JScrollPane scrollPane = new JScrollPane(table.UserTable);
 				checkOutLeft.add(scrollPane,BoxLayout.X_AXIS);
 				
@@ -636,9 +665,60 @@ public class Mainframe implements ActionListener{
 				pane.add(buttonHolder);
 			}
 			else if (section == "receipt") {
-				JOptionPane.showMessageDialog(null, "This Page has not yet been developed. "
-						+ "For more information look under the paneEdit Function in the "
-						+ "'receipt' section of the 'checkout' field.", "Under Construction", JOptionPane.ERROR_MESSAGE);
+					//A JPanel is used in this section because the positioning of the form items later doesn't 
+					//work if they are just directly added to the pane container. 
+					JLabel label1 = new JLabel("Search for a Receipt");
+					JPanel buttonHolder = new JPanel();
+					buttonHolder.setLayout(new GridBagLayout());
+					
+					//This is necessary for the positioning code farther down in this if statement
+					GridBagConstraints design = new GridBagConstraints();
+					design.insets = new Insets(30, 30, 10, 30);
+					
+					//Create and initialize some variables *SIDE NOTE* The reason why inventory, users, and checkout
+					//are declared at the header of this class is so that they can be used in the Listener code		
+					dayList1 = new JComboBox(calDays);
+					monthList1 = new JComboBox(calMonths);
+					yearList1 = new JComboBox(calYears);
+		
+					searchBar = new JTextField(10);
+					searchBar.setBounds(2, 3, 200, 50);
+					
+					searchDate = new JButton("Search By Date");
+					searchId = new JButton("Search By ID");
+					
+					searchDate.addActionListener(this);
+					searchId.addActionListener(this);
+					
+					genRep = new JButton("Generate Report");
+					
+					//This listener runs the JDBC Queries to check the password
+					genRep.addActionListener(this);
+					
+					//Positioning for the different parts of the form
+					design.gridx = 3;
+					design.gridy = 0;
+					buttonHolder.add(label1, design);
+					design.gridx = 1;
+					design.gridy = 2;
+					buttonHolder.add(dayList1, design);
+					design.gridx = 2;
+					design.gridy = 2;
+					buttonHolder.add(monthList1, design);
+					design.gridx = 3;
+					design.gridy = 2;
+					buttonHolder.add(yearList1, design);
+					design.gridx = 5;
+					design.gridy = 2;
+					buttonHolder.add(searchDate, design);
+					design.gridx = 2;
+					design.gridy = 3;
+					buttonHolder.add(searchBar, design);
+					design.gridx = 5;
+					design.gridy = 3;
+					buttonHolder.add(searchId, design);
+					
+					pane.add(buttonHolder);
 			}
 			else if (section == "order") {
 				//A JPanel is used in this section because the positioning of the form items later doesn't 
@@ -1141,15 +1221,11 @@ public class Mainframe implements ActionListener{
 		//If User clicks the "Go" button for the Edit Item from the Inventory Menu, load the Edit Item form
 		if (e.getSource() == invEd) {
 			loadInventoryChange();
-			//JDBCUpdate updateInv = new JDBCUpdate("inventory", "Go-Pro", "Go-Pro", "3", "600.00", "id", "22");
-			//updateInv.getList().clear();
 		}
 		
-		//If User clicks the "Go" button for the Delete Item from the Inventory Menu, load the Delete Item form
+		//If User clicks the "Go" button for the Search Item from the Inventory Menu, load the Search Item form
 		if (e.getSource() == invDe) {
 			loadInventoryChange();
-			//JDBCDelete deleteUsr = new JDBCDelete("inventory", "provider", "Airwheel");
-			//deleteUsr.getList().clear();
 		}
 		
 		//If User clicks the "Go" button for the Users section from the main Admin page, load the frame with
@@ -1166,15 +1242,11 @@ public class Mainframe implements ActionListener{
 		//If User clicks the "Go" button for the Edit User from the User Menu, load the Edit Item form
 		if (e.getSource() == usrEd) {
 			loadUserChange();
-			//JDBCUpdate updateUsr = new JDBCUpdate("users", "jeremy.killpack", "Toast4Me!", "false", "id", "6");
-			//updateUsr.getList().clear();
 		}
 
 		//If User clicks the "Go" button for the Delete User from the User Menu, load the Delete Item form
 		if (e.getSource() == usrDe) {
 			loadUserChange();
-			//JDBCDelete deleteUsr = new JDBCDelete("users", "username", "zerin.bates");
-			//deleteUsr.getList().clear();
 		}
 		
 		//If User clicks the "Go" button for the Checkout section from the main Cashier or Admin page, 
@@ -1273,6 +1345,7 @@ public class Mainframe implements ActionListener{
 		if (e.getSource() == ckReceipt) {
 			loadReceipt();
 		}
+		
 		if (e.getSource() == genRep) {
 			String date1 = monthList1.getSelectedItem().toString() + " " + dayList1.getSelectedItem().toString() + ", " + yearList1.getSelectedItem().toString();
 			String date2 = monthList2.getSelectedItem().toString() + " " + dayList2.getSelectedItem().toString() + ", " + yearList2.getSelectedItem().toString();
@@ -1294,6 +1367,123 @@ public class Mainframe implements ActionListener{
 			} catch (ParseException e1) {
 				e1.printStackTrace();
 				JOptionPane.showMessageDialog(null, "There was a Date Parsing Error", "DATE ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		
+		if (e.getSource() == searchInv) {
+			Item searchedItem = new Item();
+			if (searchPicker1.isSelected()) {
+				if(searchBar.getText().isEmpty() == false){
+					String testMe = searchBar.getText().trim();
+					testMe = "'".concat(testMe).concat("'");
+					@SuppressWarnings("unused")
+					JDBCSelect findItem = new JDBCSelect("inventory", "producttype", testMe);
+					if (JDBCSelect.getList().size() != 0) {
+						searchedItem.setID(JDBCSelect.getList().get(0));
+						searchedItem.setName(JDBCSelect.getList().get(1));
+						searchedItem.setProvider(JDBCSelect.getList().get(2));
+						searchedItem.setQuantity(JDBCSelect.getList().get(3));
+						searchedItem.setPrice(JDBCSelect.getList().get(4));
+						JOptionPane.showMessageDialog(null, "Search Results for '" + searchBar.getText().trim() + "':\n" + 
+								searchedItem.toString(), "Search Results", JOptionPane.INFORMATION_MESSAGE);
+						JDBCSelect.getList().clear();
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "No Inventory Items match the text, '" + searchBar.getText().trim() + "', that was "
+								+ "searched", "Search Error", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Cannot perform a search with a blank submission!", 
+							"Search Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			else if (searchPicker2.isSelected()) {
+				if(searchBar.getText().isEmpty() == false){
+					@SuppressWarnings("unused")
+					JDBCSelect findItem = new JDBCSelect("inventory", "id", searchBar.getText().trim());
+					if (JDBCSelect.getList().size() != 0) {
+						searchedItem.setID(JDBCSelect.getList().get(0));
+						searchedItem.setName(JDBCSelect.getList().get(1));
+						searchedItem.setProvider(JDBCSelect.getList().get(2));
+						searchedItem.setQuantity(JDBCSelect.getList().get(3));
+						searchedItem.setPrice(JDBCSelect.getList().get(4));
+						JOptionPane.showMessageDialog(null, "Search Results for '" + searchBar.getText().trim() + "':\n" + 
+								searchedItem.toString(), "Search Results", JOptionPane.INFORMATION_MESSAGE);
+						JDBCSelect.getList().clear();
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "No Inventory Items match the ID, '" + searchBar.getText().trim() + "', that was "
+								+ "searched", "Search Error", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Cannot perform a search with a blank submission!", 
+							"Search Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "There was an error with the search method selection", "Search Error", 
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		
+		if (e.getSource() == searchDate) {
+			String date = monthList1.getSelectedItem().toString() + " " + dayList1.getSelectedItem().toString() + ", " + yearList1.getSelectedItem().toString();
+			DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
+			Date searchByDate = null;
+			try {
+				searchByDate = format.parse(date);
+				System.out.println(searchByDate);
+
+				Calendar searchCal = Calendar.getInstance();
+				searchCal.setTime(searchByDate);
+				date = "'" + searchCal.get(Calendar.YEAR) + "-" + (searchCal.get(Calendar.MONTH) + 1) + "-" + searchCal.get(Calendar.DATE) 
+					 + "'";
+				
+				Receipt searchedOrder = new Receipt();
+				@SuppressWarnings("unused")
+				JDBCSelect findItem = new JDBCSelect("receipts", "date", date);
+				if (JDBCSelect.getList().size() != 0) {
+					String body;
+					searchedOrder.setId(JDBCSelect.getList().get(0));
+					body = JDBCSelect.getList().get(1);
+					searchedOrder.setTotal(JDBCSelect.getList().get(2));
+					searchedOrder.setCashierId((JDBCSelect.getList().get(3)));
+					searchedOrder.setDate(JDBCSelect.getList().get(4));
+					JOptionPane.showMessageDialog(null, "Search Results for '" + searchBar.getText().trim() + "':\n" + 
+							searchedOrder.toString(true, body), "Search Results", JOptionPane.INFORMATION_MESSAGE);
+					JDBCSelect.getList().clear();
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "No Inventory Items match the Date, '" + date + "', that was "
+							+ "searched", "Search Error", JOptionPane.ERROR_MESSAGE);
+				}
+				
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null, "There was a Date Parsing Error", "DATE ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		
+		if (e.getSource() == searchId) {
+			Receipt searchedOrder = new Receipt();
+			@SuppressWarnings("unused")
+			JDBCSelect findItem = new JDBCSelect("receipts", "id", searchBar.getText().trim());
+			if (JDBCSelect.getList().size() != 0) {
+				String body;
+				searchedOrder.setId(JDBCSelect.getList().get(0));
+				body = JDBCSelect.getList().get(1);
+				searchedOrder.setTotal(JDBCSelect.getList().get(2));
+				searchedOrder.setCashierId((JDBCSelect.getList().get(3)));
+				searchedOrder.setDate(JDBCSelect.getList().get(4));
+				JOptionPane.showMessageDialog(null, "Search Results for '" + searchBar.getText().trim() + "':\n" + 
+						searchedOrder.toString(true, body), "Search Results", JOptionPane.INFORMATION_MESSAGE);
+				JDBCSelect.getList().clear();
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "No Inventory Items match the ID, '" + searchBar.getText().trim() + "', that was "
+						+ "searched", "Search Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
