@@ -325,7 +325,7 @@ public class JDBCSelect {
 								edit = edit.substring(j + 1);
 								breakDown = edit.toCharArray();
 								count++;
-								System.out.println("Product: " + product);
+								//System.out.println("Product: " + product);
 								//System.out.println(edit);
 								//System.out.println(breakDown);
 								//System.out.println(count);
@@ -337,7 +337,7 @@ public class JDBCSelect {
 								edit = edit.substring(j + 1);
 								breakDown = edit.toCharArray();
 								count++;
-								System.out.println("Quantity: " + quantity);
+								//System.out.println("Quantity: " + quantity);
 								//System.out.println(edit);
 								//System.out.println(breakDown);
 								//System.out.println(count);
@@ -359,7 +359,7 @@ public class JDBCSelect {
 									System.out.println(removeMoney);
 								}
 							}
-							System.out.println("Revenue: $" + removeMoney);
+							//System.out.println("Revenue: $" + removeMoney);
 							revenue = Double.parseDouble(removeMoney);
 							Report report = new Report(product, quantity, revenue);
 							reportList.addReport(report);
@@ -369,11 +369,11 @@ public class JDBCSelect {
 					}
 					results.next();
 				}
-				System.out.println("Total Revenue: $" + reportList.calculateTotalRevenue());
-				System.out.println("Total Orders: " + reportList.getTotalOrders());
-				for (int i = 0; i < reportList.getSize(); i++) {
-					System.out.println(reportList.getReport(i).toString());
-				}
+//				System.out.println("Total Revenue: $" + reportList.calculateTotalRevenue());
+//				System.out.println("Total Orders: " + reportList.getTotalOrders());
+//				for (int i = 0; i < reportList.getSize(); i++) {
+//					System.out.println(reportList.getReport(i).toString());
+//				}
 			} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();

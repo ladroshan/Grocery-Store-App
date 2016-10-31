@@ -65,4 +65,15 @@ public class ReportList {
 		this.totalOrders = 0;
 		this.totalRevenue = 0;
 	}
+	
+	public String toString() {
+		String output = "Product        |         Quantity        |        Revenue\n";
+		for (int i = 0; i < daList.size(); i++) {
+			output = output + daList.get(i).getProduct() + "     |     " + daList.get(i).getQuantity() + "     |     " 
+					+ daList.get(i).getRevenue() + "\n"; 
+		}
+		calculateTotalRevenue();
+		output = output + "\nTotal Revenue: $" + totalRevenue + "\n\nTotal Orders: " + totalOrders;
+		return output;
+	}
 }

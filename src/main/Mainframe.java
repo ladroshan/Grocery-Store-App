@@ -1361,6 +1361,15 @@ public class Mainframe implements ActionListener{
 				}
 				else {
 					generateReport(startDate, endDate);
+					if (JDBCSelect.getReportList().getSize() > 0) {
+						String printReport = JDBCSelect.getReportList().toString();
+						JOptionPane.showMessageDialog(null, printReport, "Report for " + date1 + " - " + date2, 
+								JOptionPane.INFORMATION_MESSAGE);
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "There was no data stored for generating a report in the range of" 
+								+ date1 + " - " + date2, "Report Generation Error", JOptionPane.ERROR_MESSAGE);
+					}
 					System.out.println(startDate);
 					System.out.println(endDate);
 				}
