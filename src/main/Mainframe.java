@@ -772,11 +772,11 @@ public class Mainframe implements ActionListener{
 		
 		//Make sure username field is not empty or too big
 		if (username.length() < 1) {
-			JOptionPane.showMessageDialog(null, "The Username you entered is NULL!", "Password Error", 
+			JOptionPane.showMessageDialog(null, "The Username you entered is NULL!", "Username Error", 
 					JOptionPane.ERROR_MESSAGE);
 		}
 		else if (username.length() > 40) {
-			JOptionPane.showMessageDialog(null, "The Username you entered is too long!", "Password Error", 
+			JOptionPane.showMessageDialog(null, "The Username you entered is too long!", "Username Error", 
 					JOptionPane.ERROR_MESSAGE);
 		}
 		else {
@@ -794,15 +794,15 @@ public class Mainframe implements ActionListener{
 		//To keep the logout function in a separate method, the program initializes to a logged-in view and then 
 		//immediately is logged out *SIDE NOTE* While it starts logged-in, it still starts with NONUSER 
 		//privileges
-		//Mainframe test = new Mainframe();
-		//test.logout();
-
 		Mainframe test = new Mainframe();
-		test.pane.removeAll();
-		test.frame.dispose();
-		test.current = userType.ADMIN;
-		test.paneEdit("main", "admin");
-		test.reload();
+		test.logout();
+
+		//Mainframe test = new Mainframe();
+		//test.pane.removeAll();
+		//test.frame.dispose();
+		//test.current = userType.ADMIN;
+		//test.paneEdit("main", "admin");
+		//test.reload();
 	}
 	
 	@SuppressWarnings("static-access") //Not sure why, but Java told me to add this SuppressWarnings tag
@@ -864,9 +864,6 @@ public class Mainframe implements ActionListener{
 			//This has to be done with the password because of the way that JPasswordField stores data
 			String passString = new String(pword.getPassword());
 			
-			//If the username and password entered validate then run JDBC Queries
-			if (validateUsername(uname.getText()) && validatePassword(passString)) {
-				
 				//Run a Select Query on the 'users' table where the username field is equal to the entered username
 				JDBCSelect getUser = new JDBCSelect("users", "username", "'" + uname.getText() + "'");
 				
@@ -919,11 +916,6 @@ public class Mainframe implements ActionListener{
 					//data
 					(getUser).getList().clear();
 				}
-			}
-			else {
-				//This is only reached if the username and password did not validate before being sent to the
-				//JDBC Query Builder. Nothing needs to happen here because error windows were already cast
-			}
 		}
 		
 		//If User clicks the "Go" button for the Inventory from the main Admin page, load the frame with
