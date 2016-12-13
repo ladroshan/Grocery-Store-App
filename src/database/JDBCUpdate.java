@@ -47,6 +47,8 @@ public class JDBCUpdate {
 		//Build the Query with user input then try pulling from database
 		table = "inventory";
 		where = "id";
+		product = product.toLowerCase();
+		provider = provider.toLowerCase();
 		Query = "UPDATE " + table + " SET producttype = '" + product + "', provider = '" + provider + "', quantity = " + quantity + ", price = " + price
 				+ " WHERE " + where + " = " + id;
 		try {

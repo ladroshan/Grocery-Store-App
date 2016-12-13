@@ -32,7 +32,7 @@ public class ReceiptRow {
 	public String getCost() {
 		return cost;
 	}
-	
+
 	public String toString() {
 		return id + "    |    " + name.trim() + "    |    " + amount + "    |    " + cost;
 	}

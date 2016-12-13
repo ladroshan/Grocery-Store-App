@@ -31,8 +31,9 @@ public class MenuBar extends JMenuBar implements ActionListener{
 	//The JMenuItems are the options that are included in each JMenu (For example, logout and exit are both
 	//options in the 'file' Menu)
 	JMenuBar menuBar;
-	JMenu file, pages, about, help;
+	JMenu file, reports, pages, about, help;
 	JMenuItem logout, exit;
+	JMenuItem generate;
 	JMenuItem inventory, users, checkout;
 	JMenuItem details;
 	JMenuItem instructions, bugReport;
@@ -49,6 +50,8 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		//Add headers to the Menubar
 		file = new JMenu("File");
 		this.add(file);
+		reports = new JMenu("Reports");
+		this.add(reports);
 		pages = new JMenu("Pages");
 		this.add(pages);
 		about = new JMenu("About");
@@ -64,6 +67,11 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		exit = new JMenuItem("Exit");
 		exit.addActionListener(this);
 		file.add(exit);
+		
+		//Add the items to the reports menu
+		generate = new JMenuItem("Generate Report");
+		generate.addActionListener(this);
+		reports.add(generate);
 		
 		//Add the items to the pages menu
 		inventory = new JMenuItem("Inventory");
@@ -106,6 +114,8 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		//Add headers to the Menubar
 		file = new JMenu("File");
 		this.add(file);
+		reports = new JMenu("Reports");
+		this.add(reports);
 		pages = new JMenu("Pages");
 		this.add(pages);
 		about = new JMenu("About");
@@ -121,6 +131,11 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		exit = new JMenuItem("Exit");
 		exit.addActionListener(this);
 		file.add(exit);
+		
+		//Add the items to the reports menu
+		generate = new JMenuItem("Generate Report");
+		generate.addActionListener(this);
+		reports.add(generate);
 		
 		//Add the items to the pages menu
 		inventory = new JMenuItem("Inventory");
@@ -186,6 +201,13 @@ public class MenuBar extends JMenuBar implements ActionListener{
 				this.remove(file);
 			}
 		}
+		
+		//Check if the 'reports' JMenu is affected
+		if (hide == "reports") {
+			if (subs == "all") {
+				this.remove(reports);
+			}
+		}
 	}
 	
 	/**
@@ -200,6 +222,9 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		this.add(file);
 		file.add(logout);
 		file.add(exit);
+		
+		this.add(reports);
+		reports.add(generate);
 		
 		this.add(pages);
 		pages.add(inventory);
@@ -243,6 +268,11 @@ public class MenuBar extends JMenuBar implements ActionListener{
 			System.exit(0);
 		}
 		
+		//If user clicks "Generate Report", run the report generation page
+		if (e.getSource() == generate) {
+			frame.loadReports();
+		}
+		
 		//If user clicks "Inventory", reload the frame with the inventory layout
 		if (e.getSource() == inventory) {
 			frame.loadInventory();
@@ -271,7 +301,7 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		if (e.getSource() == instructions) {
 			JOptionPane.showMessageDialog(null, "How To Use ScanableGrocery:\n1. Press 'Login"
 					+ "\n2. Enter the Username and Password and click Submit. If you are unable to"
-					+ " login, contact a Manager.\n3. Follow the next steps.", "Instructions", 
+					+ " login, contact a Manager.\n3. Enjoy the program!", "Instructions", 
 					JOptionPane.INFORMATION_MESSAGE);
 		}
 		
