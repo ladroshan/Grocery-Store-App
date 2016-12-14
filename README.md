@@ -8,7 +8,10 @@ Application for Intro to Software Engineering Project
 	b) CREATE ROLE app SUPERUSER;
 	c) ALTER ROLE app WITH PASSWORD 'Th3Cak3IsALi3!';
 	d) ALTER ROLE app LOGIN;
-	e) \i '~PATH~/Grocery-Store-App/lib/scangro_release.sql'  (As a side note, you must replace the ~PATH~ in the 
+	e) Login to the scangro database with the app user: 
+		psql -U app scangro
+		Password: Th3Cak3IsALi3!
+	f) \i '~PATH~/Grocery-Store-App/lib/scangro_release.sql'  (As a side note, you must replace the ~PATH~ in the 
 		quotations with the path to the folder you put the forked Grocery-Store-App files in)
 3. Run the ScanableGrocery executable file that is in the Grocery-Store-App folder. 
 	Current executable name: ScannableGrocery_v1_0.jar
