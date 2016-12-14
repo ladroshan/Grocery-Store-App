@@ -163,7 +163,7 @@ public class JDBCSelect {
 				if(prejudice == 4) {
 					makeDaUsrList(results, count);
 				}
-				else if (prejudice == 5) {
+				else if (prejudice == 5 || prejudice  == 6) {
 					if (Qcount.equals("inventory")){
 						makeDaInvList(results, count);
 					}
@@ -172,6 +172,10 @@ public class JDBCSelect {
 					}
 				}
 				else {
+					if (prejudice == 0) {
+						JOptionPane.showMessageDialog(null, "There were no records that matched your search", 
+								"Database Error", JOptionPane.ERROR_MESSAGE);
+					}
 					JOptionPane.showMessageDialog(null, "There was an error in the differentiating between"
 							+ "whether this dump is for the User or Inventory databases.", "Database Error", 
 							JOptionPane.ERROR_MESSAGE);

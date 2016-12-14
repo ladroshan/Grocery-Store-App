@@ -1,6 +1,8 @@
 package main;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -27,6 +29,10 @@ public class Receipt {
 		for (int i = 0; i < receiptBody.size(); i++) {
 			this.receiptBody.add(receiptBody.get(i));
 		}
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		this.date = sdf.format(cal.getTime());
 	}
 	
 	public Receipt() {
@@ -188,6 +194,10 @@ public class Receipt {
 		initial = date;
 		initial = initial.substring(5) + "-" + initial.substring(0, 4); 
 		this.date = initial.trim();
+	}
+	
+	public String getDate() {
+		return this.date;
 	}
 	
 	public String toString(boolean isSearch, String body) {

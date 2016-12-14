@@ -1145,12 +1145,6 @@ public class Mainframe implements ActionListener{
 			//This has to be done with the password because of the way that JPasswordField stores data
 			String passString = new String(pword.getPassword());
 			
-<<<<<<< HEAD
-=======
-			//If the username and password entered validate then run JDBC Queries
-			if (validateUsername(uname.getText())) {
-				
->>>>>>> 342eed02f50c0d1023c6379610a66c1673c96537
 				//Run a Select Query on the 'users' table where the username field is equal to the entered username
 				JDBCSelect getUser = new JDBCSelect("users", "username", "'" + uname.getText() + "'");
 				
