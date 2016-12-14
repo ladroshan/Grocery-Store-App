@@ -11,12 +11,12 @@ public class ReportList {
 	
 	private double totalRevenue;
 	private int totalOrders;
+	private int totalReceipts;
 	private List<Report> daList = new ArrayList<Report>();
 	
 	public ReportList() {
 		this.totalRevenue = 0;
-		this.totalOrders = 0;
-		
+		this.totalOrders = 0;	
 	}
 	
 	public void addReport(Report report) {
@@ -37,6 +37,10 @@ public class ReportList {
 		}
 		daList.add(report);
 		totalOrders++;
+	}
+	
+	public void setReceiptCount(int count) {
+		totalReceipts = count;
 	}
 	
 	public int getSize() {
@@ -73,7 +77,8 @@ public class ReportList {
 					+ daList.get(i).getRevenue() + "\n"; 
 		}
 		calculateTotalRevenue();
-		output = output + "\nTotal Revenue: $" + totalRevenue + "\n\nTotal Orders: " + totalOrders;
+		output = output + "\nTotal Revenue: $" + totalRevenue + "\n\nTotal Orders: " + totalOrders + 
+				"\n\nTotal Receipts: " + totalReceipts;
 		return output;
 	}
 }

@@ -43,6 +43,7 @@ public class JDBCSelect {
 	private static List<Item> DaUdderInvList = new ArrayList<Item>();
 	private static List<User> DaUdderUsrList = new ArrayList<User>();
 	private static ReportList reportList = new ReportList();
+	private static int receiptCount = 0;
 	
 	/**
 	 * This is the overloaded constructor that is called by the Mainframe to run the SELECT queries
@@ -146,6 +147,7 @@ public class JDBCSelect {
 				System.out.println(prejudice);
 				r.next();
 				count = r.getInt("rowcount");
+				receiptCount = count;
 				System.out.println(count);
 				r.close();				
 			}
@@ -403,6 +405,7 @@ public class JDBCSelect {
 	}
 	
 	public static ReportList getReportList() {
+		reportList.setReceiptCount(receiptCount);
 		return reportList;
 	}
 	
