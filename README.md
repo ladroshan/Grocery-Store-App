@@ -6,7 +6,7 @@ Application for Intro to Software Engineering Project
 2. Before running the executable, run the following lines of code in your local computer's PostgreSQL:
 	a) CREATE DATABASE scangro;
 	b) CREATE ROLE app SUPERUSER;
-	c) ALTER ROLE app WITH PASSWORD 'examplePassword';
+	c) ALTER ROLE app WITH PASSWORD 'Th3Cak3IsALi3!';
 	d) ALTER ROLE app LOGIN;
 	e) \i '~PATH~/Grocery-Store-App/lib/scangro_release.sql'  (As a side note, you must replace the ~PATH~ in the 
 		quotations with the path to the folder you put the forked Grocery-Store-App files in)
