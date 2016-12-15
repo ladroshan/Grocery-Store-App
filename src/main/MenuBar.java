@@ -1,7 +1,8 @@
 package main;
 
 import main.Mainframe;
-import main.ExcelBuilder;
+//import main.ExcelBuilder;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -188,18 +189,15 @@ public class MenuBar extends JMenuBar implements ActionListener{
 			//Remove specified JMenuItems or the whole pages menu
 			if (subs == "inventory"){
 				pages.remove(inventory);
-				file.remove(read);
 			}
 			else if (subs == "users"){
 				pages.remove(users);
-				file.remove(read);
 			}
 			else if (subs == "checkout"){
 				pages.remove(checkout);
 			}
 			else if (subs == "all"){
 				this.remove(pages);
-				file.remove(read);
 			}
 		}
 		
@@ -209,6 +207,9 @@ public class MenuBar extends JMenuBar implements ActionListener{
 			if (subs == "logout") {
 				file.remove(logout);
 				
+			}
+			else if (subs == "read") {
+				file.remove(read);
 			}
 			else {
 				this.remove(file);

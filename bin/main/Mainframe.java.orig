@@ -3,7 +3,6 @@ package main;
 import main.MenuBar;
 import main.tableItems;
 import main.TableUser;
-import main.ExcelBuilder;
 import database.JDBCInsert;
 import database.JDBCSelect;
 
@@ -51,7 +50,6 @@ import javax.swing.JTextField;
  * @version 1.23
  */
 public class Mainframe implements ActionListener{
-
 	
 	//This is the JFrame that runs the program.
 	private JFrame frame =  new JFrame("ScanableGrocery");
@@ -116,8 +114,7 @@ public class Mainframe implements ActionListener{
 	public Mainframe(){
 		//This is initializing the current user to NONUSER since no one is logged in when the app starts
 		current = userType.CASHIER;
-	//	ExcelBuilder real = new ExcelBuilder();
-		//real.excelReader();
+		
 		//Check what type of user is logged in and use that information to build the view they need
 		checkUser();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -937,10 +934,6 @@ public class Mainframe implements ActionListener{
 		paneEdit("login", "button");
 		reload();
 	}
-	ExcelBuilder xl = new ExcelBuilder();
-	protected void read(){
-		xl.excelReader();
-	}
 	
 	/**
 	 * This method is for checking the userType and setting up the MenuBar with the menu items
@@ -952,16 +945,12 @@ public class Mainframe implements ActionListener{
 			menu.restartMenu();
 			menu.hideMenu("pages", "all");
 			menu.hideMenu("file", "logout");
-			menu.hideMenu("file", "read");
-			menu.hideMenu("reports", "all");
 		}
 		else if (current == userType.CASHIER) {
 			//restartMenu() sets up the MenuBar with all options so that the necessary items can be removed next
 			menu.restartMenu();
 			menu.hideMenu("pages", "inventory");
 			menu.hideMenu("pages", "users");
-			menu.hideMenu("file", "read");
-			menu.hideMenu("reports", "all");
 		}
 		else if (current == userType.ADMIN) {
 			//restartMenu() sets up the MenuBar with all options because the Admin has full access.
@@ -1082,10 +1071,14 @@ public class Mainframe implements ActionListener{
 		//To keep the logout function in a separate method, the program initializes to a logged-in view and then 
 		//immediately is logged out *SIDE NOTE* While it starts logged-in, it still starts with NONUSER 
 		//privileges
+<<<<<<< HEAD
+=======
 
+//		Mainframe test = new Mainframe();
+//		test.logout();
 		//ExcelBuilder temp = new ExcelBuilder();
 		//temp.excelReader();
-
+>>>>>>> 342eed02f50c0d1023c6379610a66c1673c96537
 		Mainframe test = new Mainframe();
 		test.logout();
 
@@ -1156,6 +1149,12 @@ public class Mainframe implements ActionListener{
 			//This has to be done with the password because of the way that JPasswordField stores data
 			String passString = new String(pword.getPassword());
 			
+<<<<<<< HEAD
+=======
+			//If the username and password entered validate then run JDBC Queries
+			if (validateUsername(uname.getText())) {
+				
+>>>>>>> 342eed02f50c0d1023c6379610a66c1673c96537
 				//Run a Select Query on the 'users' table where the username field is equal to the entered username
 				JDBCSelect getUser = new JDBCSelect("users", "username", "'" + uname.getText() + "'");
 				
