@@ -1,7 +1,7 @@
 package main;
 
 import main.Mainframe;
-
+import main.ExcelBuilder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -32,11 +32,12 @@ public class MenuBar extends JMenuBar implements ActionListener{
 	//options in the 'file' Menu)
 	JMenuBar menuBar;
 	JMenu file, reports, pages, about, help;
-	JMenuItem logout, exit;
+	JMenuItem logout, exit, read;
 	JMenuItem generate;
 	JMenuItem inventory, users, checkout;
 	JMenuItem details;
 	JMenuItem instructions, bugReport;
+
 	
 	//This is an instance of the Mainframe that has been imported so that the Menu can invoke some frame methods
 	Mainframe frame;
@@ -63,6 +64,10 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		logout = new JMenuItem("Logout");
 		logout.addActionListener(this);
 		file.add(logout);
+		
+		read = new JMenuItem("Load Excel");
+		read.addActionListener(this);
+		file.add(read);
 		
 		exit = new JMenuItem("Exit");
 		exit.addActionListener(this);
@@ -128,6 +133,10 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		logout.addActionListener(this);
 		file.add(logout);
 		
+		read = new JMenuItem("Read Excel");
+		read.addActionListener(this);
+		file.add(read);
+		
 		exit = new JMenuItem("Exit");
 		exit.addActionListener(this);
 		file.add(exit);
@@ -179,15 +188,18 @@ public class MenuBar extends JMenuBar implements ActionListener{
 			//Remove specified JMenuItems or the whole pages menu
 			if (subs == "inventory"){
 				pages.remove(inventory);
+				file.remove(read);
 			}
 			else if (subs == "users"){
 				pages.remove(users);
+				file.remove(read);
 			}
 			else if (subs == "checkout"){
 				pages.remove(checkout);
 			}
 			else if (subs == "all"){
 				this.remove(pages);
+				file.remove(read);
 			}
 		}
 		
@@ -196,6 +208,7 @@ public class MenuBar extends JMenuBar implements ActionListener{
 			//Remove specified JMenuItems or the whole file menu
 			if (subs == "logout") {
 				file.remove(logout);
+				
 			}
 			else {
 				this.remove(file);
@@ -221,6 +234,7 @@ public class MenuBar extends JMenuBar implements ActionListener{
 	protected void restartMenu() {
 		this.add(file);
 		file.add(logout);
+		file.add(read);
 		file.add(exit);
 		
 		this.add(reports);
@@ -261,6 +275,9 @@ public class MenuBar extends JMenuBar implements ActionListener{
 		//If user clicks "Logout", invoke the logout method from the Mainframe
 		if (e.getSource() == logout) {
 			frame.logout();
+		}
+		if (e.getSource() == read) {
+			frame.read();
 		}
 		
 		//If user clicks "Exit", close the program
