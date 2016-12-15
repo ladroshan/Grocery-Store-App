@@ -1,4 +1,17 @@
 package main;
+
+public class ExcelBuilder {
+
+	public static void main(String[] args) {
+		
+	}
+
+}
+
+
+/*
+***THIS HAS BEEN COMMENTED OUT FOR THE TIME BEING BECAUSE IT DOES NOT APPEAR TO BE WORKING OR IT IS NOT FINISHED!***
+package main;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -106,7 +119,8 @@ try {
 							 System.out.println(holder[0]+holder[1]+holder[2]+holder[3]);
 							 int squints =(int)(Double.parseDouble(holder[2]));
 							 String smalls="'"+holder[3]+"'";
-							 JDBCInsert wendyPefercorn =new JDBCInsert( true,holder[0], holder[1], squints+"",smalls );
+							 @SuppressWarnings("unused")
+							JDBCInsert wendyPefercorn =new JDBCInsert( true,holder[0], holder[1], squints+"",smalls );
 					      }
 				     }
 				//end of cell iterator
@@ -130,3 +144,4 @@ try {
 			e.printStackTrace();
 		}
 }}
+*/

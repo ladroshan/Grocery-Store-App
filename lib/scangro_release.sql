@@ -2,12 +2,11 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.1
--- Dumped by pg_dump version 9.6.1
+-- Dumped from database version 9.5.1
+-- Dumped by pg_dump version 9.5.1
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -71,7 +70,7 @@ ALTER SEQUENCE inventory_id_seq OWNED BY inventory.id;
 
 
 --
--- Name: receipts; Type: TABLE; Schema: public; Owner: app
+-- Name: receipts; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE receipts (
@@ -83,10 +82,10 @@ CREATE TABLE receipts (
 );
 
 
-ALTER TABLE receipts OWNER TO app;
+ALTER TABLE receipts OWNER TO postgres;
 
 --
--- Name: receipts_id_seq; Type: SEQUENCE; Schema: public; Owner: app
+-- Name: receipts_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE receipts_id_seq
@@ -97,10 +96,10 @@ CREATE SEQUENCE receipts_id_seq
     CACHE 1;
 
 
-ALTER TABLE receipts_id_seq OWNER TO app;
+ALTER TABLE receipts_id_seq OWNER TO postgres;
 
 --
--- Name: receipts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: app
+-- Name: receipts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
 ALTER SEQUENCE receipts_id_seq OWNED BY receipts.id;
@@ -142,21 +141,21 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
--- Name: inventory id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY inventory ALTER COLUMN id SET DEFAULT nextval('inventory_id_seq'::regclass);
 
 
 --
--- Name: receipts id; Type: DEFAULT; Schema: public; Owner: app
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY receipts ALTER COLUMN id SET DEFAULT nextval('receipts_id_seq'::regclass);
 
 
 --
--- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
@@ -167,7 +166,7 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 --
 
 COPY inventory (id, producttype, provider, quantity, price) FROM stdin;
-0	Example Item 1      	Provider            	1	$0.00
+0	example item 1      	provider            	0	$0.00
 \.
 
 
@@ -175,11 +174,11 @@ COPY inventory (id, producttype, provider, quantity, price) FROM stdin;
 -- Name: inventory_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('inventory_id_seq', 37, true);
+SELECT pg_catalog.setval('inventory_id_seq', 1, false);
 
 
 --
--- Data for Name: receipts; Type: TABLE DATA; Schema: public; Owner: app
+-- Data for Name: receipts; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY receipts (id, body, totalprice, cashierid, date) FROM stdin;
@@ -187,10 +186,10 @@ COPY receipts (id, body, totalprice, cashierid, date) FROM stdin;
 
 
 --
--- Name: receipts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: app
+-- Name: receipts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('receipts_id_seq', 4, true);
+SELECT pg_catalog.setval('receipts_id_seq', 1, false);
 
 
 --
@@ -206,13 +205,26 @@ COPY users (id, username, password, is_admin) FROM stdin;
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('users_id_seq', 24, true);
+SELECT pg_catalog.setval('users_id_seq', 1, false);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
 --
 -- Name: inventory; Type: ACL; Schema: public; Owner: postgres
 --
 
+REVOKE ALL ON TABLE inventory FROM PUBLIC;
+REVOKE ALL ON TABLE inventory FROM postgres;
+GRANT ALL ON TABLE inventory TO postgres;
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE inventory TO app;
 
 
@@ -220,6 +232,9 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE inventory TO app;
 -- Name: inventory_id_seq; Type: ACL; Schema: public; Owner: postgres
 --
 
+REVOKE ALL ON SEQUENCE inventory_id_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE inventory_id_seq FROM postgres;
+GRANT ALL ON SEQUENCE inventory_id_seq TO postgres;
 GRANT ALL ON SEQUENCE inventory_id_seq TO app;
 
 
@@ -227,6 +242,9 @@ GRANT ALL ON SEQUENCE inventory_id_seq TO app;
 -- Name: users; Type: ACL; Schema: public; Owner: postgres
 --
 
+REVOKE ALL ON TABLE users FROM PUBLIC;
+REVOKE ALL ON TABLE users FROM postgres;
+GRANT ALL ON TABLE users TO postgres;
 GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE users TO app;
 
 
@@ -234,6 +252,9 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE users TO app;
 -- Name: users_id_seq; Type: ACL; Schema: public; Owner: postgres
 --
 
+REVOKE ALL ON SEQUENCE users_id_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE users_id_seq FROM postgres;
+GRANT ALL ON SEQUENCE users_id_seq TO postgres;
 GRANT ALL ON SEQUENCE users_id_seq TO app;
 
 

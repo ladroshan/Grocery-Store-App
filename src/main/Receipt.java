@@ -1,6 +1,8 @@
 package main;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -17,8 +19,9 @@ import database.JDBCUpdate;
 public class Receipt {
 
 	private double total;
-	private String paymentMethod;
+	private String paymentMethod, date;
 	private List<ReceiptRow> receiptBody = new ArrayList<ReceiptRow>();
+	private int cashierId, id;
 	
 	public Receipt(double total, String paymentMethod, List<ReceiptRow> receiptBody) {
 		this.total = total;
@@ -26,7 +29,21 @@ public class Receipt {
 		for (int i = 0; i < receiptBody.size(); i++) {
 			this.receiptBody.add(receiptBody.get(i));
 		}
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		this.date = sdf.format(cal.getTime());
 	}
+	
+	public Receipt() {
+		this.id = 0;
+		this.date = "0000-0-0";
+		this.paymentMethod = "";
+		this.receiptBody = null;
+		this.cashierId = 0;
+		this.total = 0.0;
+	}
+	
 	public int[] getItemsQuant(){
 		int [] items = new int [receiptBody.size()];
 		for (int i = 0; i < receiptBody.size(); i++) {
@@ -141,6 +158,63 @@ public class Receipt {
 		}
 		return output;
 	}
+	
+	public void setId(String id) {
+		this.id = Integer.parseInt(id);
+		return;
+	}
+	
+	public void setReceiptBody(String body) {
+		//Write this in eventually
+	}
+	
+	public void setTotal(String total) {
+		String rawCost = total, revenue;
+		  rawCost = rawCost.substring(1);
+		  char[]removeCommas = rawCost.toCharArray();
+		  for (int i = 0; i < removeCommas.length; i++) {
+			  if(removeCommas[i] == ','){
+				  rawCost = rawCost.substring(0, i) + rawCost.substring(i + 1);
+				  removeCommas = rawCost.toCharArray();
+				  i = 0;
+			  }
+		  }
+		  revenue = rawCost;
+		  this.total = Double.parseDouble(revenue);
+		  return;
+	}
+	
+	public void setCashierId(String cashierId) {
+		this.cashierId = Integer.parseInt(cashierId);
+		return;
+	}
+	
+	public void setDate(String date) {
+		String initial;
+		initial = date;
+		initial = initial.substring(5) + "-" + initial.substring(0, 4); 
+		this.date = initial.trim();
+	}
+	
+	public String getDate() {
+		return this.date;
+	}
+	
+	public String toString(boolean isSearch, String body) {
+		if (isSearch == true) {
+			String output;
+			output = "RECEIPT #" + id + "                     " + date + "\n"
+					+ "---------------------------------------------\n";
+			output = output + body + "\n";
+			output = output + "\nTotal Price: " + Double.toString(total) + "\n";
+			output = output + "\nCashier ID: " + cashierId;
+			return output;
+		}
+		else {
+			return "isSearch ERROR";
+		}
+	}
+	
 	public String toString() {
 		String output;
 		output = "RECEIPT\n"

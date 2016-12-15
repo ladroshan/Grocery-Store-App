@@ -45,6 +45,8 @@ public class JDBCInsert {
 	public JDBCInsert(String table, String product, String provider, String quantity, String price) {
 		//Build the Query with user input then try pulling from database
 		table = "inventory";
+		product = product.toLowerCase();
+		provider = provider.toLowerCase();
 		Query = "INSERT INTO " + table + "(producttype, provider, quantity, price) VALUES('"
 				+ product + "', '" + provider + "', " + quantity + ", " 
 				+ price + ")";

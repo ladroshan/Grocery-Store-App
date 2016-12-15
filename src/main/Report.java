@@ -35,4 +35,10 @@ public class Report {
 	protected void incRevenue(double revenue) {
 		this.revenue += revenue;
 	}
+	
+	public String toString() {
+		String output;
+		output = "Product: " + this.product + "\nQuantity: " + this.quantity + "\nRevenue: $" + this.revenue + "\n";
+		return output;
+	}
 }
