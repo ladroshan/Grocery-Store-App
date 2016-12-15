@@ -3,6 +3,7 @@ package main;
 import main.MenuBar;
 import main.tableItems;
 import main.TableUser;
+import main.ExcelBuilder;
 import database.JDBCInsert;
 import database.JDBCSelect;
 
@@ -50,6 +51,7 @@ import javax.swing.JTextField;
  * @version 1.23
  */
 public class Mainframe implements ActionListener{
+
 	
 	//This is the JFrame that runs the program.
 	private JFrame frame =  new JFrame("ScanableGrocery");
@@ -114,7 +116,8 @@ public class Mainframe implements ActionListener{
 	public Mainframe(){
 		//This is initializing the current user to NONUSER since no one is logged in when the app starts
 		current = userType.CASHIER;
-		
+		ExcelBuilder real = new ExcelBuilder();
+		real.excelReader();
 		//Check what type of user is logged in and use that information to build the view they need
 		checkUser();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
